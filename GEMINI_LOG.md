@@ -1,7 +1,7 @@
-# Project: Nexus — “Collaboration, simplified.”
+1# Project: Nexus — “Infinite Canvas, Simplified.”
 
 ## Objective
-To build a collaborative project management platform (MERN) from scratch in a single repository. The development will follow a frontend-first approach, starting with a minimal, working MVP and then progressively adding paid/advanced features and the backend.
+To build a highly flexible, collaborative digital whiteboard application similar to Milanote, but with enhanced features for visual organization, brainstorming, and real-time collaboration. The development will follow a frontend-first approach, starting with a minimal, working MVP and then progressively adding advanced features and the backend.
 
 ---
 
@@ -15,19 +15,14 @@ To build a collaborative project management platform (MERN) from scratch in a si
 *   **Routing:** React Router v6
 *   **Data Fetching:** @tanstack/react-query
 *   **State Management:** Zustand
-*   **HTTP Client:** Axios
-*   **Drag & Drop:** @dnd-kit
-*   **File Uploads:** react-dropzone
-*   **Forms:** react-hook-form + zod
-*   **Date Utility:** date-fns
+*   **Canvas Library:** [To be decided: e.g., Konva.js, React Flow, Fabric.js] - *New*
+*   **Real-time Communication:** [To be decided: e.g., Socket.IO client] - *New*
 *   **Dev Tools:** ESLint, Prettier, Husky + lint-staged, Vitest
 
 ### Backend (provisional)
 *   **Runtime:** Node.js + Express
 *   **Database:** MongoDB (Mongoose) / MongoDB Atlas (for production)
-*   **Authentication:** JWT (or httpOnly cookies)
-*   **File Storage:** Cloudinary or S3 (to be decided)
-*   **Emailing:** Nodemailer (for password reset/invites, to be decided)
+*   **Real-time Communication:** [To be decided: e.g., Socket.IO server] - *New*
 
 ---
 
@@ -50,46 +45,33 @@ To build a collaborative project management platform (MERN) from scratch in a si
 
 ## Development Principles
 
-*   **Iterative Development:** Work step-by-step: frontend MVP first, then backend integration, then paid/advanced features.
+*   **Iterative Development:** Work step-by-step: frontend MVP first, then backend integration, then advanced features.
 *   **Code Quality:** Enforce linting, formatting, pre-commit checks, and tests.
-*   **State Management:** Use React Query for server state and optimistic updates; Zustand for small global UI/auth state.
+*   **State Management:** Use React Query for server state and optimistic updates; Zustand for small global UI/canvas state.
 
 ---
 
 ## Feature Roadmap
 
 ### Immediate / MVP Features (Free/Basic Version)
-*   **User Authentication:** Register, login, logout, password reset.
-*   **User Profile:** Basic profile with name and avatar.
-*   **Workspace:** Single workspace (v1) with the ability to invite team members via email.
-*   **Projects:** Create, read, update, archive/delete projects.
-*   **Tasks:** Full CRUD with fields: title, description, projectId, assignee, priority (Low/Med/High), status (Todo/Doing/Done), dueDate, labels, position.
-*   **Kanban Board:** "Todo", "Doing", "Done" columns with drag & drop functionality.
-*   **Task Details:** A modal or drawer to edit tasks, add comments, and manage attachments.
-*   **Comments:** Add/delete comments on tasks.
-*   **File Attachments:** Basic file uploads with preview and download.
-*   **Search & Filter:** Basic search and filtering capabilities.
-*   **Activity Feed:** A feed displaying the last 5 events per task.
-*   **Notifications:** Basic in-app notifications.
-*   **Responsive UI:** Ensuring the application is usable on both desktop and mobile.
-*   **Protected Routes:** Client-side authentication guards.
+*   **Infinite Canvas:** Pannable and zoomable canvas.
+*   **Basic Element Creation:** Add text boxes, basic shapes (rectangles, circles).
+*   **Element Manipulation:** Select, move, resize, delete elements.
+*   **Local Board Persistence:** Save and load board state to/from local storage.
+*   **Basic Drawing:** Freehand drawing tool.
+*   **Responsive UI:** Ensure usability on desktop and mobile.
 
-*Note: Features can be added or removed as the project evolves.*
-
-### Planned / Premium Features (Paid Version)
-*   Multi-workspace support and advanced RBAC.
-*   Unlimited team members and larger storage quotas.
-*   Gantt chart, timeline, and calendar views.
-*   Advanced filtering, search, and saved views.
-*   Time tracking and billing.
-*   Automation and workflow rules.
-*   Integrations with third-party services like Slack, Google Drive, etc.
-*   Advanced analytics and reporting.
-*   Client portal for external access.
-*   Custom branding and domain for workspaces.
-*   Data export (PDF/CSV/Excel) and scheduled reports.
-*   Priority support and SLAs.
-*   Optional AI-powered features.
+### Planned / Advanced Features (Paid/Premium Version)
+*   **Rich Content Types:** Drag & drop images, embed links, upload files (PDFs, videos).
+*   **Real-time Collaboration:** Multi-user editing with presence indicators.
+*   **User Authentication & Authorization:** Secure user accounts and board sharing.
+*   **Cloud Board Persistence:** Save and load boards to/from a database.
+*   **Advanced Drawing Tools:** Smart shapes, connectors, lines, arrows.
+*   **Version History & Undo/Redo:** Track changes and revert to previous states.
+*   **Templating System:** Pre-defined board layouts.
+*   **AI-Powered Features:** Idea generation, content summarization, image recognition.
+*   **Integrations:** Connect with external services (e.g., cloud storage, communication apps).
+*   **Export Options:** Export boards as images (PNG, JPG) or PDFs.
 
 ---
 
@@ -99,22 +81,23 @@ To build a collaborative project management platform (MERN) from scratch in a si
 1.  Bootstrap the client with Vite + React + TypeScript. Install and configure Tailwind, DaisyUI, and Shadcn/UI.
 2.  Create a basic folder structure (feature-based).
 3.  Set up global providers (React Query, Router, Zustand).
-4.  Implement an Axios instance with a base URL and error handling.
-5.  Build authentication pages and flows.
-6.  Construct the main layout (Navbar, Sidebar, Page container).
-7.  Develop the dashboard for project listing and creation.
-8.  Implement the project page with a Kanban board.
-9.  Build the task modal for creation and updates.
-10. Connect to backend APIs using React Query, implementing optimistic updates where possible.
-11. Add search, filters, activity feed, and notifications.
+4.  **Implement Core Canvas:** Choose and integrate a canvas library (e.g., Konva.js, React Flow) and set up basic panning and zooming.
+5.  **Basic Element Interaction:** Enable adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas.
+6.  **Local Storage Integration:** Implement saving and loading board state to/from local storage.
+7.  **Rich Content Type Support:** Add functionality for images, links, and file uploads.
+8.  **Real-time Communication Setup:** Integrate a real-time library (e.g., Socket.IO client) and set up basic connection.
+9.  **Authentication & Routing:** Build user authentication pages and flows, and set up protected routes.
+10. **Real-time Collaboration Implementation:** Develop real-time updates for element changes and user presence.
+11. **Advanced Features:** Implement drawing tools, version history, and other advanced features as decided.
 12. Write tests and set up pre-commit hooks before deploying to Vercel.
 
 ### Backend (to follow frontend)
-*   Develop an Express application with authentication routes.
-*   Define models for all necessary entities (User, Workspace, Project, etc.).
-*   Implement CRUD routes for projects, tasks, comments, and file uploads.
-*   Create an invitation flow and workspace membership endpoints.
-*   Implement middleware for authentication, input validation, error handling, and rate limiting.
+*   Develop an Express application with WebSocket integration for real-time communication.
+*   Define models for necessary entities (User, Board, Element, etc.).
+*   Implement API endpoints for board creation, retrieval, and element persistence.
+*   Implement authentication and authorization for board access.
+*   Handle file storage for uploaded content.
+*   Implement middleware for input validation, error handling, and rate limiting.
 *   Configure CORS and cookie settings.
 
 ---
@@ -122,7 +105,7 @@ To build a collaborative project management platform (MERN) from scratch in a si
 ## Deployment & Operations
 
 *   **Local Development:** The client will run via `npm run dev` (Vite) and the server via nodemon/ts-node.
-*   **Environment Variables:** `VITE_API_URL` (client), `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL` (server).
+*   **Environment Variables:** `VITE_API_URL` (client), `MONGO_URI`, `JWT_SECRET`, `CLIENT_URL` (server) - *will be updated based on new backend needs*.
 *   **CI/CD:** Implement continuous integration to run linting, tests, and builds on push. Use Husky and lint-staged for commit hygiene.
 *   **Deployment:** The frontend will be deployed on Vercel, the backend on Render, and the database will be hosted on MongoDB Atlas.
 
@@ -136,3 +119,9 @@ To build a collaborative project management platform (MERN) from scratch in a si
 *   Troubleshot and resolved various configuration issues.
 *   Created the initial feature-based folder structure.
 *   Installed core dependencies for routing (`react-router-dom`), state management (`zustand`), and data fetching (`@tanstack/react-query`).
+*   **Project pivot confirmed:** Shifted from a collaborative project management tool to an infinite canvas/digital whiteboard (Milanote-like) application.
+*   **Core technologies finalized:** Decided on Konva.js for canvas rendering and Socket.IO for real-time communication.
+*   **Frontend-first approach:** Agreed to focus on building the frontend MVP, deferring advanced features, backend implementation, and detailed authentication/authorization decisions for later.
+*   **Started Login Page Frontend:** Began implementing the login page using Shadcn/UI components.
+*   **Troubleshot Shadcn/UI Integration:** Resolved multiple issues including missing `utils.ts`, `class-variance-authority` dependency, and proper configuration of `tailwind.config.js` and `index.css` for Shadcn/UI styling.
+*   **Confirmed Styling:** Verified that Shadcn/UI and Tailwind CSS styling is now correctly applied.
