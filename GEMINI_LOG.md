@@ -7,16 +7,20 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Tech Stack
 
-### Frontend
+### Frontend (Iterative Approach)
+
+#### Initial Setup
 *   **Framework:** React + TypeScript (.tsx)
 *   **Build Tool:** Vite
 *   **Styling:** Tailwind CSS
-*   **UI Components:** Shadcn/UI + DaisyUI
+*   **UI Components:** Shadcn/UI
+
+#### To be added as needed:
 *   **Routing:** React Router v6
 *   **Data Fetching:** @tanstack/react-query
 *   **State Management:** Zustand
-*   **Canvas Library:** [To be decided: e.g., Konva.js, React Flow, Fabric.js] - *New*
-*   **Real-time Communication:** [To be decided: e.g., Socket.IO client] - *New*
+*   **Canvas Library:** [To be decided: e.g., Konva.js, React Flow, Fabric.js]
+*   **Real-time Communication:** [To be decided: e.g., Socket.IO client]
 *   **Dev Tools:** ESLint, Prettier, Husky + lint-staged, Vitest
 
 ### Backend (provisional)
@@ -112,6 +116,15 @@ To build a highly flexible, collaborative digital whiteboard application similar
 ---
 
 ## Progress Log
+
+### August 29, 2025
+*   **Frontend Development:**
+    *   Successfully created the login and registration pages using Shadcn/UI components.
+    *   Added a background image to the login page and resolved image loading issues.
+    *   Fixed a persistent scrolling issue that was affecting all pages.
+    *   Created the home page with a sidebar.
+
+*   **Project Reset:** The user has decided to restart the client-side development from scratch due to persistent issues with the initial setup. The AI was unable to provide a satisfactory solution, so the user will be following a YouTube tutorial to rebuild the project.
 
 ### August 28, 2025
 *   Bootstrapped the frontend application with Vite, React, and TypeScript.
