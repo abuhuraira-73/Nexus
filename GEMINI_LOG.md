@@ -1,4 +1,4 @@
-1# Project: Nexus — “Infinite Canvas, Simplified.”
+# Project: Nexus — “Infinite Canvas, Simplified.”
 
 ## Objective
 To build a highly flexible, collaborative digital whiteboard application similar to Milanote, but with enhanced features for visual organization, brainstorming, and real-time collaboration. The development will follow a frontend-first approach, starting with a minimal, working MVP and then progressively adding advanced features and the backend.
@@ -85,7 +85,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 1.  Bootstrap the client with Vite + React + TypeScript. Install and configure Tailwind, DaisyUI, and Shadcn/UI.
 2.  Create a basic folder structure (feature-based).
 3.  Set up global providers (React Query, Router, Zustand).
-4.  **Implement Core Canvas:** Choose and integrate a canvas library (e.g., Konva.js, React Flow) and set up basic panning and zooming.
+4.  **Implement Core Canvas:** Choose and integrate a canvas library (e.g., Konva.js, React Flow, Fabric.js) and set up basic panning and zooming.
 5.  **Basic Element Interaction:** Enable adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas.
 6.  **Local Storage Integration:** Implement saving and loading board state to/from local storage.
 7.  **Rich Content Type Support:** Add functionality for images, links, and file uploads.
@@ -117,14 +117,25 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### August 30, 2025
+*   **Frontend Design Decisions:**
+    *   **Sidebar Behavior:**
+        *   When no page is open: The main content area will not be an active canvas. It will display options like "create page" or a list of existing pages. The sidebar will only show the "Navigation Section" (projects/pages), and the "Tools Section" will be hidden.
+        *   When a page is opened: The main content area will transform into the infinite canvas for that specific page. The "Tools Section" will appear in the sidebar, enabling users to drag and drop elements onto the canvas.
+    *   **Core Canvas Features (Frontend Implementation Focus):**
+        *   **Seamless Canvas Navigation:** Implement intuitive controls for zooming and panning across the infinite canvas.
+        *   **Element Customization & Properties:** Develop functionality to modify properties of elements (e.g., text font/color, shape fill/border, image rotation/opacity) via a context-sensitive panel or pop-over.
+        *   **Undo/Redo:** Implement a robust undo/redo stack for all canvas operations to ensure user confidence.
+    *   **Dynamic Routing for Canvas Pages:** Implement dynamic routing using `react-router-dom` with route parameters (e.g., `/canvas/:id`) to allow unique URLs for each infinite canvas page without full page reloads.
+    *   **Main Content Area Routing:** The `client/src/pages/index.tsx` component will serve as the main application layout. It will render the `AppSidebar` and dynamically render the main content area (either the "No Canvas Open" page or the "Infinite Canvas" page) based on the current route.
+
 ### August 29, 2025
 *   **Frontend Development:**
     *   Successfully created the login and registration pages using Shadcn/UI components.
     *   Added a background image to the login page and resolved image loading issues.
     *   Fixed a persistent scrolling issue that was affecting all pages.
     *   Created the home page with a sidebar.
-
-*   **Project Reset:** The user has decided to restart the client-side development from scratch due to persistent issues with the initial setup. The AI was unable to provide a satisfactory solution, so the user will be following a YouTube tutorial to rebuild the project.
+    * Project Reset:** The user has decided to restart the client-side development from scratch due to persistent issues with the initial setup. The AI was unable to provide a satisfactory solution, so the user will be following a YouTube tutorial to rebuild the project.
 
 ### August 28, 2025
 *   Bootstrapped the frontend application with Vite, React, and TypeScript.
