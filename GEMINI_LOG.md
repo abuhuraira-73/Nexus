@@ -85,15 +85,17 @@ To build a highly flexible, collaborative digital whiteboard application similar
 1.  Bootstrap the client with Vite + React + TypeScript. Install and configure Tailwind, DaisyUI, and Shadcn/UI.
 2.  Create a basic folder structure (feature-based).
 3.  Set up global providers (React Query, Router, Zustand).
-4.  **Implement Core Canvas:** Choose and integrate a canvas library (e.g., Konva.js, React Flow, Fabric.js) and set up basic panning and zooming.
-5.  **Basic Element Interaction:** Enable adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas.
-6.  **Local Storage Integration:** Implement saving and loading board state to/from local storage.
-7.  **Rich Content Type Support:** Add functionality for images, links, and file uploads.
-8.  **Real-time Communication Setup:** Integrate a real-time library (e.g., Socket.IO client) and set up basic connection.
-9.  **Authentication & Routing:** Build user authentication pages and flows, and set up protected routes.
-10. **Real-time Collaboration Implementation:** Develop real-time updates for element changes and user presence.
-11. **Advanced Features:** Implement drawing tools, version history, and other advanced features as decided.
-12. Write tests and set up pre-commit hooks before deploying to Vercel.
+4.  **Implement Main Application Layout and Routing:** Set up `client/src/pages/index.tsx` as the `AppLayout` component, handling the main application structure (sidebar, header) and utilizing `react-router-dom`'s `<Outlet />` for nested content rendering. Configure `client/src/App.tsx` for nested routing, including dynamic routes for canvas pages (e.g., `/canvas/:id`).
+5.  **Develop "No Canvas Open" Page:** Create the `HeroSection` component (`client/src/pages/home.tsx`) to serve as the default content for the root path (`/`) when no specific canvas is open. Design its UI to be welcoming and provide clear calls to action.
+6.  **Implement Core Canvas:** Choose and integrate a canvas library (e.g., Konva.js, React Flow) and set up basic panning and zooming. Enable adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas. Implement element customization (e.g., text font/color, shape fill/border) and robust undo/redo functionality.
+7.  **Implement Dynamic Sidebar Behavior:** Develop the logic for the `AppSidebar` to conditionally display the "Tools Section" only when a canvas page is open, while the "Navigation Section" remains always visible.
+8.  **Local Storage Integration:** Implement saving and loading board state to/from local storage.
+9.  **Rich Content Type Support:** Add functionality for images, links, and file uploads.
+10. **Real-time Communication Setup:** Integrate a real-time library (e.g., Socket.IO client) and set up basic connection.
+11. **Authentication & Routing:** Build user authentication pages and flows, and set up protected routes.
+12. **Real-time Collaboration Implementation:** Develop real-time updates for element changes and user presence.
+13. **Advanced Features:** Implement drawing tools, version history, and other advanced features as decided.
+14. Write tests and set up pre-commit hooks before deploying to Vercel.
 
 ### Backend (to follow frontend)
 *   Develop an Express application with WebSocket integration for real-time communication.
@@ -128,6 +130,20 @@ To build a highly flexible, collaborative digital whiteboard application similar
         *   **Undo/Redo:** Implement a robust undo/redo stack for all canvas operations to ensure user confidence.
     *   **Dynamic Routing for Canvas Pages:** Implement dynamic routing using `react-router-dom` with route parameters (e.g., `/canvas/:id`) to allow unique URLs for each infinite canvas page without full page reloads.
     *   **Main Content Area Routing:** The `client/src/pages/index.tsx` component will serve as the main application layout. It will render the `AppSidebar` and dynamically render the main content area (either the "No Canvas Open" page or the "Infinite Canvas" page) based on the current route.
+*   **Frontend Implementation & Troubleshooting:**
+    *   **"No Canvas Open" Page (`home.tsx`):**
+        *   Designed and implemented the `HeroSection` component (`client/src/pages/home.tsx`) to serve as the "No Canvas Open" page.
+        *   Iterated on UI design to achieve a full-page, stylish layout with a prominent "Create New Canvas" button and a "Recent Canvases" section.
+        *   Implemented a background with a subtle gradient and a noise texture overlay.
+        *   Addressed responsiveness issues for the "Recent Canvases" section.
+    *   **Routing Integration:**
+        *   Modified `client/src/pages/index.tsx` to act as the `AppLayout` component, using `react-router-dom`'s `<Outlet />` for nested content rendering.
+        *   Modified `client/src/App.tsx` to set up nested routing, making `HeroSection` the default content for the root path (`/`).
+    *   **Troubleshooting:**
+        *   Resolved `TS2307: Cannot find module` errors by clarifying that `particles`, `dot-pattern`, and `@tailark/hero-section-9` are not standard Shadcn/UI components and cannot be added via `shadcn add`.
+        *   Provided guidance on installing `next-themes` and `badge` components.
+        *   Addressed `EACCES: permission denied` error during global `pnpm` installation, advising `sudo` or `nvm`.
+        *   Fixed multiple syntax errors in `home.tsx` related to mismatched braces and unclosed tags.
 
 ### August 29, 2025
 *   **Frontend Development:**
