@@ -35,9 +35,9 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Nexus",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "",
     },
     {
       name: "Acme Corp.",
