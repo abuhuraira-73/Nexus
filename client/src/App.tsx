@@ -4,6 +4,7 @@ import LoginPage from './pages/login'
 import RegisterPage from './pages/register'
 import AppLayout from './pages'
 import HeroSection from './pages/home'
+import InfiniteCanvasPage from './pages/infinite-canvas'
 // import InfiniteCanvasPage from './pages/infinite-canvas'
 
 
@@ -14,6 +15,7 @@ function App() {
         {/* Authentication Routes */}
         <Route path='/login' element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage/>} />
+        <Route path='/infinite-canvas' element={<InfiniteCanvasPage/>} />
 
         {/* The AppLayout will render the sidebar and an <Outlet /> */}
         <Route path='/' element={<AppLayout />}>
