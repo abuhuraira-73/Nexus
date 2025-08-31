@@ -14,14 +14,10 @@ const recentCanvases = [
 export default function HeroSection() {
   return (
     <section className="relative overflow-hidden py-10 md:py-20 lg:py-15 flex flex-col flex-1 items-center justify-center">
-      {/* Background Pattern */}
-      <div className="absolute inset-x-0 top-0 flex h-full w-full items-center justify-center opacity-100">
-        <img
-          alt="background"
-          src="https://deifkwefumgah.cloudfront.net/shadcnblocks/block/patterns/square-alt-grid.svg"
-          className="[mask-image:radial-gradient(75%_75%_at_center,white,transparent)] opacity-90"
-        />
-      </div>
+      {/* Blurred Gradient Background */}
+      <div
+        className="absolute top-1/2 left-1/2 w-[60rem] h-[60rem] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-tr from-purple-600 via-pink-500 to-red-500 rounded-full blur-3xl opacity-20"
+      ></div>
 
       <div className="relative z-10 container mx-auto px-4 flex flex-col items-center space-y-12">
         {/* Main Call to Action Section */}
@@ -50,7 +46,7 @@ export default function HeroSection() {
           {recentCanvases.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recentCanvases.map((canvas) => (
-                <Card key={canvas.id} className="p-6 text-left hover:shadow-xl transition-shadow cursor-pointer border border-gray-200/50 rounded-lg bg-card/80 backdrop-blur-sm">
+                <Card key={canvas.id} className="p-6 text-left transition-shadow cursor-pointer rounded-lg bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg hover:shadow-xl transition-transform duration-300 hover:scale-105">
                   <CardContent className="p-0 flex flex-col gap-3">
                     <div className="flex items-center gap-3 text-xl font-semibold text-foreground">
                       {canvas.icon}

@@ -3,7 +3,7 @@ import './App.css'
 import LoginPage from './pages/login'
 import RegisterPage from './pages/register'
 import AppLayout from './pages'
-import HeroSection from './pages/Home'
+import HeroSection from './pages/home'
 // import InfiniteCanvasPage from './pages/infinite-canvas'
 
 
