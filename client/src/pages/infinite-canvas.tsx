@@ -4,7 +4,6 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import type { Rect as RectType } from 'konva/lib/shapes/Rect';
 
-
 interface Shape {
   id: string;
   x: number;
@@ -13,6 +12,7 @@ interface Shape {
   height: number;
   fill: string;
   shadowBlur: number;
+  rotation?: number; // Add rotation to the shape interface
 }
 
 const InfiniteCanvas = () => {
@@ -23,17 +23,14 @@ const InfiniteCanvas = () => {
   });
 
   const [shapes, setShapes] = useState<Shape[]>([
-    { id: '1', x: 20, y: 20, width: 100, height: 100, fill: 'red', shadowBlur: 5 },
+    { id: '1', x: 20, y: 20, width: 100, height: 100, fill: 'red', shadowBlur: 5, rotation: 0 },
   ]);
 
-  // New state to track the selected shape's id
   const [selectedId, selectShape] = useState<string | null>(null);
 
-  // Refs for the transformer and the shapes
   const trRef = useRef<TransformerType>(null);
   const shapeRefs = useRef<(RectType | null)[]>([]);
 
-  // useEffect to attach the transformer to the selected shape
   useEffect(() => {
     if (selectedId && trRef.current) {
       const selectedNode = shapeRefs.current.find(
@@ -77,15 +74,13 @@ const InfiniteCanvas = () => {
     });
   };
 
-  
-
   const handleStageDragEnd = (e: KonvaEventObject<DragEvent>) => {
     setStage({
       ...stage,
       x: e.target.x(),
       y: e.target.y(),
     });
-  }
+  };
 
   const addShape = () => {
     const newShape: Shape = {
@@ -96,6 +91,7 @@ const InfiniteCanvas = () => {
       height: 100,
       fill: 'green',
       shadowBlur: 5,
+      rotation: 0,
     };
     setShapes([...shapes, newShape]);
   };
@@ -119,14 +115,14 @@ const InfiniteCanvas = () => {
         width={window.innerWidth}
         height={window.innerHeight}
         onWheel={handleWheel}
-        onDragEnd={handleStageDragEnd} // Renamed for clarity
+        onDragEnd={handleStageDragEnd}
         draggable
         scaleX={stage.scale}
         scaleY={stage.scale}
         x={stage.x}
         y={stage.y}
-        onMouseDown={checkDeselect} // Add mousedown event listener for deselection
-        onTouchStart={checkDeselect} // Add touchstart event listener for deselection on mobile
+        onMouseDown={checkDeselect}
+        onTouchStart={checkDeselect}
       >
         <Layer>
           {shapes.map((shape, i) => (
@@ -140,11 +136,12 @@ const InfiniteCanvas = () => {
               height={shape.height}
               fill={shape.fill}
               shadowBlur={shape.shadowBlur}
+              rotation={shape.rotation} // Add rotation prop
               onClick={() => {
-                selectShape(shape.id); // Select shape on click
+                selectShape(shape.id);
               }}
               onTap={() => {
-                selectShape(shape.id); // Select shape on tap for mobile
+                selectShape(shape.id);
               }}
               draggable
               onDragEnd={(e) => {
@@ -154,19 +151,40 @@ const InfiniteCanvas = () => {
                   shapeToUpdate.x = e.target.x();
                   shapeToUpdate.y = e.target.y();
                   setShapes(newShapes);
-              }
-            }}
+                }
+              }}
             />
           ))}
-          {/* Add the Transformer component */}
           <Transformer
             ref={trRef}
             boundBoxFunc={(oldBox, newBox) => {
-              // limit resize
               if (newBox.width < 5 || newBox.height < 5) {
                 return oldBox;
               }
               return newBox;
+            }}
+            // Add onTransformEnd handler
+            onTransformEnd={(e) => {
+              const node = e.target;
+              const scaleX = node.scaleX();
+              const scaleY = node.scaleY();
+              const rotation = node.rotation();
+
+              // We will reset the scale back to 1 and apply the scale to the width and height
+              node.scaleX(1);
+              node.scaleY(1);
+
+              const newShapes = shapes.slice();
+              const shapeToUpdate = newShapes.find(s => s.id === node.id());
+              if (shapeToUpdate) {
+                shapeToUpdate.x = node.x();
+                shapeToUpdate.y = node.y();
+                // Apply scaled width and height
+                shapeToUpdate.width = Math.max(5, node.width() * scaleX);
+                shapeToUpdate.height = Math.max(5, node.height() * scaleY);
+                shapeToUpdate.rotation = rotation;
+                setShapes(newShapes);
+              }
             }}
           />
         </Layer>
