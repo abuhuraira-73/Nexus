@@ -19,7 +19,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **Routing:** React Router v6
 *   **Data Fetching:** @tanstack/react-query
 *   **State Management:** Zustand
-*   **Canvas Library:** [To be decided: e.g., Konva.js, React Flow, Fabric.js]
+*   **Canvas Library:** Konva.js (via react-konva)
 *   **Real-time Communication:** [To be decided: e.g., Socket.IO client]
 *   **Dev Tools:** ESLint, Prettier, Husky + lint-staged, Vitest
 
@@ -60,7 +60,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 ### Immediate / MVP Features (Free/Basic Version)
 *   **Infinite Canvas:** Pannable and zoomable canvas.
 *   **Basic Element Creation:** Add text boxes, basic shapes (rectangles, circles).
-*   **Element Manipulation:** Select, move, resize, delete elements.
+*   **Element Manipulation:** Select, move, resize, delete elements. (Implemented)
 *   **Local Board Persistence:** Save and load board state to/from local storage.
 *   **Basic Drawing:** Freehand drawing tool.
 *   **Responsive UI:** Ensure usability on desktop and mobile.
@@ -71,7 +71,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **User Authentication & Authorization:** Secure user accounts and board sharing.
 *   **Cloud Board Persistence:** Save and load boards to/from a database.
 *   **Advanced Drawing Tools:** Smart shapes, connectors, lines, arrows.
-*   **Version History & Undo/Redo:** Track changes and revert to previous states.
+*   **Version History & Undo/Redo:** Track changes and revert to previous states. (Implemented - Manual Zustand)
 *   **Templating System:** Pre-defined board layouts.
 *   **AI-Powered Features:** Idea generation, content summarization, image recognition.
 *   **Integrations:** Connect with external services (e.g., cloud storage, communication apps).
@@ -87,7 +87,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 3.  Set up global providers (React Query, Router, Zustand).
 4.  **Implement Main Application Layout and Routing:** Set up `client/src/pages/index.tsx` as the `AppLayout` component, handling the main application structure (sidebar, header) and utilizing `react-router-dom`'s `<Outlet />` for nested content rendering. Configure `client/src/App.tsx` for nested routing, including dynamic routes for canvas pages (e.g., `/canvas/:id`).
 5.  **Develop "No Canvas Open" Page:** Create the `HeroSection` component (`client/src/pages/home.tsx`) to serve as the default content for the root path (`/`) when no specific canvas is open. Design its UI to be welcoming and provide clear calls to action.
-6.  **Implement Core Canvas:** Choose and integrate a canvas library (e.g., Konva.js, React Flow) and set up basic panning and zooming. Enable adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas. Implement element customization (e.g., text font/color, shape fill/border) and robust undo/redo functionality.
+6.  **Implement Core Canvas:** Integrated Konva.js (via react-konva) and set up basic panning and zooming. Enabled adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas. Implemented element customization (e.g., text font/color, shape fill/border) and robust undo/redo functionality (manual Zustand implementation).
 7.  **Implement Dynamic Sidebar Behavior:** Develop the logic for the `AppSidebar` to conditionally display the "Tools Section" only when a canvas page is open, while the "Navigation Section" remains always visible.
 8.  **Local Storage Integration:** Implement saving and loading board state to/from local storage.
 9.  **Rich Content Type Support:** Add functionality for images, links, and file uploads.
@@ -165,3 +165,85 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **Started Login Page Frontend:** Began implementing the login page using Shadcn/UI components.
 *   **Troubleshot Shadcn/UI Integration:** Resolved multiple issues including missing `utils.ts`, `class-variance-authority` dependency, and proper configuration of `tailwind.config.js` and `index.css` for Shadcn/UI styling.
 *   **Confirmed Styling:** Verified that Shadcn/UI and Tailwind CSS styling is now correctly applied.
+
+### September 2, 2025
+*   **Frontend Features Implemented:**
+    *   **Select & Transform:** Implemented selection of shapes, and enabled resizing and rotation using `react-konva`'s `Transformer`.
+    *   **Move Individual Shapes:** Enabled dragging of individual shapes on the canvas.
+    *   **Delete Shapes:** Implemented deletion of selected shapes using the `Delete` or `Backspace` key.
+    *   **Undo/Redo:** Refactored state management to use a manual Undo/Redo system within a Zustand store, replacing the problematic `temporal` middleware.
+*   **Troubleshooting & Resolutions:**
+    *   Resolved persistent TypeScript/ESLint errors in `infinite-canvas.tsx` related to `ref` callback types and general syntax. This involved multiple iterations of code correction and guidance on refreshing the VS Code environment.
+    *   Fixed build failure due to `TS1484` error in `sidebar.tsx` (`VariantProps` import).
+    *   Addressed build/runtime errors related to `zustand/middleware/temporal` import. Initially attempted to use `zustand`'s `temporal` middleware, but due to persistent package resolution and type issues, a robust manual Undo/Redo implementation was adopted.
+    *   Resolved build error (`TS6133`) in `canvasStore.ts` by removing an unused `get` parameter.
+*   **Next Steps Discussed:**
+    *   Defining and implementing "Card" components (e.g., text, image, link cards) for the canvas, inspired by Milanote's content types.
+    *   Setting up the backend infrastructure for real-time collaboration, authentication, and cloud persistence.
+
+## 📂 Project Structure & Key Files (Frontend - `client/src`)
+
+This section outlines the core structure and purpose of key files within the frontend application, focusing on their functionality and role in the Nexus project.
+
+```
+client/src/
+├───App.tsx
+├───main.tsx
+├───components/
+│   ├───app-sidebar.tsx
+│   ├───login-form.tsx
+│   ├───nav-main.tsx
+│   ├───nav-projects.tsx
+│   ├───nav-user.tsx
+│   ├───register-form.tsx
+│   ├───team-switcher.tsx
+│   └───ui/
+│       ├───sidebar.tsx
+│       └───... (other Shadcn/UI components)
+├───hooks/
+│   └───use-mobile.ts
+├───lib/
+│   └───utils.ts
+├───pages/
+│   ├───home.tsx
+│   ├───index.tsx
+│   ├───infinite-canvas.tsx
+│   ├───login.tsx
+│   └───register.tsx
+└───store/
+    └───canvasStore.ts
+```
+
+### Key Files and Directories within `client/src/`
+
+*   **`App.tsx`**:
+    *   **Purpose:** The root React component. It sets up the main application layout and routing.
+    *   **Functionality:** Serves as the primary entry point for the React component tree, orchestrating the overall application structure.
+*   **`main.tsx`**:
+    *   **Purpose:** The application's entry point. It renders the `App` component into the HTML document.
+    *   **Functionality:** Initializes and mounts the React application, connecting it to the browser's DOM.
+*   **`components/`**:
+    *   **Purpose:** Houses reusable React components.
+    *   **Functionality:** Promotes modularity and reusability of UI elements across the application.
+    *   **`app-sidebar.tsx`**: Manages the main application sidebar's display and behavior.
+    *   **`login-form.tsx` / `register-form.tsx`**: Components for user authentication forms.
+    *   **`ui/`**: Contains UI components from Shadcn/UI, customized for the project.
+        *   **`sidebar.tsx`**: The core Shadcn/UI sidebar component, handling its state and responsiveness.
+*   **`hooks/`**:
+    *   **Purpose:** Stores custom React hooks.
+    *   **Functionality:** Encapsulates reusable, stateful logic for various parts of the application.
+    *   **`use-mobile.ts`**: A custom hook to detect if the user is on a mobile device, used for responsive UI adjustments.
+*   **`lib/`**:
+    *   **Purpose:** Contains utility functions and helper modules.
+    *   **Functionality:** Provides common, project-wide helper functions (e.g., `utils.ts` for class name concatenation).
+*   **`pages/`**:
+    *   **Purpose:** Top-level components representing distinct views or "pages" of the application.
+    *   **Functionality:** Defines the main screens users navigate through.
+    *   **`home.tsx`**: The landing page displayed when no canvas is open, featuring a "Hero Section."
+    *   **`index.tsx`**: Acts as the main application layout component, wrapping other pages and managing the overall structure (e.g., sidebar and content area).
+    *   **`infinite-canvas.tsx`**: The central canvas component. This is where users interact with shapes, supporting panning, zooming, selection, movement, resizing, rotation, and deletion. It integrates with `react-konva` for rendering.
+    *   **`login.tsx` / `register.tsx`**: The full page components for user authentication.
+*   **`store/`**:
+    *   **Purpose:** Dedicated directory for Zustand stores.
+    *   **Functionality:** Centralizes global application state management.
+    *   **`canvasStore.ts`**: The core Zustand store for the canvas. It manages the state of all shapes, maintains a history for undo/redo functionality, and provides actions for manipulating shapes (add, update, delete, undo, redo).

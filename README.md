@@ -1,18 +1,23 @@
-1
 <p align="center">
-  <img src="https://static.vecteezy.com/system/resources/previews/004/243/973/original/abstract-template-blue-background-white-squares-free-vector.jpg" alt="Nexus Banner">
-</p>
+<pre>
 
-<h1 align="center">Nexus: Infinite Canvas, Simplified. ✨</h1>
+ /$$   /$$ /$$$$$$$$ /$$   /$$ /$$   /$$  /$$$$$$ 
+| $$$ | $$| $$_____/| $$  / $$| $$  | $$ /$$__  $$
+| $$$$| $$| $$      |  $$/ $$/| $$  | $$| $$  \__/
+| $$ $$ $$| $$$$$    \  $$$$/ | $$  | $$|  $$$$$$ 
+| $$  $$$$| $$__/     >$$  $$ | $$  | $$ \____  $$
+| $$\  $$$| $$       /$$/\  $$| $$  | $$ /$$  \ $$
+| $$ \  $$| $$$$$$$$| $$  \ $$|  $$$$$$/|  $$$$$$/
+|__/  \__/|________/|__/  |__/ \______/  \______/ 
+
+</pre>
+</p>
 
 <p align="center">
   <a href="https://github.com/your-username/Nexus/blob/main/LICENSE.md">
     <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
   </a>
   <a href="https://github.com/your-username/Nexus/issues">
-    <img src="https://img.shields.io/github/issues/your-username/Nexus" alt="Issues">
-  </a>
-  <a href="https://github.com/your-username/Nexus/pulls">
     <img src="https://img.shields.io/github/issues-pr/your-username/Nexus" alt="Pull Requests">
   </a>
 </p>
@@ -30,14 +35,14 @@ Nexus is a highly flexible, collaborative digital whiteboard application designe
 *   **🎨 Main Application Layout:** Dynamic layout with a persistent sidebar and a content area that adapts to the current route.
 *   **🖼️ "No Canvas Open" Page:** A stylish and welcoming landing page when no canvas is active.
 *   **🗺️ Frontend Routing:** Seamless navigation between pages using `react-router-dom`.
-
-### 🚀 Planned
-
 *   **無限 Infinite Canvas:** A pannable and zoomable canvas for unrestricted creativity.
 *   **📝 Basic Element Creation:** Add text boxes, shapes, and other basic elements.
 *   **🔧 Element Manipulation:** Easily select, move, resize, and delete elements.
 *   **🎨 Element Customization:** Modify properties like font, color, size, and rotation.
-*   **↩️ Undo/Redo:** Robust version history and undo/redo functionality.
+*   **↩️ Undo/Redo:** Robust version history and undo/redo functionality (manual Zustand implementation).
+
+### 🚀 Planned
+
 *   **💾 Local Board Persistence:** Save and load your work to/from local storage.
 *   **☁️ Cloud Board Persistence:** Save and load boards to/from a database for access anywhere.
 *   **🤝 Real-time Collaboration:** Work with others in real-time with presence indicators.
@@ -52,22 +57,23 @@ Nexus leverages a powerful and modern technology stack:
 
 ### Frontend
 
-*   **React** (with TypeScript) - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="React" width="20" height="20"/>
-*   **Vite** - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/vitejs/vitejs-original.svg" alt="Vite" width="20" height="20"/>
-*   **TypeScript** - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg" alt="TypeScript" width="20" height="20"/>
-*   **Tailwind CSS** - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind CSS" width="20" height="20"/>
+*   **React** (with TypeScript) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" width="20" height="20"/>
+*   **Vite** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" alt="Vite" width="20" height="20"/>
+*   **TypeScript** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="20" height="20"/>
+*   **Tailwind CSS** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind CSS" width="20" height="20"/>
 *   **Shadcn/UI** - <img src="https://avatars.githubusercontent.com/u/124591059?s=200&v=4" alt="Shadcn/UI" width="20" height="20"/>
 *   **React Router DOM** - <img src="https://reactrouter.com/favicon.png" alt="React Router" width="20" height="20"/>
-*   **Zustand** - <img src="https://github.com/pmndrs/zustand/raw/main/bear.png" alt="Zustand" width="20" height="20"/>
+*   **Zustand** (with manual Undo/Redo implementation) - <img src="https://github.com/pmndrs/zustand/raw/main/bear.png" alt="Zustand" width="20" height="20"/>
+*   **Konva.js** (via React Konva) - <img src="https://konvajs.org/assets/konva-logo.png" alt="Konva.js" width="20" height="20"/>
 *   **@tanstack/react-query** - <img src="https://raw.githubusercontent.com/TanStack/query/main/media/repo-icon.svg" alt="React Query" width="20" height="20"/>
 *   **Lucide React** - <img src="https://lucide.dev/logo.svg" alt="Lucide React" width="20" height="20"/>
 *   **next-themes** - <img src="https://assets.vercel.com/image/upload/v1670824459/nextjs/Icon_light_background.png" alt="Next.js" width="20" height="20"/>
 
 ### Backend (Planned)
 
-*   **Node.js** (with Express.js) - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="20" height="20"/>
-*   **MongoDB** (Mongoose) - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="20" height="20"/>
-*   **Socket.IO** - <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/socketio/socketio-original.svg" alt="Socket.IO" width="20" height="20"/>
+*   **Node.js** (with Express.js) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="20" height="20"/>
+*   **MongoDB** (Mongoose) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="20" height="20"/>
+*   **Socket.IO** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg" alt="Socket.IO" width="20" height="20"/>
 
 ## 🚀 Installation & Setup
 
@@ -109,3 +115,4 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## 📧 Contact
 
 For questions, feedback, or collaboration inquiries, please reach out to [Your Name/Email/GitHub Profile Link].
+
