@@ -5,20 +5,21 @@ interface CanvasState {
   shapes: Shape[];
   history: Shape[][]; // Array of past shape states
   future: Shape[][]; // Array of future shape states for redo
+  selectedId: string | null;
 
   addShape: (newShape: Shape) => void;
   updateShape: (updatedShape: Partial<Shape> & { id: string }) => void;
   deleteShape: (id: string) => void;
+  selectShape: (id: string | null) => void;
   undo: () => void;
   redo: () => void;
 }
 
 export const useCanvasStore = create<CanvasState>((set) => ({
-  shapes: [
-    { id: '1', x: 20, y: 20, width: 100, height: 100, fill: 'red', shadowBlur: 5, rotation: 0 },
-  ],
+  shapes: [],
   history: [],
   future: [],
+  selectedId: null,
 
   addShape: (newShape) => {
     set((state) => {
@@ -51,9 +52,12 @@ export const useCanvasStore = create<CanvasState>((set) => ({
         shapes: state.shapes.filter((shape) => shape.id !== id),
         history: newHistory,
         future: [], // Clear future on new action
+        selectedId: null, // Deselect on deletion
       };
     });
   },
+
+  selectShape: (id) => set({ selectedId: id }),
 
   undo: () => {
     set((state) => {
@@ -67,6 +71,7 @@ export const useCanvasStore = create<CanvasState>((set) => ({
         shapes: previousShapes,
         history: newHistory,
         future: newFuture,
+        selectedId: null, // Deselect on undo
       };
     });
   },
@@ -83,6 +88,7 @@ export const useCanvasStore = create<CanvasState>((set) => ({
         shapes: nextShapes,
         history: newHistory,
         future: newFuture,
+        selectedId: null, // Deselect on redo
       };
     });
   },

@@ -88,7 +88,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 4.  **Implement Main Application Layout and Routing:** Set up `client/src/pages/index.tsx` as the `AppLayout` component, handling the main application structure (sidebar, header) and utilizing `react-router-dom`'s `<Outlet />` for nested content rendering. Configure `client/src/App.tsx` for nested routing, including dynamic routes for canvas pages (e.g., `/canvas/:id`).
 5.  **Develop "No Canvas Open" Page:** Create the `HeroSection` component (`client/src/pages/home.tsx`) to serve as the default content for the root path (`/`) when no specific canvas is open. Design its UI to be welcoming and provide clear calls to action.
 6.  **Implement Core Canvas:** Integrated Konva.js (via react-konva) and set up basic panning and zooming. Enabled adding, selecting, moving, resizing, and deleting text boxes and shapes on the canvas. Implemented element customization (e.g., text font/color, shape fill/border) and robust undo/redo functionality (manual Zustand implementation).
-7.  **Implement Dynamic Sidebar Behavior:** Develop the logic for the `AppSidebar` to conditionally display the "Tools Section" only when a canvas page is open, while the "Navigation Section" remains always visible.
+7.  **Implement Dynamic Sidebar Behavior:** Develop the logic for the `AppSidebar` to conditionally display a "Tools Section" on canvas pages. The tools in this section (e.g., shapes, text boxes) should be draggable onto the canvas to create new elements.
 8.  **Local Storage Integration:** Implement saving and loading board state to/from local storage.
 9.  **Rich Content Type Support:** Add functionality for images, links, and file uploads.
 10. **Real-time Communication Setup:** Integrate a real-time library (e.g., Socket.IO client) and set up basic connection.
@@ -122,8 +122,10 @@ To build a highly flexible, collaborative digital whiteboard application similar
 ### August 30, 2025
 *   **Frontend Design Decisions:**
     *   **Sidebar Behavior:**
-        *   When no page is open: The main content area will not be an active canvas. It will display options like "create page" or a list of existing pages. The sidebar will only show the "Navigation Section" (projects/pages), and the "Tools Section" will be hidden.
-        *   When a page is opened: The main content area will transform into the infinite canvas for that specific page. The "Tools Section" will appear in the sidebar, enabling users to drag and drop elements onto the canvas.
+        *   **Dynamic Tool Section:** The "Tools Section" will only be visible when a canvas is open. The tools within this section (e.g., shapes, text boxes) will be draggable onto the canvas to create new elements.
+        *   **Context-Aware Properties Panel:** When a user selects an element on the canvas (e.g., a shape), the sidebar will transform into a "Properties Panel," displaying editable properties for that item like color, border, and font size.
+        *   **Favorites Section:** A dedicated "Favorites" section will be added to the navigation area, allowing users to "pin" or "star" their most important canvases for quick access.
+        *   **Responsive & Collapsible:** The existing responsive behavior (for mobile) and collapsible sections are confirmed as implemented and meeting current requirements.
     *   **Core Canvas Features (Frontend Implementation Focus):**
         *   **Seamless Canvas Navigation:** Implement intuitive controls for zooming and panning across the infinite canvas.
         *   **Element Customization & Properties:** Develop functionality to modify properties of elements (e.g., text font/color, shape fill/border, image rotation/opacity) via a context-sensitive panel or pop-over.

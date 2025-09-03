@@ -1,17 +1,22 @@
 import { useState, useRef, useEffect } from 'react';
-import { Stage, Layer, Rect, Transformer } from 'react-konva';
+import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
-import type { Rect as RectType } from 'konva/lib/shapes/Rect';
+import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore'; // Import the new store
 import { Button } from '@/components/ui/button'; // Import Button component
 
+export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow';
+
 export interface Shape {
   id: string;
+  type: ShapeType;
   x: number;
   y: number;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
+  radius?: number;
+  points?: number[];
   fill: string;
   shadowBlur: number;
   rotation?: number;
@@ -28,12 +33,10 @@ const InfiniteCanvas = () => {
   });
 
   // Get state and actions from the Zustand store
-  const { shapes, addShape, updateShape, deleteShape, undo, redo } = useCanvasStore((state) => state);
-
-  const [selectedId, selectShape] = useState<string | null>(null);
+  const { shapes, addShape, updateShape, deleteShape, undo, redo, selectedId, selectShape } = useCanvasStore();
 
   const trRef = useRef<TransformerType>(null);
-  const shapeRefs = useRef<(RectType | null)[]>([]);
+  const shapeRefs = useRef<(Konva.Node | null)[]>([]);
 
   // Effect to set initial dimensions
   useEffect(() => {
@@ -100,20 +103,6 @@ const InfiniteCanvas = () => {
     setStage({ ...stage, x: e.target.x(), y: e.target.y() });
   };
 
-  const handleAddShape = () => {
-    const newShape: Shape = {
-      id: String(Date.now()),
-      x: (dimensions.width / 2) / stage.scale - stage.x / stage.scale, // Center horizontally
-      y: (dimensions.height / 2) / stage.scale - stage.y / stage.scale, // Center vertically
-      width: 100,
-      height: 100,
-      fill: 'green',
-      shadowBlur: 5,
-      rotation: 0,
-    };
-    addShape(newShape);
-  };
-
   const checkDeselect = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     const clickedOnEmpty = e.target === e.target.getStage();
     if (clickedOnEmpty) {
@@ -121,14 +110,123 @@ const InfiniteCanvas = () => {
     }
   };
 
+  const renderShape = (shape: Shape, i: number) => {
+    const commonProps = {
+      key: shape.id,
+      ref: (el: Konva.Node | null) => { shapeRefs.current[i] = el; },
+      id: shape.id,
+      x: shape.x,
+      y: shape.y,
+      fill: shape.fill,
+      shadowBlur: shape.shadowBlur,
+      rotation: shape.rotation,
+      onClick: () => selectShape(shape.id),
+      onTap: () => selectShape(shape.id),
+      draggable: true,
+      onDragEnd: (e: KonvaEventObject<DragEvent>) => {
+        updateShape({ ...shape, x: e.target.x(), y: e.target.y() });
+      },
+      onTransformEnd: (e: KonvaEventObject<Event>) => {
+        const node = e.target;
+        const scaleX = node.scaleX();
+        const scaleY = node.scaleY();
+        node.scaleX(1);
+        node.scaleY(1);
+        updateShape({
+          ...shape,
+          x: node.x(),
+          y: node.y(),
+          width: shape.width ? Math.max(5, shape.width * scaleX) : undefined,
+          height: shape.height ? Math.max(5, shape.height * scaleY) : undefined,
+          radius: shape.radius ? Math.max(5, shape.radius * scaleX) : undefined,
+          rotation: node.rotation(),
+        });
+      },
+    };
+
+    switch (shape.type) {
+      case 'rectangle':
+      case 'square':
+        return <Rect {...commonProps} width={shape.width} height={shape.height} />;
+      case 'circle':
+        return <Circle {...commonProps} radius={shape.radius} />;
+      case 'triangle':
+        return <RegularPolygon {...commonProps} sides={3} radius={shape.radius || 60} />;
+      case 'star':
+        return <RegularPolygon {...commonProps} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
+      case 'arrow':
+        return <Arrow {...commonProps} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="relative w-full h-[calc(100vh-8rem)] flex flex-col">
       <div className="p-2 border-b flex gap-2">
-        <Button onClick={handleAddShape} size="sm">Add Shape</Button>
+        {/* This button is for debugging and can be removed */}
+        <Button onClick={() => addShape({ type: 'rectangle', id: String(Date.now()), x: 100, y: 100, width: 100, height: 100, fill: 'green', shadowBlur: 5 })} size="sm">Add Shape</Button>
         <Button onClick={undo} size="sm" variant="outline">Undo</Button>
         <Button onClick={redo} size="sm" variant="outline">Redo</Button>
       </div>
-      <div ref={containerRef} className="relative flex-1 w-full h-full">
+      <div 
+        ref={containerRef} 
+        className="relative flex-1 w-full h-full"
+        onDragOver={(e) => e.preventDefault()} // Allow drop
+        onDrop={(e) => {
+          e.preventDefault();
+          const type = e.dataTransfer.getData("application/reactflow") as ShapeType;
+
+          if (!type) return;
+
+          if (!containerRef.current) return;
+
+          const rect = containerRef.current.getBoundingClientRect();
+          const position = {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top,
+          };
+
+          const newPos = {
+            x: (position.x - stage.x) / stage.scale,
+            y: (position.y - stage.y) / stage.scale,
+          };
+
+          let newShape: Shape;
+          const baseShape = {
+            id: String(Date.now()),
+            x: newPos.x,
+            y: newPos.y,
+            fill: 'green',
+            shadowBlur: 5,
+            rotation: 0,
+          };
+
+          switch (type) {
+            case 'rectangle':
+              newShape = { ...baseShape, type, width: 120, height: 80 };
+              break;
+            case 'square':
+              newShape = { ...baseShape, type, width: 100, height: 100 };
+              break;
+            case 'circle':
+              newShape = { ...baseShape, type, radius: 50 };
+              break;
+            case 'triangle':
+              newShape = { ...baseShape, type, radius: 60 };
+              break;
+            case 'star':
+              newShape = { ...baseShape, type, radius: 70 };
+              break;
+            case 'arrow':
+              newShape = { ...baseShape, type, width: 150 };
+              break;
+            default:
+              return;
+          }
+          addShape(newShape);
+        }}
+      >
         <Stage
           width={dimensions.width}
           height={dimensions.height}
@@ -143,41 +241,7 @@ const InfiniteCanvas = () => {
           onTouchStart={checkDeselect}
         >
           <Layer>
-            {shapes.map((shape, i) => (
-              <Rect
-                key={shape.id}
-                ref={(el) => { shapeRefs.current[i] = el; }}
-                id={shape.id}
-                x={shape.x}
-                y={shape.y}
-                width={shape.width}
-                height={shape.height}
-                fill={shape.fill}
-                shadowBlur={shape.shadowBlur}
-                rotation={shape.rotation}
-                onClick={() => selectShape(shape.id)}
-                onTap={() => selectShape(shape.id)}
-                draggable
-                onDragEnd={(e) => {
-                  updateShape({ id: shape.id, x: e.target.x(), y: e.target.y() });
-                }}
-                onTransformEnd={(e) => {
-                  const node = e.target;
-                  const scaleX = node.scaleX();
-                  const scaleY = node.scaleY();
-                  node.scaleX(1);
-                  node.scaleY(1);
-                  updateShape({
-                    id: shape.id,
-                    x: node.x(),
-                    y: node.y(),
-                    width: Math.max(5, node.width() * scaleX),
-                    height: Math.max(5, node.height() * scaleY),
-                    rotation: node.rotation(),
-                  });
-                }}
-              />
-            ))}
+            {shapes.map(renderShape)}
             <Transformer
               ref={trRef}
               boundBoxFunc={(oldBox, newBox) => {
