@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { PlusCircle, FileText, Folder, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 // Placeholder for recent canvases data
 const recentCanvases = [
@@ -12,6 +13,13 @@ const recentCanvases = [
 ];
 
 export default function HeroSection() {
+  const navigate = useNavigate();
+
+  const handleCreateCanvas = () => {
+    // We can later make this a dynamic ID, e.g., `/canvas/${newCanvasId}`
+    navigate('/canvas');
+  };
+
   return (
     <section className="relative overflow-hidden py-10 md:py-20 lg:py-15 flex flex-col flex-1 items-center justify-center">
       {/* Blurred Gradient Background */}
@@ -32,7 +40,11 @@ export default function HeroSection() {
           <p className="mx-auto max-w-3xl text-lg md:text-xl text-muted-foreground leading-relaxed">
             Unleash your creativity with Nexus. Brainstorm, organize, and collaborate on an endless digital whiteboard.
           </p>
-          <Button size="lg" className="mt-6 text-lg px-10 py-7 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300">
+          <Button
+            size="lg"
+            className="mt-6 text-lg px-10 py-7 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            onClick={handleCreateCanvas}
+          >
             <PlusCircle className="mr-3 h-6 w-6" />
             Create New Canvas
           </Button>

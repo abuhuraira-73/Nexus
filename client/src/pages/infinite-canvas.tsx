@@ -4,6 +4,7 @@ import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import type { Rect as RectType } from 'konva/lib/shapes/Rect';
 import { useCanvasStore } from '../store/canvasStore'; // Import the new store
+import { Button } from '@/components/ui/button'; // Import Button component
 
 export interface Shape {
   id: string;
@@ -17,6 +18,9 @@ export interface Shape {
 }
 
 const InfiniteCanvas = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
   const [stage, setStage] = useState({
     scale: 1,
     x: 0,
@@ -30,6 +34,16 @@ const InfiniteCanvas = () => {
 
   const trRef = useRef<TransformerType>(null);
   const shapeRefs = useRef<(RectType | null)[]>([]);
+
+  // Effect to set initial dimensions
+  useEffect(() => {
+    if (containerRef.current) {
+      setDimensions({
+        width: containerRef.current.offsetWidth,
+        height: containerRef.current.offsetHeight,
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (selectedId && trRef.current) {
@@ -88,9 +102,9 @@ const InfiniteCanvas = () => {
 
   const handleAddShape = () => {
     const newShape: Shape = {
-      id: String(Date.now()), // Use a more unique ID
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      id: String(Date.now()),
+      x: (dimensions.width / 2) / stage.scale - stage.x / stage.scale, // Center horizontally
+      y: (dimensions.height / 2) / stage.scale - stage.y / stage.scale, // Center vertically
       width: 100,
       height: 100,
       fill: 'green',
@@ -108,70 +122,72 @@ const InfiniteCanvas = () => {
   };
 
   return (
-    <div>
-      <div style={{ position: 'absolute', top: 20, left: 20, zIndex: 1, display: 'flex', gap: '10px' }}>
-        <button onClick={handleAddShape}>Add Shape</button>
-        <button onClick={undo}>Undo</button>
-        <button onClick={redo}>Redo</button>
+    <div className="relative w-full h-[calc(100vh-8rem)] flex flex-col">
+      <div className="p-2 border-b flex gap-2">
+        <Button onClick={handleAddShape} size="sm">Add Shape</Button>
+        <Button onClick={undo} size="sm" variant="outline">Undo</Button>
+        <Button onClick={redo} size="sm" variant="outline">Redo</Button>
       </div>
-      <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onWheel={handleWheel}
-        onDragEnd={handleStageDragEnd}
-        draggable
-        scaleX={stage.scale}
-        scaleY={stage.scale}
-        x={stage.x}
-        y={stage.y}
-        onMouseDown={checkDeselect}
-        onTouchStart={checkDeselect}
-      >
-        <Layer>
-          {shapes.map((shape, i) => (
-            <Rect
-              key={shape.id}
-              ref={(el) => { shapeRefs.current[i] = el; }}
-              id={shape.id}
-              x={shape.x}
-              y={shape.y}
-              width={shape.width}
-              height={shape.height}
-              fill={shape.fill}
-              shadowBlur={shape.shadowBlur}
-              rotation={shape.rotation}
-              onClick={() => selectShape(shape.id)}
-              onTap={() => selectShape(shape.id)}
-              draggable
-              onDragEnd={(e) => {
-                updateShape({ id: shape.id, x: e.target.x(), y: e.target.y() });
-              }}
-              onTransformEnd={(e) => {
-                const node = e.target;
-                const scaleX = node.scaleX();
-                const scaleY = node.scaleY();
-                node.scaleX(1);
-                node.scaleY(1);
-                updateShape({
-                  id: shape.id,
-                  x: node.x(),
-                  y: node.y(),
-                  width: Math.max(5, node.width() * scaleX),
-                  height: Math.max(5, node.height() * scaleY),
-                  rotation: node.rotation(),
-                });
+      <div ref={containerRef} className="relative flex-1 w-full h-full">
+        <Stage
+          width={dimensions.width}
+          height={dimensions.height}
+          onWheel={handleWheel}
+          onDragEnd={handleStageDragEnd}
+          draggable
+          scaleX={stage.scale}
+          scaleY={stage.scale}
+          x={stage.x}
+          y={stage.y}
+          onMouseDown={checkDeselect}
+          onTouchStart={checkDeselect}
+        >
+          <Layer>
+            {shapes.map((shape, i) => (
+              <Rect
+                key={shape.id}
+                ref={(el) => { shapeRefs.current[i] = el; }}
+                id={shape.id}
+                x={shape.x}
+                y={shape.y}
+                width={shape.width}
+                height={shape.height}
+                fill={shape.fill}
+                shadowBlur={shape.shadowBlur}
+                rotation={shape.rotation}
+                onClick={() => selectShape(shape.id)}
+                onTap={() => selectShape(shape.id)}
+                draggable
+                onDragEnd={(e) => {
+                  updateShape({ id: shape.id, x: e.target.x(), y: e.target.y() });
+                }}
+                onTransformEnd={(e) => {
+                  const node = e.target;
+                  const scaleX = node.scaleX();
+                  const scaleY = node.scaleY();
+                  node.scaleX(1);
+                  node.scaleY(1);
+                  updateShape({
+                    id: shape.id,
+                    x: node.x(),
+                    y: node.y(),
+                    width: Math.max(5, node.width() * scaleX),
+                    height: Math.max(5, node.height() * scaleY),
+                    rotation: node.rotation(),
+                  });
+                }}
+              />
+            ))}
+            <Transformer
+              ref={trRef}
+              boundBoxFunc={(oldBox, newBox) => {
+                if (newBox.width < 5 || newBox.height < 5) return oldBox;
+                return newBox;
               }}
             />
-          ))}
-          <Transformer
-            ref={trRef}
-            boundBoxFunc={(oldBox, newBox) => {
-              if (newBox.width < 5 || newBox.height < 5) return oldBox;
-              return newBox;
-            }}
-          />
-        </Layer>
-      </Stage>
+          </Layer>
+        </Stage>
+      </div>
     </div>
   );
 };
