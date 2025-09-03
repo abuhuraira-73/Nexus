@@ -33,12 +33,14 @@ Nexus is a highly flexible, collaborative digital whiteboard application designe
 *   **🔐 User Authentication:** Secure login and registration pages with a modern UI.
 *   **📱 Responsive Layout:** Core application layout designed for various screen sizes.
 *   **🎨 Main Application Layout:** Dynamic layout with a persistent sidebar and a content area that adapts to the current route.
+*   **✨ Dynamic Sidebar:** Sidebar intelligently shows/hides panels like "Tools" and "Properties" based on the user's context.
 *   **🖼️ "No Canvas Open" Page:** A stylish and welcoming landing page when no canvas is active.
 *   **🗺️ Frontend Routing:** Seamless navigation between pages using `react-router-dom`.
+*   **⭐ Favorites System:** Pin your most important canvases for quick access.
 *   **無限 Infinite Canvas:** A pannable and zoomable canvas for unrestricted creativity.
-*   **📝 Basic Element Creation:** Add text boxes, shapes, and other basic elements.
+*   **✏️ Draggable Tools:** Drag shapes from the sidebar to create them on the canvas.
 *   **🔧 Element Manipulation:** Easily select, move, resize, and delete elements.
-*   **🎨 Element Customization:** Modify properties like font, color, size, and rotation.
+*   **🎨 Element Customization:** Modify properties like fill color, rotation, and position via a context-aware properties panel.
 *   **↩️ Undo/Redo:** Robust version history and undo/redo functionality (manual Zustand implementation).
 
 ### 🚀 Planned

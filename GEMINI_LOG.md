@@ -119,6 +119,37 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 3, 2025
+*   **Core UX & Navigation:**
+    *   Implemented the primary navigation flow, allowing users to move from the homepage to the infinite canvas.
+    *   Fixed a layout bug where the canvas would overlap with the application header.
+*   **Sidebar Refactoring & Feature Implementation:**
+    *   **Dynamic Panels:** Implemented logic to dynamically show/hide sidebar panels based on context. The "Tools" panel now appears only when a canvas is open, and is replaced by a "Properties" panel when a shape is selected.
+    *   **Draggable Tools:** Added a "Tools" section with a collapsible submenu for shapes. These shapes (Rectangle, Circle, Star, etc.) can be dragged from the sidebar and dropped onto the canvas to create new elements.
+    *   **Context-Aware Properties Panel:** When a shape is selected on the canvas, the sidebar now displays its properties. Implemented controls for changing fill color (with a color picker), rotation, and position.
+    *   **Homepage Navigation:** Refactored the main navigation sidebar to remove placeholder content. It now shows a focused list including "New Canvas", "Favorites", "All Canvases", "Trash", and "Settings".
+    *   **Favorites System:** Implemented the ability to mark canvases as favorites, moving them between the "Favorites" and "All Canvases" sections.
+    *   **Custom Menus:** The dropdown menus for canvas items are now context-aware, showing "Favorite/Unfavorite" options for regular items and "Restore/Delete Permanently" for items in the trash.
+*   **Bug Fixes & DX Improvements:**
+    *   Resolved multiple TypeScript and ESLint errors related to component props and unused imports.
+    *   Fixed a bug where the "Star" shape would not render correctly.
+    *   Fixed a critical UX bug where typing in an input field could accidentally delete a selected shape.
+
+### September 2, 2025
+*   **Frontend Features Implemented:**
+    *   **Select & Transform:** Implemented selection of shapes, and enabled resizing and rotation using `react-konva`'s `Transformer`.
+    *   **Move Individual Shapes:** Enabled dragging of individual shapes on the canvas.
+    *   **Delete Shapes:** Implemented deletion of selected shapes using the `Delete` or `Backspace` key.
+    *   **Undo/Redo:** Refactored state management to use a manual Undo/Redo system within a Zustand store, replacing the problematic `temporal` middleware.
+*   **Troubleshooting & Resolutions:**
+    *   Resolved persistent TypeScript/ESLint errors in `infinite-canvas.tsx` related to `ref` callback types and general syntax. This involved multiple iterations of code correction and guidance on refreshing the VS Code environment.
+    *   Fixed build failure due to `TS1484` error in `sidebar.tsx` (`VariantProps` import).
+    *   Addressed build/runtime errors related to `zustand/middleware/temporal` import. Initially attempted to use `zustand`'s `temporal` middleware, but due to persistent package resolution and type issues, a robust manual Undo/Redo implementation was adopted.
+    *   Resolved build error (`TS6133`) in `canvasStore.ts` by removing an unused `get` parameter.
+*   **Next Steps Discussed:**
+    *   Defining and implementing "Card" components (e.g., text, image, link cards) for the canvas, inspired by Milanote's content types.
+    *   Setting up the backend infrastructure for real-time collaboration, authentication, and cloud persistence.
+
 ### August 30, 2025
 *   **Frontend Design Decisions:**
     *   **Sidebar Behavior:**
@@ -167,21 +198,6 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **Started Login Page Frontend:** Began implementing the login page using Shadcn/UI components.
 *   **Troubleshot Shadcn/UI Integration:** Resolved multiple issues including missing `utils.ts`, `class-variance-authority` dependency, and proper configuration of `tailwind.config.js` and `index.css` for Shadcn/UI styling.
 *   **Confirmed Styling:** Verified that Shadcn/UI and Tailwind CSS styling is now correctly applied.
-
-### September 2, 2025
-*   **Frontend Features Implemented:**
-    *   **Select & Transform:** Implemented selection of shapes, and enabled resizing and rotation using `react-konva`'s `Transformer`.
-    *   **Move Individual Shapes:** Enabled dragging of individual shapes on the canvas.
-    *   **Delete Shapes:** Implemented deletion of selected shapes using the `Delete` or `Backspace` key.
-    *   **Undo/Redo:** Refactored state management to use a manual Undo/Redo system within a Zustand store, replacing the problematic `temporal` middleware.
-*   **Troubleshooting & Resolutions:**
-    *   Resolved persistent TypeScript/ESLint errors in `infinite-canvas.tsx` related to `ref` callback types and general syntax. This involved multiple iterations of code correction and guidance on refreshing the VS Code environment.
-    *   Fixed build failure due to `TS1484` error in `sidebar.tsx` (`VariantProps` import).
-    *   Addressed build/runtime errors related to `zustand/middleware/temporal` import. Initially attempted to use `zustand`'s `temporal` middleware, but due to persistent package resolution and type issues, a robust manual Undo/Redo implementation was adopted.
-    *   Resolved build error (`TS6133`) in `canvasStore.ts` by removing an unused `get` parameter.
-*   **Next Steps Discussed:**
-    *   Defining and implementing "Card" components (e.g., text, image, link cards) for the canvas, inspired by Milanote's content types.
-    *   Setting up the backend infrastructure for real-time collaboration, authentication, and cloud persistence.
 
 ## 📂 Project Structure & Key Files (Frontend - `client/src`)
 
@@ -249,3 +265,5 @@ client/src/
     *   **Purpose:** Dedicated directory for Zustand stores.
     *   **Functionality:** Centralizes global application state management.
     *   **`canvasStore.ts`**: The core Zustand store for the canvas. It manages the state of all shapes, maintains a history for undo/redo functionality, and provides actions for manipulating shapes (add, update, delete, undo, redo).
+
+    git add . && git commit -m "feat: Implement fully functional dynamic sidebar" && git push origin main
