@@ -116,5 +116,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 📧 Contact
 
-For questions, feedback, or collaboration inquiries, please reach out to [Your Name/Email/GitHub Profile Link].
+For questions, feedback, or collaboration inquiries, please reach out in Linkedin.
 
