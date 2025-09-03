@@ -6,8 +6,6 @@ import {
   ArrowLeft,
   ArrowRight,
   AudioWaveform,
-  BookOpen,
-  Bot,
   ChevronRight,
   Circle,
   Command,
@@ -15,18 +13,18 @@ import {
   GalleryVerticalEnd,
   Map,
   PieChart,
+  Plus,
   RectangleHorizontal,
   Settings2,
   Shapes,
   Square,
   Star,
-  SquareTerminal,
+  Trash2,
   Triangle,
 } from "lucide-react"
 
 import { useCanvasStore } from "@/store/canvasStore"
 import type { Shape } from "@/pages/infinite-canvas"
-import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
@@ -144,7 +142,7 @@ const PropertiesPanel = ({ shape }: { shape: Shape }) => {
 
 
 // This is sample data.
-const data = {
+const initialData = {
   user: {
     name: "shadcn",
     email: "m@example.com",
@@ -167,110 +165,38 @@ const data = {
       plan: "Free",
     },
   ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ],
   projects: [
     {
+      id: "proj-1",
       name: "Design Engineering",
       url: "#",
       icon: Frame,
+      isFavorite: true,
     },
     {
+      id: "proj-2",
       name: "Sales & Marketing",
       url: "#",
       icon: PieChart,
+      isFavorite: false,
     },
     {
+      id: "proj-3",
       name: "Travel",
       url: "#",
       icon: Map,
+      isFavorite: false,
     },
   ],
+  trash: [
+    {
+        id: "proj-4",
+        name: "Old Brainstorm",
+        url: "#",
+        icon: Trash2,
+        isFavorite: false,
+    }
+  ]
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
@@ -278,13 +204,26 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/canvas');
 
+  const [projects, setProjects] = React.useState(initialData.projects);
+
+  const toggleFavorite = (projectId: string) => {
+    setProjects(
+      projects.map((p) =>
+        p.id === projectId ? { ...p, isFavorite: !p.isFavorite } : p
+      )
+    );
+  };
+
+  const favoriteProjects = projects.filter((p) => p.isFavorite);
+  const otherProjects = projects.filter((p) => !p.isFavorite);
+
   const { selectedId, shapes } = useCanvasStore();
   const selectedShape = shapes.find((shape) => shape.id === selectedId);
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={initialData.teams} />
       </SidebarHeader>
       <SidebarContent>
         {isCanvasOpen ? (
@@ -307,14 +246,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </>
           )
         ) : (
-          <>
-            <NavMain items={data.navMain} />
-            <NavProjects projects={data.projects} />
-          </>
+          <div className="flex flex-col gap-2">
+            <SidebarGroup>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton onClick={() => navigate('/canvas')}>
+                            <Plus/>
+                            <span>New Canvas</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarGroup>
+            <NavProjects projects={favoriteProjects} label="Favorites" onToggleFavorite={toggleFavorite} />
+            <NavProjects projects={otherProjects} label="All Canvases" onToggleFavorite={toggleFavorite} />
+            <NavProjects projects={initialData.trash} label="Trash" />
+            <SidebarGroup>
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton>
+                            <Settings2/>
+                            <span>Settings</span>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
+            </SidebarGroup>
+          </div>
         )}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={initialData.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
