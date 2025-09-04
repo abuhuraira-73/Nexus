@@ -11,7 +11,7 @@
 |__/  \__/|________/|__/  |__/ \______/  \______/ 
 
 </pre>
-</p>
+</p> 
 
 <p align="center">
   <a href="https://github.com/your-username/Nexus/blob/main/LICENSE.md">
