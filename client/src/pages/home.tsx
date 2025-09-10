@@ -21,7 +21,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden py-10 md:py-20 lg:py-15 flex flex-col flex-1 items-center justify-center">
+    <section className="relative overflow-hidden py-10 md:py-20 lg:py-15 flex flex-col items-center justify-center">
       {/* Blurred Gradient Background */}
       <div
         className="absolute top-1/2 left-1/2 w-[60rem] h-[60rem] -translate-x-1/2 -translate-y-1/2 bg-gradient-to-tr from-purple-600 via-pink-500 to-red-500 rounded-full blur-3xl opacity-20"

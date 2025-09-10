@@ -61,8 +61,8 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **Infinite Canvas:** Pannable and zoomable canvas.
 *   **Basic Element Creation:** Add text boxes, basic shapes (rectangles, circles).
 *   **Element Manipulation:** Select, move, resize, delete elements. (Implemented)
-*   **Local Board Persistence:** Save and load board state to/from local storage.
-*   **Basic Drawing:** Freehand drawing tool.
+*   **Local Board Persistence:** Save and load board state to/from local storage. (Implemented)
+*   **Basic Drawing:** Freehand drawing tool. (Implemented)
 *   **Responsive UI:** Ensure usability on desktop and mobile.
 
 ### Planned / Advanced Features (Paid/Premium Version)
@@ -266,4 +266,13 @@ client/src/
     *   **Functionality:** Centralizes global application state management.
     *   **`canvasStore.ts`**: The core Zustand store for the canvas. It manages the state of all shapes, maintains a history for undo/redo functionality, and provides actions for manipulating shapes (add, update, delete, undo, redo).
 
-    git add . && git commit -m "feat: Implement fully functional dynamic sidebar" && git push origin main
+    git add . && git commit -m "" && git push origin main
+.
+    *   **`infinite-canvas.tsx`**: The central canvas component. This is where users interact with shapes, supporting panning, zooming, selection, movement, resizing, rotation, and deletion. It integrates with `react-konva` for rendering.
+    *   **`login.tsx` / `register.tsx`**: The full page components for user authentication.
+*   **`store/`**:
+    *   **Purpose:** Dedicated directory for Zustand stores.
+    *   **Functionality:** Centralizes global application state management.
+    *   **`canvasStore.ts`**: The core Zustand store for the canvas. It manages the state of all shapes, maintains a history for undo/redo functionality, and provides actions for manipulating shapes (add, update, delete, undo, redo).
+
+    git add . && git commit -m "" && git push origin main

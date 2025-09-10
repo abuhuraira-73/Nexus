@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer } from 'react-konva';
+import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import Konva from 'konva';
-import { useCanvasStore } from '../store/canvasStore'; // Import the new store
-import { Button } from '@/components/ui/button'; // Import Button component
+import { useCanvasStore } from '../store/canvasStore';
+import { Button } from '@/components/ui/button';
 
-export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow';
+export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line';
 
 export interface Shape {
   id: string;
@@ -20,6 +20,8 @@ export interface Shape {
   fill: string;
   shadowBlur: number;
   rotation?: number;
+  stroke?: string;
+  strokeWidth?: number;
 }
 
 const InfiniteCanvas = () => {
@@ -32,13 +34,13 @@ const InfiniteCanvas = () => {
     y: 0,
   });
 
-  // Get state and actions from the Zustand store
-  const { shapes, addShape, updateShape, deleteShape, undo, redo, selectedId, selectShape } = useCanvasStore();
+  const { shapes, addShape, updateShape, deleteShape, undo, redo, selectedId, selectShape, mode, strokeColor, strokeWidth } = useCanvasStore();
+
+  const [currentLine, setCurrentLine] = useState<Shape | null>(null);
 
   const trRef = useRef<TransformerType>(null);
   const shapeRefs = useRef<(Konva.Node | null)[]>([]);
 
-  // Effect to set initial dimensions
   useEffect(() => {
     if (containerRef.current) {
       setDimensions({
@@ -76,7 +78,7 @@ const InfiniteCanvas = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedId, deleteShape]);
+  }, [selectedId, deleteShape, selectShape]);
 
 
   const handleWheel = (e: KonvaEventObject<WheelEvent>) => {
@@ -100,14 +102,76 @@ const InfiniteCanvas = () => {
   };
 
   const handleStageDragEnd = (e: KonvaEventObject<DragEvent>) => {
-    setStage({ ...stage, x: e.target.x(), y: e.target.y() });
+    if (mode === 'select') {
+      setStage({ ...stage, x: e.target.x(), y: e.target.y() });
+    }
   };
 
-  const checkDeselect = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
-    const clickedOnEmpty = e.target === e.target.getStage();
-    if (clickedOnEmpty) {
-      selectShape(null);
+  const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if (mode === 'select') {
+      const clickedOnEmpty = e.target === e.target.getStage();
+      if (clickedOnEmpty) {
+        selectShape(null);
+      }
+      return;
     }
+
+    if (mode === 'draw') {
+      const stage = e.target.getStage();
+      if (!stage) return;
+      const pos = stage.getPointerPosition();
+      if (!pos) return;
+
+      const newPos = {
+        x: (pos.x - stage.x()) / stage.scaleX(),
+        y: (pos.y - stage.y()) / stage.scaleY(),
+      };
+
+      setCurrentLine({
+        id: String(Date.now()),
+        type: 'line',
+        points: [newPos.x, newPos.y],
+        x: 0,
+        y: 0,
+        fill: strokeColor,
+        stroke: strokeColor,
+        strokeWidth: strokeWidth,
+        shadowBlur: 0,
+      });
+    }
+  };
+
+  const handleMouseMove = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if (mode !== 'draw' || !currentLine) {
+      return;
+    }
+
+    const stage = e.target.getStage();
+    if (!stage) return;
+    const point = stage.getPointerPosition();
+    if (!point) return;
+
+    const newPos = {
+      x: (point.x - stage.x()) / stage.scaleX(),
+      y: (point.y - stage.y()) / stage.scaleY(),
+    };
+
+    setCurrentLine(prevLine => {
+      if (!prevLine) return null;
+      return {
+        ...prevLine,
+        points: [...(prevLine.points || []), newPos.x, newPos.y],
+      };
+    });
+  };
+
+  const handleMouseUp = () => {
+    if (mode !== 'draw' || !currentLine) {
+      return;
+    }
+
+    addShape(currentLine);
+    setCurrentLine(null);
   };
 
   const renderShape = (shape: Shape, i: number) => {
@@ -122,7 +186,7 @@ const InfiniteCanvas = () => {
       rotation: shape.rotation,
       onClick: () => selectShape(shape.id),
       onTap: () => selectShape(shape.id),
-      draggable: true,
+      draggable: mode === 'select',
       onDragEnd: (e: KonvaEventObject<DragEvent>) => {
         updateShape({ ...shape, x: e.target.x(), y: e.target.y() });
       },
@@ -156,6 +220,8 @@ const InfiniteCanvas = () => {
         return <RegularPolygon {...commonProps} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
       case 'arrow':
         return <Arrow {...commonProps} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
+      case 'line':
+        return <Line {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
       default:
         return null;
     }
@@ -164,8 +230,6 @@ const InfiniteCanvas = () => {
   return (
     <div className="relative w-full h-[calc(100vh-8rem)] flex flex-col">
       <div className="p-2 border-b flex gap-2">
-        {/* This button is for debugging and can be removed */}
-        <Button onClick={() => addShape({ type: 'rectangle', id: String(Date.now()), x: 100, y: 100, width: 100, height: 100, fill: 'green', shadowBlur: 5 })} size="sm">Add Shape</Button>
         <Button onClick={undo} size="sm" variant="outline">Undo</Button>
         <Button onClick={redo} size="sm" variant="outline">Redo</Button>
       </div>
@@ -232,16 +296,30 @@ const InfiniteCanvas = () => {
           height={dimensions.height}
           onWheel={handleWheel}
           onDragEnd={handleStageDragEnd}
-          draggable
+          draggable={mode === 'select'}
           scaleX={stage.scale}
           scaleY={stage.scale}
           x={stage.x}
           y={stage.y}
-          onMouseDown={checkDeselect}
-          onTouchStart={checkDeselect}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchMove={handleMouseMove}
+          onTouchEnd={handleMouseUp}
         >
           <Layer>
             {shapes.map(renderShape)}
+            {currentLine && (
+              <Line
+                points={currentLine.points}
+                stroke={currentLine.stroke}
+                strokeWidth={currentLine.strokeWidth}
+                tension={0.5}
+                lineCap="round"
+                lineJoin="round"
+              />
+            )}
             <Transformer
               ref={trRef}
               boundBoxFunc={(oldBox, newBox) => {

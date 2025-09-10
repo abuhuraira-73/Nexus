@@ -42,6 +42,8 @@ Nexus is a highly flexible, collaborative digital whiteboard application designe
 *   **🔧 Element Manipulation:** Easily select, move, resize, and delete elements.
 *   **🎨 Element Customization:** Modify properties like fill color, rotation, and position via a context-aware properties panel.
 *   **↩️ Undo/Redo:** Robust version history and undo/redo functionality (manual Zustand implementation).
+*   **💾 Local Board Persistence:** Your work is automatically saved to your browser's local storage.
+*   **✍️ Basic Drawing:** Draw freehand on the canvas with customizable stroke color and width.
 
 ### 🚀 Planned
 

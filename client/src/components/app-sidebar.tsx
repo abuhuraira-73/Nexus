@@ -23,16 +23,15 @@ import {
   Triangle,
 } from "lucide-react"
 
-import { useCanvasStore } from "@/store/canvasStore"
-import type { Shape } from "@/pages/infinite-canvas"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { useCanvasStore } from "@/store/canvasStore";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   Sidebar,
   SidebarContent,
@@ -47,10 +46,12 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { Separator } from "./ui/separator"
-import { Label } from "./ui/label"
-import { Input } from "./ui/input"
+} from "@/components/ui/sidebar";
+import { Separator } from "./ui/separator";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+
+import { Pencil } from "lucide-react";
 
 const shapeTools = [
   { name: "Rectangle", icon: RectangleHorizontal },
@@ -61,45 +62,62 @@ const shapeTools = [
   { name: "Arrow", icon: ArrowRight },
 ];
 
-const NavTools = () => (
-  <SidebarGroup>
-    <SidebarGroupLabel>Tools</SidebarGroupLabel>
-    <SidebarMenu>
-      <Collapsible asChild className="group/collapsible" defaultOpen>
-        <SidebarMenuItem>
-          <CollapsibleTrigger asChild>
-            <SidebarMenuButton>
-              <Shapes />
-              <span>Shapes</span>
-              <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-            </SidebarMenuButton>
-          </CollapsibleTrigger>
-          <CollapsibleContent>
-            <SidebarMenuSub>
-              {shapeTools.map((tool) => (
-                <SidebarMenuSubItem key={tool.name}>
-                  <SidebarMenuSubButton
-                    className="text-sidebar-foreground/70"
-                    draggable={true}
-                    onDragStart={(e) => {
-                      e.dataTransfer.setData("application/reactflow", tool.name.toLowerCase());
-                      e.dataTransfer.effectAllowed = "move";
-                    }}
-                  >
-                    <tool.icon className="text-muted-foreground" />
-                    <span>{tool.name}</span>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              ))}
-            </SidebarMenuSub>
-          </CollapsibleContent>
-        </SidebarMenuItem>
-      </Collapsible>
-    </SidebarMenu>
-  </SidebarGroup>
-);
+const NavTools = () => {
+  const { mode, setMode } = useCanvasStore();
 
-const PropertiesPanel = ({ shape }: { shape: Shape }) => {
+  const toggleDrawMode = () => {
+    setMode(mode === 'draw' ? 'select' : 'draw');
+  };
+
+  return (
+    <SidebarGroup>
+      <SidebarGroupLabel>Tools</SidebarGroupLabel>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton
+            onClick={toggleDrawMode}
+            isActive={mode === 'draw'}
+          >
+            <Pencil />
+            <span>Draw</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+        <Collapsible asChild className="group/collapsible" defaultOpen>
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton>
+                <Shapes />
+                <span>Shapes</span>
+                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                {shapeTools.map((tool) => (
+                  <SidebarMenuSubItem key={tool.name}>
+                    <SidebarMenuSubButton
+                      className="text-sidebar-foreground/70"
+                      draggable={true}
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData("application/reactflow", tool.name.toLowerCase());
+                        e.dataTransfer.effectAllowed = "move";
+                      }}
+                    >
+                      <tool.icon className="text-muted-foreground" />
+                      <span>{tool.name}</span>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
+      </SidebarMenu>
+    </SidebarGroup>
+  );
+};
+
+const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
   const { updateShape } = useCanvasStore();
 
   return (
@@ -134,6 +152,46 @@ const PropertiesPanel = ({ shape }: { shape: Shape }) => {
                 <Label htmlFor="pos-y">Y</Label>
                 <Input id="pos-y" type="number" value={Math.round(shape.y)} onChange={(e) => updateShape({ id: shape.id, y: parseInt(e.target.value, 10) || 0 })} />
             </div>
+        </div>
+      </div>
+    </SidebarGroup>
+  )
+}
+
+const DrawProperties = () => {
+  const { strokeColor, setStrokeColor, strokeWidth, setStrokeWidth, setMode } = useCanvasStore();
+
+  return (
+    <SidebarGroup>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton onClick={() => setMode('select')}>
+            <ArrowLeft />
+            <span>Sidebar</span>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+      <Separator />
+      <SidebarGroupLabel>Draw Properties</SidebarGroupLabel>
+      <div className="p-4 space-y-4">
+        <div className="grid gap-2">
+          <Label htmlFor="stroke-color">Stroke Color</Label>
+          <Input
+            id="stroke-color"
+            type="color"
+            className="h-8"
+            value={strokeColor}
+            onChange={(e) => setStrokeColor(e.target.value)}
+          />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="stroke-width">Stroke Width</Label>
+          <Input
+            id="stroke-width"
+            type="number"
+            value={strokeWidth}
+            onChange={(e) => setStrokeWidth(parseInt(e.target.value, 10) || 1)}
+          />
         </div>
       </div>
     </SidebarGroup>
@@ -217,8 +275,35 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const favoriteProjects = projects.filter((p) => p.isFavorite);
   const otherProjects = projects.filter((p) => !p.isFavorite);
 
-  const { selectedId, shapes } = useCanvasStore();
+  const { selectedId, shapes, mode } = useCanvasStore();
   const selectedShape = shapes.find((shape) => shape.id === selectedId);
+
+  const renderCanvasSidebar = () => {
+    if (mode === 'draw') {
+      return <DrawProperties />;
+    }
+
+    if (selectedShape) {
+      return <PropertiesPanel shape={selectedShape} />;
+    }
+
+    return (
+      <>
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton onClick={() => navigate('/')}>
+                <ArrowLeft />
+                <span>Back to Home</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+        <Separator />
+        <NavTools />
+      </>
+    );
+  };
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -227,24 +312,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         {isCanvasOpen ? (
-          selectedShape ? (
-            <PropertiesPanel shape={selectedShape} />
-          ) : (
-            <>
-              <SidebarGroup>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton onClick={() => navigate('/')}>
-                      <ArrowLeft />
-                      <span>Back to Home</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroup>
-              <Separator />
-              <NavTools />
-            </>
-          )
+          renderCanvasSidebar()
         ) : (
           <div className="flex flex-col gap-2">
             <SidebarGroup>
