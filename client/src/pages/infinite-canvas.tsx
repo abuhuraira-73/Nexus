@@ -187,6 +187,9 @@ const InfiniteCanvas = () => {
       onClick: () => selectShape(shape.id),
       onTap: () => selectShape(shape.id),
       draggable: mode === 'select',
+      onDragStart: (e: KonvaEventObject<DragEvent>) => {
+        e.evt.stopPropagation();
+      },
       onDragEnd: (e: KonvaEventObject<DragEvent>) => {
         updateShape({ ...shape, x: e.target.x(), y: e.target.y() });
       },
