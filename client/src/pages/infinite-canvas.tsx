@@ -37,6 +37,7 @@ const InfiniteCanvas = () => {
   const { shapes, addShape, updateShape, deleteShape, undo, redo, selectedId, selectShape, mode, strokeColor, strokeWidth } = useCanvasStore();
 
   const [currentLine, setCurrentLine] = useState<Shape | null>(null);
+  const [isErasing, setIsErasing] = useState(false);
 
   const trRef = useRef<TransformerType>(null);
   const shapeRefs = useRef<(Konva.Node | null)[]>([]);
@@ -111,6 +112,10 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if (mode === 'erase') {
+        setIsErasing(true);
+    }
+
     if (mode === 'select') {
       const clickedOnEmpty = e.target === e.target.getStage();
       if (clickedOnEmpty) {
@@ -169,6 +174,10 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseUp = () => {
+    if (isErasing) {
+        setIsErasing(false);
+    }
+
     if (mode !== 'draw' || !currentLine) {
       return;
     }
@@ -187,8 +196,25 @@ const InfiniteCanvas = () => {
       fill: shape.fill,
       shadowBlur: shape.shadowBlur,
       rotation: shape.rotation,
-      onClick: () => selectShape(shape.id),
-      onTap: () => selectShape(shape.id),
+      onClick: () => {
+        if (mode === 'erase') {
+            deleteShape(shape.id);
+        } else {
+            selectShape(shape.id);
+        }
+      },
+      onTap: () => {
+        if (mode === 'erase') {
+            deleteShape(shape.id);
+        } else {
+            selectShape(shape.id);
+        }
+      },
+      onMouseEnter: () => {
+        if (mode === 'erase' && isErasing) {
+            deleteShape(shape.id);
+        }
+      },
       draggable: mode === 'select',
       onDragStart: (e: KonvaEventObject<DragEvent>) => {
         e.evt.stopPropagation();

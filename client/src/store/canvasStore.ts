@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { Shape } from '../pages/infinite-canvas';
 
-export type CanvasMode = 'select' | 'draw';
+export type CanvasMode = 'select' | 'draw' | 'erase';
 
 interface CanvasState {
   shapes: Shape[];

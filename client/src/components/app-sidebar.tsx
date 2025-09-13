@@ -9,9 +9,12 @@ import {
   ChevronRight,
   Circle,
   Command,
+  Eraser,
   Frame,
   GalleryVerticalEnd,
+  Highlighter,
   Map,
+  Pen,
   PieChart,
   Plus,
   RectangleHorizontal,
@@ -62,6 +65,13 @@ const shapeTools = [
   { name: "Arrow", icon: ArrowRight },
 ];
 
+const drawingTools = [
+    { name: "Pencil", icon: Pencil, isFunctional: true },
+    { name: "Pen", icon: Pen, isFunctional: false },
+    { name: "Highlighter", icon: Highlighter, isFunctional: false },
+    // { name: "Eraser", icon: Eraser, isFunctional: false },
+]
+
 const NavTools = () => {
   const { mode, setMode } = useCanvasStore();
 
@@ -74,14 +84,42 @@ const NavTools = () => {
       <SidebarGroupLabel>Tools</SidebarGroupLabel>
       <SidebarMenu>
         <SidebarMenuItem>
-          <SidebarMenuButton
-            onClick={toggleDrawMode}
-            isActive={mode === 'draw'}
-          >
-            <Pencil />
-            <span>Draw</span>
-          </SidebarMenuButton>
+            <SidebarMenuButton
+                onClick={() => setMode('erase')}
+                isActive={mode === 'erase'}
+            >
+                <Eraser />
+                <span>Eraser</span>
+            </SidebarMenuButton>
         </SidebarMenuItem>
+        <Collapsible asChild className="group/collapsible" defaultOpen>
+            <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                    <SidebarMenuButton>
+                        <Pencil />
+                        <span>Draw</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                    </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                    <SidebarMenuSub>
+                        {drawingTools.map((tool) => (
+                            <SidebarMenuSubItem key={tool.name}>
+                                <SidebarMenuSubButton
+                                    onClick={tool.isFunctional ? toggleDrawMode : undefined}
+                                    className="text-sidebar-foreground/70"
+                                    disabled={!tool.isFunctional}
+                                    isActive={tool.isFunctional && mode === 'draw'}
+                                >
+                                    <tool.icon className="text-muted-foreground" />
+                                    <span>{tool.name}</span>
+                                </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                        ))}
+                    </SidebarMenuSub>
+                </CollapsibleContent>
+            </SidebarMenuItem>
+        </Collapsible>
         <Collapsible asChild className="group/collapsible" defaultOpen>
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
