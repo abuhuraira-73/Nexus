@@ -102,8 +102,11 @@ const InfiniteCanvas = () => {
   };
 
   const handleStageDragEnd = (e: KonvaEventObject<DragEvent>) => {
-    if (mode === 'select') {
-      setStage({ ...stage, x: e.target.x(), y: e.target.y() });
+    // only update stage position if the drag was directly on the stage
+    if (e.target === e.currentTarget) {
+      if (mode === 'select') {
+        setStage({ ...stage, x: e.target.x(), y: e.target.y() });
+      }
     }
   };
 
