@@ -14,11 +14,15 @@ import {
   Circle,
   Command,
   Eraser,
+  File,
+  Film,
   Frame,
   GalleryVerticalEnd,
   Heading1,
   Highlighter,
+  Image,
   Italic,
+  Link,
   Map,
   Pen,
   PieChart,
@@ -64,6 +68,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { ImageUploadModal } from './image-upload-modal';
 
 
 import { Pencil } from "lucide-react";
@@ -89,7 +94,13 @@ const textTools = [
     { name: "Sticky Note", icon: StickyNote, subType: 'stickyNote' },
 ]
 
-const NavTools = () => {
+const mediaTools = [
+    { name: "Image", icon: Image, type: 'image', disabled: false },
+    { name: "Embed Link", icon: Link, type: 'embed', disabled: true },
+    { name: "Upload File", icon: File, type: 'file', disabled: true },
+]
+
+const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
   const { mode, setMode } = useCanvasStore();
 
   const toggleDrawMode = () => {
@@ -192,6 +203,33 @@ const NavTools = () => {
                         e.dataTransfer.setData("application/subtype", tool.subType);
                         e.dataTransfer.effectAllowed = "move";
                       }}
+                    >
+                      <tool.icon className="text-muted-foreground" />
+                      <span>{tool.name}</span>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
+        <Collapsible asChild className="group/collapsible" defaultOpen>
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton>
+                <Film />
+                <span>Media</span>
+                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                {mediaTools.map((tool) => (
+                  <SidebarMenuSubItem key={tool.name}>
+                    <SidebarMenuSubButton
+                      className="text-sidebar-foreground/70"
+                      onClick={onImageToolClick}
+                      disabled={tool.disabled}
                     >
                       <tool.icon className="text-muted-foreground" />
                       <span>{tool.name}</span>
@@ -467,6 +505,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const isCanvasOpen = location.pathname.startsWith('/canvas');
 
   const [projects, setProjects] = React.useState(initialData.projects);
+  const [isImageModalOpen, setIsImageModalOpen] = React.useState(false);
 
   const toggleFavorite = (projectId: string) => {
     setProjects(
@@ -479,8 +518,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const favoriteProjects = projects.filter((p) => p.isFavorite);
   const otherProjects = projects.filter((p) => !p.isFavorite);
 
-  const { selectedId, shapes, mode } = useCanvasStore();
+  const { selectedId, shapes, mode, addShape } = useCanvasStore();
   const selectedShape = shapes.find((shape) => shape.id === selectedId);
+
+    const handleAddImage = (src: string, width: number, height: number) => {
+    addShape({
+        id: String(Date.now()),
+        type: 'image',
+        src,
+        x: 100,
+        y: 100,
+        width,
+        height,
+        fill: '', // Required by Shape type, not used by image
+        rotation: 0,
+        shadowBlur: 0,
+    });
+  }
 
   const renderCanvasSidebar = () => {
     if (mode === 'draw') {
@@ -507,13 +561,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenu>
         </SidebarGroup>
         <Separator />
-        <NavTools />
+        <NavTools onImageToolClick={() => setIsImageModalOpen(true)} />
       </>
     );
   };
 
   return (
     <Sidebar collapsible="icon" {...props}>
+        <ImageUploadModal 
+            isOpen={isImageModalOpen} 
+            onClose={() => setIsImageModalOpen(false)} 
+            onImageAdd={handleAddImage} 
+        />
       <SidebarHeader>
         <TeamSwitcher teams={initialData.teams} />
       </SidebarHeader>

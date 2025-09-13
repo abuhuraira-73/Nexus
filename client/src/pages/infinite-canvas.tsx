@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line, Text, Group } from 'react-konva';
+import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line, Text, Group, Image as KonvaImage } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore';
 import { Button } from '@/components/ui/button';
 
-export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text';
+export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image';
 
 export interface Shape {
   id: string;
@@ -32,7 +32,31 @@ export interface Shape {
   align?: string; // 'left', 'center', 'right'
   backgroundColor?: string; // For sticky note background
   padding?: number;
+  // Image-specific properties
+  src?: string;
 }
+
+const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: any }) => {
+    const [image, setImage] = useState<HTMLImageElement | null>(null);
+
+    useEffect(() => {
+        if (!shape.src) return;
+        const img = new window.Image();
+        img.src = shape.src;
+        img.onload = () => {
+            setImage(img);
+        };
+    }, [shape.src]);
+
+    return (
+        <KonvaImage
+            {...commonProps}
+            image={image}
+            width={shape.width}
+            height={shape.height}
+        />
+    );
+};
 
 const InfiniteCanvas = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -286,6 +310,8 @@ const InfiniteCanvas = () => {
                 />
             </Group>
         )
+      case 'image':
+        return <URLImage shape={shape} commonProps={commonProps} />;
       default:
         return null;
     }
@@ -373,6 +399,9 @@ const InfiniteCanvas = () => {
                 break;
                 case 'arrow':
                 newShape = { ...shapeBase, type, width: 150 };
+                break;
+                case 'image':
+                newShape = { ...shapeBase, type, width: 200, height: 200, src: 'https://via.placeholder.com/200' }; // Placeholder src
                 break;
                 default:
                 return;

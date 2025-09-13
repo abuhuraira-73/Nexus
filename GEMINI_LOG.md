@@ -70,7 +70,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **Real-time Collaboration:** Multi-user editing with presence indicators.
 *   **User Authentication & Authorization:** Secure user accounts and board sharing.
 *   **Cloud Board Persistence:** Save and load boards to/from a database.
-*   **Advanced Drawing Tools:** Smart shapes, connectors, lines, arrows.
+*   **Advanced Drawing Tools:** Smart shapes, connectors, lines, and arrows.
 *   **Version History & Undo/Redo:** Track changes and revert to previous states. (Implemented - Manual Zustand)
 *   **Templating System:** Pre-defined board layouts.
 *   **AI-Powered Features:** Idea generation, content summarization, image recognition.
@@ -118,6 +118,14 @@ To build a highly flexible, collaborative digital whiteboard application similar
 ---
 
 ## Progress Log
+
+### September 13, 2025
+*   **Sidebar Enhancements:**
+    *   Fixed the "Image" button in the sidebar to correctly open the `ImageUploadModal`.
+*   **Canvas Features Implemented:**
+    *   **Image Card:** Implemented drag-and-drop functionality for images onto the canvas.
+    *   **Text Card:** Implemented the ability to add and customize text boxes on the canvas.
+    *   **Eraser Tool:** Implemented the eraser tool for removing drawing elements.
 
 ### September 3, 2025
 *   **Core UX & Navigation:**
@@ -200,6 +208,39 @@ To build a highly flexible, collaborative digital whiteboard application similar
 *   **Confirmed Styling:** Verified that Shadcn/UI and Tailwind CSS styling is now correctly applied.
 
 ## 📂 Project Structure & Key Files (Frontend - `client/src`)
+
+This section outlines the core structure and purpose of key files within the frontend application, focusing on their functionality and role in the Nexus project.
+
+```
+client/src/
+├───App.tsx
+├───main.tsx
+├───components/
+│   ├───app-sidebar.tsx
+│   ├───login-form.tsx
+│   ├───nav-main.tsx
+│   ├───nav-projects.tsx
+│   ├───nav-user.tsx
+│   ├───register-form.tsx
+│   ├───team-switcher.tsx
+│   └───ui/
+│       ├───sidebar.tsx
+│       └───... (other Shadcn/UI components)
+├───hooks/
+│   └───use-mobile.ts
+├───lib/
+│   └───utils.ts
+├───pages/
+│   ├───home.tsx
+│   ├───index.tsx
+│   ├───infinite-canvas.tsx
+│   ├───login.tsx
+│   └───register.tsx
+└───store/
+    └───canvasStore.ts
+```
+
+### Key Files and Directories within `client/src/`
 
 This section outlines the core structure and purpose of key files within the frontend application, focusing on their functionality and role in the Nexus project.
 

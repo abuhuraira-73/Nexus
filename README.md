@@ -44,6 +44,9 @@ Nexus is a highly flexible, collaborative digital whiteboard application designe
 *   **↩️ Undo/Redo:** Robust version history and undo/redo functionality (manual Zustand implementation).
 *   **💾 Local Board Persistence:** Your work is automatically saved to your browser's local storage.
 *   **✍️ Basic Drawing:** Draw freehand on the canvas with customizable stroke color and width.
+*   **🖼️ Image Card:** Drag & drop images onto the canvas.
+*   **✍️ Text Card:** Add and customize text boxes on the canvas.
+*   **🧼 Eraser Tool:** Erase drawing elements from the canvas.
 
 ### 🚀 Planned
 
@@ -54,6 +57,7 @@ Nexus is a highly flexible, collaborative digital whiteboard application designe
 *   **📋 Templating System:** Pre-defined board layouts to get you started quickly.
 *   **🤖 AI-Powered Features:** Idea generation, content summarization, and more.
 *   **📤 Export Options:** Export your boards as images (PNG, JPG) or PDFs.
+*   **Rich Content Types:** Embed links, upload files (PDFs, videos).
 
 ## 🛠️ Technology Stack
 
