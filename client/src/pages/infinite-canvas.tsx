@@ -1,27 +1,37 @@
 import { useState, useRef, useEffect } from 'react';
-import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line } from 'react-konva';
+import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line, Text, Group } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore';
 import { Button } from '@/components/ui/button';
 
-export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line';
+export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text';
 
 export interface Shape {
   id: string;
   type: ShapeType;
+  subType?: 'plain' | 'heading' | 'stickyNote';
   x: number;
   y: number;
   width?: number;
   height?: number;
   radius?: number;
   points?: number[];
-  fill: string;
+  fill: string; // For shapes, it's fill color. For text, it's font color.
   shadowBlur: number;
   rotation?: number;
   stroke?: string;
   strokeWidth?: number;
+  // Text-specific properties
+  text?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontStyle?: string; // 'normal', 'bold', 'italic', 'bold italic'
+  textDecoration?: string; // 'underline'
+  align?: string; // 'left', 'center', 'right'
+  backgroundColor?: string; // For sticky note background
+  padding?: number;
 }
 
 const InfiniteCanvas = () => {
@@ -193,8 +203,6 @@ const InfiniteCanvas = () => {
       id: shape.id,
       x: shape.x,
       y: shape.y,
-      fill: shape.fill,
-      shadowBlur: shape.shadowBlur,
       rotation: shape.rotation,
       onClick: () => {
         if (mode === 'erase') {
@@ -243,17 +251,41 @@ const InfiniteCanvas = () => {
     switch (shape.type) {
       case 'rectangle':
       case 'square':
-        return <Rect {...commonProps} width={shape.width} height={shape.height} />;
+        return <Rect {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} width={shape.width} height={shape.height} />;
       case 'circle':
-        return <Circle {...commonProps} radius={shape.radius} />;
+        return <Circle {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} radius={shape.radius} />;
       case 'triangle':
-        return <RegularPolygon {...commonProps} sides={3} radius={shape.radius || 60} />;
+        return <RegularPolygon {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={3} radius={shape.radius || 60} />;
       case 'star':
-        return <RegularPolygon {...commonProps} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
+        return <RegularPolygon {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
       case 'arrow':
-        return <Arrow {...commonProps} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
+        return <Arrow {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
       case 'line':
         return <Line {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
+      case 'text':
+        return (
+            <Group {...commonProps}>
+                {shape.backgroundColor && (
+                    <Rect
+                        width={shape.width}
+                        height={shape.height}
+                        fill={shape.backgroundColor}
+                        shadowBlur={shape.shadowBlur}
+                    />
+                )}
+                <Text
+                    text={shape.text}
+                    fontSize={shape.fontSize}
+                    fontFamily={shape.fontFamily}
+                    fontStyle={shape.fontStyle}
+                    textDecoration={shape.textDecoration}
+                    align={shape.align}
+                    fill={shape.fill}
+                    width={shape.width}
+                    padding={shape.padding}
+                />
+            </Group>
+        )
       default:
         return null;
     }
@@ -272,6 +304,7 @@ const InfiniteCanvas = () => {
         onDrop={(e) => {
           e.preventDefault();
           const type = e.dataTransfer.getData("application/reactflow") as ShapeType;
+          const subType = e.dataTransfer.getData("application/subtype") as Shape['subType'];
 
           if (!type) return;
 
@@ -293,32 +326,57 @@ const InfiniteCanvas = () => {
             id: String(Date.now()),
             x: newPos.x,
             y: newPos.y,
-            fill: 'green',
-            shadowBlur: 5,
+            shadowBlur: 0,
             rotation: 0,
           };
 
-          switch (type) {
-            case 'rectangle':
-              newShape = { ...baseShape, type, width: 120, height: 80 };
-              break;
-            case 'square':
-              newShape = { ...baseShape, type, width: 100, height: 100 };
-              break;
-            case 'circle':
-              newShape = { ...baseShape, type, radius: 50 };
-              break;
-            case 'triangle':
-              newShape = { ...baseShape, type, radius: 60 };
-              break;
-            case 'star':
-              newShape = { ...baseShape, type, radius: 70 };
-              break;
-            case 'arrow':
-              newShape = { ...baseShape, type, width: 150 };
-              break;
-            default:
-              return;
+          if (type === 'text') {
+            const textBase = {
+                ...baseShape,
+                type: 'text',
+                fill: '#000000',
+                fontFamily: 'Inter',
+            }
+            switch (subType) {
+                case 'heading':
+                    newShape = { ...textBase, subType, text: 'Heading', fontSize: 32, fontStyle: 'bold', width: 200 };
+                    break;
+                case 'stickyNote':
+                    newShape = { ...textBase, subType, text: 'Sticky note...', fontSize: 18, width: 200, height: 200, backgroundColor: '#FFFFA5', padding: 20, fontFamily: 'Caveat' };
+                    break;
+                case 'plain':
+                default:
+                    newShape = { ...textBase, subType: 'plain', text: 'Plain Text', fontSize: 16, width: 150 };
+                    break;
+            }
+          } else {
+            const shapeBase = {
+                ...baseShape,
+                fill: 'green',
+                shadowBlur: 5,
+            }
+            switch (type) {
+                case 'rectangle':
+                newShape = { ...shapeBase, type, width: 120, height: 80 };
+                break;
+                case 'square':
+                newShape = { ...shapeBase, type, width: 100, height: 100 };
+                break;
+                case 'circle':
+                newShape = { ...shapeBase, type, radius: 50 };
+                break;
+                case 'triangle':
+                newShape = { ...shapeBase, type, radius: 60 };
+                break;
+                case 'star':
+                newShape = { ...shapeBase, type, radius: 70 };
+                break;
+                case 'arrow':
+                newShape = { ...shapeBase, type, width: 150 };
+                break;
+                default:
+                return;
+            }
           }
           addShape(newShape);
         }}
