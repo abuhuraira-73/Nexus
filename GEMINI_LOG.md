@@ -1,5 +1,14 @@
 # Project: Nexus — “Infinite Canvas, Simplified.”
 
+---
+## Gemini Operating Instructions (Set by user on September 14, 2025)
+
+1.  **Preserve Existing Functionality:** Utmost care must be taken to not disrupt or break any existing code or functionality.
+2.  **Adhere to Explicit Requests:** Only implement changes that have been explicitly requested by the user. Do not perform any extra modifications or additions.
+3.  **Await Explicit Command for Code Changes:** Do not write, create, or modify any files or code until explicitly instructed to do so.
+4.  **Strict Adherence to Instructions:** All user instructions are to be followed precisely as stated.
+---
+
 ## Objective
 To build a highly flexible, collaborative digital whiteboard application similar to Milanote, but with enhanced features for visual organization, brainstorming, and real-time collaboration. The development will follow a frontend-first approach, starting with a minimal, working MVP and then progressively adding advanced features and the backend.
 
@@ -317,3 +326,43 @@ client/src/
     *   **`canvasStore.ts`**: The core Zustand store for the canvas. It manages the state of all shapes, maintains a history for undo/redo functionality, and provides actions for manipulating shapes (add, update, delete, undo, redo).
 
     git add . && git commit -m "" && git push origin main
+---
+## SaaS Blueprint (Finalized September 14, 2025)
+
+This section outlines the core product strategy and development roadmap for transforming Nexus into a freemium SaaS application.
+
+### Part 1: The Freemium Model
+
+A two-tier model is defined to offer significant value for free while creating a compelling reason for users to upgrade.
+
+**The Free Plan: The Creative Sandbox**
+
+This plan is designed for individual use and provides access to the full creative power of the canvas.
+
+*   **Core Access:** Users get the complete infinite canvas experience.
+*   **Included Features:**
+    *   Full Content Creation: Add and manipulate Text Cards and Image Cards.
+    *   Advanced Drawing Tools: Full access to tools like the Eraser, and future additions like Connectors and Arrows.
+*   **Primary Limitation:**
+    *   **Content-Based:** The free plan will be limited by the **number of items allowed per board** (e.g., a maximum of 100 items).
+
+**The Premium Plan: The Collaboration & Pro Suite**
+
+This plan unlocks the full collaborative and professional potential of Nexus, designed for power users and teams.
+
+*   **Core Upgrade:** **Unlimited items** on all boards.
+*   **Exclusive Premium Features:**
+    *   **Real-time Collaboration:** The ability for multiple users to work on the same board simultaneously.
+    *   **High-Quality Exports:** Export boards as high-resolution, watermark-free images (PNG/JPG).
+    *   **Priority Support:** Users get direct access to email support for faster help.
+    *   **Future AI Features:** All upcoming AI-powered tools for generation, summarization, etc., will be exclusive to the Premium plan.
+
+### Part 2: Required Application & Website Pages
+
+The following pages will be built to create a complete user journey, from initial visit to app usage.
+
+1.  **Landing Page:** The primary marketing page for non-logged-in users to convert visitors into free users.
+2.  **Pricing Page:** A comparative table layout to clearly communicate the differences between the Free and Premium plans.
+3.  **Features Page:** A dedicated, in-depth showcase of Nexus's capabilities with descriptions and visuals.
+4.  **Forgot Password Page:** A functional page for users to securely reset their password.
+5.  **Legal Pages (Terms of Service & Privacy Policy):** To establish a legal framework and build user trust.

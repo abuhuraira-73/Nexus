@@ -1,13 +1,13 @@
 <p align="center">
 <pre>
 
- /$$   /$$ /$$$$$$$$ /$$   /$$ /$$   /$$  /$$$$$$ 
-| $$$ | $$| $$_____/| $$  / $$| $$  | $$ /$$__  $$
-| $$$$| $$| $$      |  $$/ $$/| $$  | $$| $$  \__/
-| $$ $$ $$| $$$$$    \  $$$$/ | $$  | $$|  $$$$$$ 
-| $$  $$$$| $$__/     >$$  $$ | $$  | $$ \____  $$
-| $$\  $$$| $$       /$$/\  $$| $$  | $$ /$$  \ $$
-| $$ \  $$| $$$$$$$$| $$  \ $$|  $$$$$$/|  $$$$$$/
+ /$   /$ /$$$$ /$   /$ /$   /$  /$$$ 
+| $$ | $| $_____/| $  / $| $  | $ /$__  $
+| $$| $| $      |  $/ $/| $  | $| $  \__/
+| $ $ $| $$$    \  $$/ | $  | $|  $$$ 
+| $  $$| $__/     >$  $ | $  | $ \____  $
+| $\  $$| $       /$/\  $| $  | $ /$  \ $
+| $ \  $| $$$$| $  \ $|  $$$/|  $$$/
 |__/  \__/|________/|__/  |__/ \______/  \______/ 
 
 </pre>
@@ -26,38 +26,40 @@
 
 Nexus is a highly flexible, collaborative digital whiteboard application designed for visual organization, brainstorming, and real-time collaboration. Inspired by tools like Milanote, Nexus aims to provide an intuitive and powerful platform for unleashing creativity. This project follows a frontend-first iterative development approach, focusing on a robust MVP before scaling.
 
-## ✨ Features
+## ✨ Freemium Model
 
-### ✅ Implemented
+Nexus will operate on a freemium model, designed to provide powerful core tools for free, with advanced features available for premium users.
 
-*   **🔐 User Authentication:** Secure login and registration pages with a modern UI.
-*   **📱 Responsive Layout:** Core application layout designed for various screen sizes.
-*   **🎨 Main Application Layout:** Dynamic layout with a persistent sidebar and a content area that adapts to the current route.
-*   **✨ Dynamic Sidebar:** Sidebar intelligently shows/hides panels like "Tools" and "Properties" based on the user's context.
-*   **🖼️ "No Canvas Open" Page:** A stylish and welcoming landing page when no canvas is active.
-*   **🗺️ Frontend Routing:** Seamless navigation between pages using `react-router-dom`.
+*   **✅ Free Plan:** Perfect for individual use. Includes the full infinite canvas, all drawing and content tools (text cards, image cards, connectors, etc.), and is limited by the number of items per board.
+*   **🚀 Premium Plan:** Unlocks the full collaborative and professional potential. Includes unlimited items per board, real-time collaboration, high-resolution exports, priority support, and all future AI-powered features.
+
+## 🗺️ Roadmap
+
+### ✅ Core Features (Implemented)
+
+*   **🔐 User Authentication:** Secure login and registration pages.
+*   **無限 Infinite Canvas:** A pannable, zoomable, and interactive canvas.
+*   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
+*   **✏️ Rich Content & Drawing Tools:** Includes Text Cards, Image Cards, freehand drawing, and an eraser.
+*   **💾 Local Persistence:** Work is saved automatically to local storage.
+*   **↩️ Undo/Redo:** Robust history management.
 *   **⭐ Favorites System:** Pin your most important canvases for quick access.
-*   **無限 Infinite Canvas:** A pannable and zoomable canvas for unrestricted creativity.
-*   **✏️ Draggable Tools:** Drag shapes from the sidebar to create them on the canvas.
-*   **🔧 Element Manipulation:** Easily select, move, resize, and delete elements.
-*   **🎨 Element Customization:** Modify properties like fill color, rotation, and position via a context-aware properties panel.
-*   **↩️ Undo/Redo:** Robust version history and undo/redo functionality (manual Zustand implementation).
-*   **💾 Local Board Persistence:** Your work is automatically saved to your browser's local storage.
-*   **✍️ Basic Drawing:** Draw freehand on the canvas with customizable stroke color and width.
-*   **🖼️ Image Card:** Drag & drop images onto the canvas.
-*   **✍️ Text Card:** Add and customize text boxes on the canvas.
-*   **🧼 Eraser Tool:** Erase drawing elements from the canvas.
 
-### 🚀 Planned
+### 🚀 Upcoming Features & Pages
 
-*   **💾 Local Board Persistence:** Save and load your work to/from local storage.
-*   **☁️ Cloud Board Persistence:** Save and load boards to/from a database for access anywhere.
-*   **🤝 Real-time Collaboration:** Work with others in real-time with presence indicators.
-*   **✍️ Advanced Drawing Tools:** Smart shapes, connectors, lines, and arrows.
-*   **📋 Templating System:** Pre-defined board layouts to get you started quickly.
-*   **🤖 AI-Powered Features:** Idea generation, content summarization, and more.
-*   **📤 Export Options:** Export your boards as images (PNG, JPG) or PDFs.
-*   **Rich Content Types:** Embed links, upload files (PDFs, videos).
+The next phase of development focuses on building out the public-facing SaaS website and adding premium features.
+
+*   **🌐 Public Website:**
+    *   **Landing Page:** A beautiful marketing page to attract new users.
+    *   **Pricing Page:** A clear breakdown of the Free vs. Premium plans.
+    *   **Features Page:** A detailed showcase of all Nexus capabilities.
+*   **⚙️ App Functionality:**
+    *   **Forgot Password Flow:** Enabling users to reset their passwords.
+    *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
+*   **☁️ Premium Backend Features:**
+    *   **Cloud Persistence:** Saving boards to a central database.
+    *   **Real-time Collaboration:** Multi-user editing, cursors, and presence.
+    *   **High-Quality Exports:** Exporting boards to PNG/JPG without watermarks.
 
 ## 🛠️ Technology Stack
 
