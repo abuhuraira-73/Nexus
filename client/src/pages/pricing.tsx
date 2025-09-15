@@ -103,87 +103,89 @@ export default function PricingPage() {
             </p>
         </section>
 
-        {/* Gradient Background Wrapper */}
-        <div className="bg-gradient-custom bg-cover bg-center">
-            {/* Pricing Table Section */}
-            <section className="pt-20 lg:pt-28">
-              <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                  {pricingTiers.map((tier) => (
-                    <Card
-                      key={tier.name}
-                      className={`bg-gray-900/50 border-gray-800 backdrop-blur-sm flex flex-col h-full ${tier.isFeatured ? 'border-purple-500 ring-2 ring-purple-500' : ''}`}>
-                      <CardHeader className="text-center">
-                        <CardTitle className="text-3xl font-bold">{tier.name}</CardTitle>
-                        <p className="text-gray-400 h-12">{tier.description}</p>
-                        <div className="text-5xl font-bold mt-4">
-                          {tier.price}
-                          {tier.price !== "$0" && <span className="text-lg font-normal text-gray-400">/ month</span>}
-                        </div>
-                      </CardHeader>
-                      <CardContent className="flex flex-col flex-grow">
-                        <a href={tier.name === 'Enterprise' ? '#' : '/register'} className="w-full">
-                          <Button
-                            className={`w-full text-lg py-6 ${tier.isFeatured ? 'bg-white text-black hover:bg-gray-200' : ''}`}
-                            variant={tier.isFeatured ? 'default' : 'outline'}>
-                            {tier.cta}
-                          </Button>
-                        </a>
-                        <ul className="space-y-4 mt-8 text-left flex-grow">
-                          {tier.features.map((feature) => (
-                            <li key={feature} className="flex items-start">
-                              <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" />
-                              <span>{feature}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </section>
+        {/* Inset Gradient Section */}
+        <div className="px-8 sm:px-12 lg:px-16">
+            <div className="bg-gradient-custom bg-cover bg-center rounded-2xl">
+                {/* Pricing Table Section */}
+                <section className="pt-20 lg:pt-28">
+                  <div className="container mx-auto px-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                      {pricingTiers.map((tier) => (
+                        <Card
+                          key={tier.name}
+                          className={`bg-gray-900/50 border-gray-800 backdrop-blur-sm flex flex-col h-full ${tier.isFeatured ? 'border-purple-500 ring-2 ring-purple-500' : ''}`}>
+                          <CardHeader className="text-center">
+                            <CardTitle className="text-3xl font-bold">{tier.name}</CardTitle>
+                            <p className="text-gray-400 h-12">{tier.description}</p>
+                            <div className="text-5xl font-bold mt-4">
+                              {tier.price}
+                              {tier.price !== "$0" && <span className="text-lg font-normal text-gray-400">/ month</span>}
+                            </div>
+                          </CardHeader>
+                          <CardContent className="flex flex-col flex-grow">
+                            <a href={tier.name === 'Enterprise' ? '#' : '/register'} className="w-full">
+                              <Button
+                                className={`w-full text-lg py-6 ${tier.isFeatured ? 'bg-white text-black hover:bg-gray-200' : ''}`}
+                                variant={tier.isFeatured ? 'default' : 'outline'}>
+                                {tier.cta}
+                              </Button>
+                            </a>
+                            <ul className="space-y-4 mt-8 text-left flex-grow">
+                              {tier.features.map((feature) => (
+                                <li key={feature} className="flex items-start">
+                                  <Check className="h-6 w-6 text-green-500 mr-3 flex-shrink-0" />
+                                  <span>{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                </section>
 
-            {/* Comparison Table Section */}
-            <section className="py-20 lg:py-28">
-                <div className="container mx-auto px-4">
-                    <h2 className="text-4xl font-bold text-center mb-12">Compare All Features</h2>
-                    <div className="bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 overflow-hidden">
-                        {/* Table Header */}
-                        <div className="grid grid-cols-4 p-4 border-b border-gray-700 font-bold">
-                            <div className="col-span-1">Features</div>
-                            <div className="col-span-1 text-center">Free</div>
-                            <div className="col-span-1 text-center">Premium</div>
-                            <div className="col-span-1 text-center">Enterprise</div>
-                        </div>
-                        {/* Table Body */}
-                        <div className="divide-y divide-gray-800">
-                            {comparisonFeatures.map((item, index) => (
-                                <div key={index} className="grid grid-cols-4 p-4 items-center">
-                                    <div className="col-span-1 font-medium">{item.feature}</div>
-                                    <div className="col-span-1 flex justify-center"><Checkmark available={item.free} /></div>
-                                    <div className="col-span-1 flex justify-center"><Checkmark available={item.premium} /></div>
-                                    <div className="col-span-1 flex justify-center"><Checkmark available={item.enterprise} /></div>
-                                </div>
-                            ))}
+                {/* Comparison Table Section */}
+                <section className="py-20 lg:py-28">
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-4xl font-bold text-center mb-12">Compare All Features</h2>
+                        <div className="bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 overflow-hidden">
+                            {/* Table Header */}
+                            <div className="grid grid-cols-4 p-4 border-b border-gray-700 font-bold">
+                                <div className="col-span-1">Features</div>
+                                <div className="col-span-1 text-center">Free</div>
+                                <div className="col-span-1 text-center">Premium</div>
+                                <div className="col-span-1 text-center">Enterprise</div>
+                            </div>
+                            {/* Table Body */}
+                            <div className="divide-y divide-gray-800">
+                                {comparisonFeatures.map((item, index) => (
+                                    <div key={index} className="grid grid-cols-4 p-4 items-center">
+                                        <div className="col-span-1 font-medium">{item.feature}</div>
+                                        <div className="col-span-1 flex justify-center"><Checkmark available={item.free} /></div>
+                                        <div className="col-span-1 flex justify-center"><Checkmark available={item.premium} /></div>
+                                        <div className="col-span-1 flex justify-center"><Checkmark available={item.enterprise} /></div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* CTA Buttons */}
-            <section className="pb-20 lg:pb-28 text-center">
-                <div className="container mx-auto px-4 flex justify-center gap-8">
-                    <Button size="lg" variant="outline">Get Started with Free</Button>
-                    <Button size="lg">Upgrade to Premium</Button>
-                    <Button size="lg" variant="outline">Contact Sales</Button>
-                </div>
-            </section>
+                {/* CTA Buttons */}
+                <section className="pb-20 lg:pb-28 text-center">
+                    <div className="container mx-auto px-4 flex justify-center gap-8">
+                        <Button size="lg" variant="outline">Get Started with Free</Button>
+                        <Button size="lg">Upgrade to Premium</Button>
+                        <Button size="lg" variant="outline">Contact Sales</Button>
+                    </div>
+                </section>
+            </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-gray-800">
+      <footer className="bg-black pt-4">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
             <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Nexus. All Rights Reserved.</p>
             <div className="flex space-x-4">
