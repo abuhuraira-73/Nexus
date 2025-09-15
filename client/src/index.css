@@ -130,6 +130,13 @@
   background-position: center;
 }
 
+.bg-gradient-custom1 {
+  background-image: url('@/assets/images/gradient/gradient-2.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+
 @keyframes gradient {
   0% {
     background-position: 0% 50%;

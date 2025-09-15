@@ -49,7 +49,7 @@ export default function LandingPage() {
           <a className="text-sm font-medium hover:underline underline-offset-4" href="#features">
             Features
           </a>
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="#pricing">
+          <a className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">
             Pricing
           </a>
           <a className="text-sm font-medium hover:underline underline-offset-4" href="/login">
