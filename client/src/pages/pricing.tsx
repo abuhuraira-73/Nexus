@@ -75,6 +75,9 @@ export default function PricingPage() {
           <span className="ml-2 font-semibold text-lg">Nexus</span>
         </a>
         <nav className="ml-auto flex items-center gap-4 sm:gap-6">
+          <a className="text-sm font-medium hover:underline underline-offset-4" href="/">
+            Home
+          </a>
           <a className="text-sm font-medium hover:underline underline-offset-4" href="/features">
             Features
           </a>

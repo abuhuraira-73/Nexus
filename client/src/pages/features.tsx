@@ -25,6 +25,9 @@ export default function FeaturesPage() {
           <span className="ml-2 font-semibold text-lg">Nexus</span>
         </a>
         <nav className="ml-auto flex items-center gap-4 sm:gap-6">
+          <a className="text-sm font-medium hover:underline underline-offset-4" href="/">
+            Home
+          </a>
           <a className="text-sm font-medium hover:underline underline-offset-4" href="/features">
             Features
           </a>
@@ -43,17 +46,22 @@ export default function FeaturesPage() {
       </header>
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="text-center py-20 lg:py-32 bg-gradient-custom bg-cover bg-center">
-          <div className="bg-black/60 py-16">
+        {/* Hero Section - Headline */}
+        <section className="text-center py-20 lg:py-28 bg-black">
             <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter">
               All The Tools You Need To Think Visually.
             </h1>
-            <p className="max-w-[700px] mx-auto text-gray-300 md:text-xl mt-6">
-              From infinite canvases to real-time collaboration, discover how Nexus empowers you and your team to bring ideas to life.
-            </p>
-          </div>
         </section>
+        {/* Hero Section - Sub-headline with Bezel Effect */}
+        <div className="px-4 sm:px-6 lg:px-8">
+            <section className="text-center py-20 lg:py-28 bg-gradient-custom bg-cover bg-center rounded-2xl">
+                <div className="container mx-auto px-4">
+                    <p className="text-gray-300 md:text-2xl">
+                      From infinite canvases that expand with your thoughts to real-time collaboration that keeps your team in sync, Nexus is the all-in-one visual workspace designed to empower your creative process. Discover how our powerful tools can help you bring your most ambitious ideas to life.
+                    </p>
+                </div>
+            </section>
+        </div>
 
         {/* --- Thematic Feature Sections --- */}
         <div className="bg-black">
@@ -63,13 +71,21 @@ export default function FeaturesPage() {
                 icon={<Palette className="h-32 w-32 text-purple-400" />}
             />
         </div>
-        <div className="bg-gray-900">
+        {/* NEW SEPARATOR LINE */}
+        <div className="container mx-auto px-4">
+            <div className="border-t border-gray-700 my-16 max-w-4xl mx-auto"></div>
+        </div>
+        <div className="bg-black">
             <FeatureSection
                 title="Built for Seamless Collaboration"
                 description="Work together in real-time, from anywhere in the world. See your team's cursors, get instant feedback with comments, and share your boards with a single click. Collaboration has never been this easy."
                 icon={<Users className="h-32 w-32 text-pink-400" />}
                 reverse={true}
             />
+        </div>
+        {/* NEW SEPARATOR LINE */}
+        <div className="container mx-auto px-4">
+            <div className="border-t border-gray-700 my-16 max-w-4xl mx-auto"></div>
         </div>
         <div className="bg-black">
             <FeatureSection
@@ -79,22 +95,24 @@ export default function FeaturesPage() {
             />
         </div>
 
-        {/* CTA Section */}
-        <section className="py-20 lg:py-32 bg-gradient-custom bg-cover bg-center">
-            <div className="container mx-auto px-4 text-center">
-                <h2 className="text-4xl font-bold mb-6">Ready to build your next big idea?</h2>
-                <p className="text-gray-300 text-lg mb-8">Get started with Nexus for free. No credit card required.</p>
-                <a href="/register">
-                    <Button size="lg" className="transition-transform duration-300 hover:scale-105">
-                        Sign Up for Free
-                    </Button>
-                </a>
-            </div>
-        </section>
+        {/* CTA Section with Bezel Effect */}
+        <div className="px-4 sm:px-6 lg:px-8">
+            <section className="py-20 lg:py-32 bg-gradient-custom bg-cover bg-center rounded-2xl">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="text-4xl font-bold mb-6">Ready to build your next big idea?</h2>
+                    <p className="text-gray-300 text-lg mb-8">Get started with Nexus for free. No credit card required.</p>
+                    <a href="/register">
+                        <Button size="lg" className="transition-transform duration-300 hover:scale-105">
+                            Sign Up for Free
+                        </Button>
+                    </a>
+                </div>
+            </section>
+        </div>
       </main>
 
       {/* Simplified Footer */}
-      <footer className="bg-black border-t border-gray-800">
+      <footer className="bg-black pt-4">
         <div className="container mx-auto px-4 py-6 flex justify-between items-center">
             <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Nexus. All Rights Reserved.</p>
             <div className="flex space-x-4">
