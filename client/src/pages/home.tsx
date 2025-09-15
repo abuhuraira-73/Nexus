@@ -17,7 +17,7 @@ export default function HeroSection() {
 
   const handleCreateCanvas = () => {
     // We can later make this a dynamic ID, e.g., `/canvas/${newCanvasId}`
-    navigate('/canvas');
+    navigate('/app/canvas');
   };
 
   return (

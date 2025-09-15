@@ -502,7 +502,7 @@ const initialData = {
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const navigate = useNavigate();
-  const isCanvasOpen = location.pathname.startsWith('/canvas');
+  const isCanvasOpen = location.pathname.startsWith('/app/canvas');
 
   const [projects, setProjects] = React.useState(initialData.projects);
   const [isImageModalOpen, setIsImageModalOpen] = React.useState(false);
@@ -553,7 +553,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => navigate('/')}>
+              <SidebarMenuButton onClick={() => navigate('/app')}>
                 <ArrowLeft />
                 <span>Back to Home</span>
               </SidebarMenuButton>
@@ -584,7 +584,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroup>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => navigate('/canvas')}>
+                        <SidebarMenuButton onClick={() => navigate('/app/canvas')}>
                             <Plus/>
                             <span>New Canvas</span>
                         </SidebarMenuButton>

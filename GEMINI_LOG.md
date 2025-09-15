@@ -128,6 +128,27 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 14, 2025
+*   **SaaS Implementation Roadmap Finalized**: The following implementation order was decided upon for building out the SaaS platform.
+
+    **Phase 1: Building the Public Website & User Flow**
+    1.  **Create Landing Page:** Build the main marketing page for new visitors.
+    2.  **Update App Routing:** Ensure non-logged-in users see public pages and logged-in users are directed to the application.
+    3.  **Create Features Page:** A detailed page to showcase Nexus's capabilities.
+    4.  **Create Pricing Page:** Build the page with the comparative table for the Free and Premium plans.
+    5.  **Create Forgot Password Page:** Complete the essential user authentication flow.
+    6.  **Create Legal Pages:** Add placeholder pages for Terms of Service and Privacy Policy.
+
+    **Phase 2: Enhancing the Core Application (Free Tier)**
+    7.  **Implement Connectors & Arrows:** Add the advanced drawing tools for diagramming, available for all users.
+
+    **Phase 3: Developing the Premium Backend & Features**
+    8.  **Initial Backend Setup:** Create the Node.js/Express server foundation.
+    9.  **Cloud Persistence:** Implement saving and loading boards to a database, linked to user accounts.
+    10. **Implement High-Quality Exports:** Add the premium feature for exporting boards without watermarks.
+    11. **Implement Real-time Collaboration:** The flagship feature for multi-user interaction on the same board.
+    12. **Future Premium Features:** Stubs for future AI-powered tools and priority support systems.
+
 ### September 13, 2025
 *   **Sidebar Enhancements:**
     *   Fixed the "Image" button in the sidebar to correctly open the `ImageUploadModal`.
