@@ -149,6 +149,28 @@ To build a highly flexible, collaborative digital whiteboard application similar
     11. **Implement Real-time Collaboration:** The flagship feature for multi-user interaction on the same board.
     12. **Future Premium Features:** Stubs for future AI-powered tools and priority support systems.
 
+### September 15, 2025
+*   **Public Website Refinements:**
+    *   **Landing Page:**
+        *   Updated hero section text.
+        *   Implemented smooth scrolling for anchor links.
+        *   Redesigned footer and testimonials section (with avatars and star ratings).
+        *   **Remaining Customization:** Hero section background and bezel effect to be done tomorrow.
+    *   **Features Page:**
+        *   Created dedicated page with detailed content and zig-zag layout.
+        *   Refined hero sub-headline section with bezel effect and full-width text.
+        *   Added separator lines between thematic feature sections.
+    *   **Pricing Page:**
+        *   Created dedicated page with comparison table and three tiers (Free, Premium, Enterprise).
+        *   Implemented "bezel" layout (black background with inset, rounded gradient panel).
+        *   Thickened side bezels.
+        *   Removed top border from footer.
+    *   **Navigation:**
+        *   Updated all header links (`Home`, `Features`, `Pricing`, `Login`, `Sign Up`) across Landing, Features, and Pricing pages to point to correct routes.
+        *   Refactored header into a reusable `PublicHeader` component and used it on Landing, Features, and Pricing pages.
+*   **Core Application Flow Fixes (Authenticated):**
+    *   Fixed routing issues in `app-sidebar.tsx` (correctly detecting canvas open, "New Canvas" button navigation, "Back to Home" button navigation).
+
 ### September 13, 2025
 *   **Sidebar Enhancements:**
     *   Fixed the "Image" button in the sidebar to correctly open the `ImageUploadModal`.

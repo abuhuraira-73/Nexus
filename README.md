@@ -45,16 +45,29 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **↩️ Undo/Redo:** Robust history management.
 *   **⭐ Favorites System:** Pin your most important canvases for quick access.
 
+### ✅ Core Features (Implemented)
+
+*   **🔐 User Authentication:** Secure login and registration pages.
+*   **無限 Infinite Canvas:** A pannable, zoomable, and interactive canvas.
+*   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
+*   **✏️ Rich Content & Drawing Tools:** Includes Text Cards, Image Cards, freehand drawing, and an eraser.
+*   **💾 Local Persistence:** Work is saved automatically to local storage.
+*   **↩️ Undo/Redo:** Robust history management.
+*   **⭐ Favorites System:** Pin your most important canvases for quick access.
+*   **🌐 Public Website Pages:**
+    *   **Dedicated Landing Page:** A modern, content-rich marketing page.
+    *   **Dedicated Features Page:** Detailed showcase of Nexus capabilities.
+    *   **Dedicated Pricing Page:** Comprehensive comparison of Free, Premium, and Enterprise plans.
+*   **🔄 Reusable Public Header:** Centralized navigation component for public pages.
+
 ### 🚀 Upcoming Features & Pages
 
 The next phase of development focuses on building out the public-facing SaaS website and adding premium features.
 
 *   **🌐 Public Website:**
-    *   **Landing Page:** A beautiful marketing page to attract new users.
-    *   **Pricing Page:** A clear breakdown of the Free vs. Premium plans.
-    *   **Features Page:** A detailed showcase of all Nexus capabilities.
-*   **⚙️ App Functionality:**
     *   **Forgot Password Flow:** Enabling users to reset their passwords.
+    *   **Legal Pages:** Placeholder pages for Terms of Service and Privacy Policy.
+*   **⚙️ App Functionality:**
     *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
 *   **☁️ Premium Backend Features:**
     *   **Cloud Persistence:** Saving boards to a central database.
