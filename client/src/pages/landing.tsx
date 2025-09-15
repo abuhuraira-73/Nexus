@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle, Zap, Shield, Heart, Star, Users, BrainCircuit, Twitter, Github, Linkedin } from "lucide-react";
+import PublicHeader from "@/components/public-header"; // Import PublicHeader
 
 const features = [
   { icon: <Zap className="h-8 w-8 text-primary-foreground transition-colors duration-300 group-hover:text-purple-600" />, title: "Infinite Canvas", description: "Never run out of space. Pan, zoom, and create on a limitless canvas that grows with your ideas." },
@@ -40,28 +41,7 @@ export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen text-white bg-black">
       {/* Header */}
-      <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center bg-black/30 backdrop-blur-lg">
-        <a className="flex items-center justify-center" href="#">
-          <Zap className="h-6 w-6" />
-          <span className="ml-2 font-semibold text-lg">Nexus</span>
-        </a>
-        <nav className="ml-auto flex items-center gap-4 sm:gap-6">
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/features">
-            Features
-          </a>
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">
-            Pricing
-          </a>
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/login">
-            Login
-          </a>
-          <a href="/register">
-            <Button variant="secondary" size="sm" className="transition-transform duration-300 hover:scale-105">
-              Sign Up
-            </Button>
-          </a>
-        </nav>
-      </header>
+      <PublicHeader />
 
       <main className="flex-1">
         {/* --- GRADIENT SECTION 1 --- */}

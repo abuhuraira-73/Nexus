@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Zap, Palette, Users, BrainCircuit, Twitter, Github, Linkedin } from "lucide-react";
+import PublicHeader from "@/components/public-header"; // Import PublicHeader
 
 // Helper component for feature sections to avoid repetition
 const FeatureSection = ({ title, description, icon, reverse = false }) => (
@@ -18,32 +19,8 @@ const FeatureSection = ({ title, description, icon, reverse = false }) => (
 export default function FeaturesPage() {
   return (
     <div className="flex flex-col min-h-screen text-white bg-black">
-      {/* Header can be a shared component later, for now, it's duplicated */}
-      <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center bg-black/30 backdrop-blur-lg">
-        <a className="flex items-center justify-center" href="/">
-          <Zap className="h-6 w-6" />
-          <span className="ml-2 font-semibold text-lg">Nexus</span>
-        </a>
-        <nav className="ml-auto flex items-center gap-4 sm:gap-6">
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/">
-            Home
-          </a>
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/features">
-            Features
-          </a>
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">
-            Pricing
-          </a>
-          <a className="text-sm font-medium hover:underline underline-offset-4" href="/login">
-            Login
-          </a>
-          <a href="/register">
-            <Button variant="secondary" size="sm" className="transition-transform duration-300 hover:scale-105">
-              Sign Up
-            </Button>
-          </a>
-        </nav>
-      </header>
+      {/* Header */}
+      <PublicHeader />
 
       <main className="flex-1">
         {/* Hero Section - Headline */}
