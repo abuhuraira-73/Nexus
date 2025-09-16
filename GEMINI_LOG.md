@@ -128,26 +128,27 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
-### September 14, 2025
-*   **SaaS Implementation Roadmap Finalized**: The following implementation order was decided upon for building out the SaaS platform.
-
-    **Phase 1: Building the Public Website & User Flow**
-    1.  **Create Landing Page:** Build the main marketing page for new visitors.
-    2.  **Update App Routing:** Ensure non-logged-in users see public pages and logged-in users are directed to the application.
-    3.  **Create Features Page:** A detailed page to showcase Nexus's capabilities.
-    4.  **Create Pricing Page:** Build the page with the comparative table for the Free and Premium plans.
-    5.  **Create Forgot Password Page:** Complete the essential user authentication flow.
-    6.  **Create Legal Pages:** Add placeholder pages for Terms of Service and Privacy Policy.
-
-    **Phase 2: Enhancing the Core Application (Free Tier)**
-    7.  **Implement Connectors & Arrows:** Add the advanced drawing tools for diagramming, available for all users.
-
-    **Phase 3: Developing the Premium Backend & Features**
-    8.  **Initial Backend Setup:** Create the Node.js/Express server foundation.
-    9.  **Cloud Persistence:** Implement saving and loading boards to a database, linked to user accounts.
-    10. **Implement High-Quality Exports:** Add the premium feature for exporting boards without watermarks.
-    11. **Implement Real-time Collaboration:** The flagship feature for multi-user interaction on the same board.
-    12. **Future Premium Features:** Stubs for future AI-powered tools and priority support systems.
+### September 16, 2025
+*   **Landing Page Enhancements:**
+    *   Applied thicker bezels to gradient sections.
+    *   Refined testimonial section: expanded content, added realistic names (including Indian names), and implemented infinite horizontal auto-scrolling with reduced fade effect.
+    *   Updated feature cards: icons are now white by default, removed hover border, and maintained zoom effect.
+*   **Footer Refactoring:**
+    *   Created `PublicFooter` component based on `pricing.tsx`'s footer.
+    *   Replaced footers in `landing.tsx`, `features.tsx`, and `pricing.tsx` with `PublicFooter`.
+*   **Forgot Password Page Implementation:**
+    *   Created `forgot-password-form.tsx` component.
+    *   Created `forgot-password.tsx` page with `login-02` block layout, updated image, and adapted form fields for password reset.
+    *   Linked "Forgot Password" from `login-form.tsx` and `register-form.tsx`.
+*   **Contact Page Implementation:**
+    *   Created `contact-form.tsx` component (removed inquiry type).
+    *   Created `contact.tsx` page with black hero section.
+    *   Implemented new main content layout: gradient background for form and contact info (two columns), with "How We Respond" text.
+    *   Moved FAQ section below main content, spanning full width, and added detailed answers.
+    *   Added "Contact" link to `PublicHeader`.
+*   **Troubleshooting & Bug Fixes:**
+    *   Resolved multiple import errors (`PublicFooter`, `PublicHeader`, `Accordion`, `Select`) by correcting import syntax and adding missing `shadcn/ui` components.
+    *   Fixed Accordion animation: added missing keyframes, then switched to a more robust `max-height` based animation strategy in `accordion.tsx` and removed old keyframes from `index.css`.
 
 ### September 15, 2025
 *   **Public Website Refinements:**
@@ -170,6 +171,27 @@ To build a highly flexible, collaborative digital whiteboard application similar
         *   Refactored header into a reusable `PublicHeader` component and used it on Landing, Features, and Pricing pages.
 *   **Core Application Flow Fixes (Authenticated):**
     *   Fixed routing issues in `app-sidebar.tsx` (correctly detecting canvas open, "New Canvas" button navigation, "Back to Home" button navigation).
+
+### September 14, 2025
+*   **SaaS Implementation Roadmap Finalized**: The following implementation order was decided upon for building out the SaaS platform.
+
+    **Phase 1: Building the Public Website & User Flow**
+    1.  **Create Landing Page:** Build the main marketing page for new visitors.
+    2.  **Update App Routing:** Ensure non-logged-in users see public pages and logged-in users are directed to the application.
+    3.  **Create Features Page:** A detailed page to showcase Nexus's capabilities.
+    4.  **Create Pricing Page:** Build the page with the comparative table for the Free and Premium plans.
+    5.  **Create Forgot Password Page:** Complete the essential user authentication flow.
+    6.  **Create Legal Pages:** Add placeholder pages for Terms of Service and Privacy Policy.
+
+    **Phase 2: Enhancing the Core Application (Free Tier)**
+    7.  **Implement Connectors & Arrows:** Add the advanced drawing tools for diagramming, available for all users.
+
+    **Phase 3: Developing the Premium Backend & Features**
+    8.  **Initial Backend Setup:** Create the Node.js/Express server foundation.
+    9.  **Cloud Persistence:** Implement saving and loading boards to a database, linked to user accounts.
+    10. **Implement High-Quality Exports:** Add the premium feature for exporting boards without watermarks.
+    11. **Implement Real-time Collaboration:** The flagship feature for multi-user interaction on the same board.
+    12. **Future Premium Features:** Stubs for future AI-powered tools and priority support systems.
 
 ### September 13, 2025
 *   **Sidebar Enhancements:**
@@ -352,15 +374,6 @@ client/src/
     *   **Functionality:** Defines the main screens users navigate through.
     *   **`home.tsx`**: The landing page displayed when no canvas is open, featuring a "Hero Section."
     *   **`index.tsx`**: Acts as the main application layout component, wrapping other pages and managing the overall structure (e.g., sidebar and content area).
-    *   **`infinite-canvas.tsx`**: The central canvas component. This is where users interact with shapes, supporting panning, zooming, selection, movement, resizing, rotation, and deletion. It integrates with `react-konva` for rendering.
-    *   **`login.tsx` / `register.tsx`**: The full page components for user authentication.
-*   **`store/`**:
-    *   **Purpose:** Dedicated directory for Zustand stores.
-    *   **Functionality:** Centralizes global application state management.
-    *   **`canvasStore.ts`**: The core Zustand store for the canvas. It manages the state of all shapes, maintains a history for undo/redo functionality, and provides actions for manipulating shapes (add, update, delete, undo, redo).
-
-    git add . && git commit -m "" && git push origin main
-.
     *   **`infinite-canvas.tsx`**: The central canvas component. This is where users interact with shapes, supporting panning, zooming, selection, movement, resizing, rotation, and deletion. It integrates with `react-konva` for rendering.
     *   **`login.tsx` / `register.tsx`**: The full page components for user authentication.
 *   **`store/`**:

@@ -18,6 +18,9 @@ export default function PublicHeader() {
         <a className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">
           Pricing
         </a>
+        <a className="text-sm font-medium hover:underline underline-offset-4" href="/contact">
+          Contact
+        </a>
         <a className="text-sm font-medium hover:underline underline-offset-4" href="/login">
           Login
         </a>

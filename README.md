@@ -44,16 +44,6 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **💾 Local Persistence:** Work is saved automatically to local storage.
 *   **↩️ Undo/Redo:** Robust history management.
 *   **⭐ Favorites System:** Pin your most important canvases for quick access.
-
-### ✅ Core Features (Implemented)
-
-*   **🔐 User Authentication:** Secure login and registration pages.
-*   **無限 Infinite Canvas:** A pannable, zoomable, and interactive canvas.
-*   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
-*   **✏️ Rich Content & Drawing Tools:** Includes Text Cards, Image Cards, freehand drawing, and an eraser.
-*   **💾 Local Persistence:** Work is saved automatically to local storage.
-*   **↩️ Undo/Redo:** Robust history management.
-*   **⭐ Favorites System:** Pin your most important canvases for quick access.
 *   **🌐 Public Website Pages:**
     *   **Dedicated Landing Page:** A modern, content-rich marketing page.
     *   **Dedicated Features Page:** Detailed showcase of Nexus capabilities.
@@ -65,7 +55,6 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 The next phase of development focuses on building out the public-facing SaaS website and adding premium features.
 
 *   **🌐 Public Website:**
-    *   **Forgot Password Flow:** Enabling users to reset their passwords.
     *   **Legal Pages:** Placeholder pages for Terms of Service and Privacy Policy.
 *   **⚙️ App Functionality:**
     *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
@@ -138,4 +127,3 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## 📧 Contact
 
 For questions, feedback, or collaboration inquiries, please reach out in Linkedin.
-

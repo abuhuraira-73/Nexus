@@ -9,6 +9,7 @@ import LandingPage from './pages/landing'; // This is the public landing page
 import FeaturesPage from './pages/features';
 import PricingPage from './pages/pricing'; // Import the new pricing page
 import ForgotPasswordPage from './pages/forgot-password';
+import ContactPage from './pages/contact';
 
 // Mock authentication state
 const isAuthenticated = false; // Set to `true` to simulate a logged-in user
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={!isAuthenticated ? <LandingPage /> : <Navigate to="/app" />} />
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/pricing" element={<PricingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/app" />} />
         <Route path="/register" element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/app" />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
