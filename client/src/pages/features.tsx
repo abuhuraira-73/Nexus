@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Zap, Palette, Users, BrainCircuit, Twitter, Github, Linkedin } from "lucide-react";
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
+import PublicFooter from "@/components/public-footer";
 
 // Helper component for feature sections to avoid repetition
 const FeatureSection = ({ title, description, icon, reverse = false }) => (
@@ -30,7 +31,7 @@ export default function FeaturesPage() {
             </h1>
         </section>
         {/* Hero Section - Sub-headline with Bezel Effect */}
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="px-8 sm:px-12 lg:px-16">
             <section className="text-center py-20 lg:py-28 bg-gradient-custom bg-cover bg-center rounded-2xl">
                 <div className="container mx-auto px-4">
                     <p className="text-gray-300 md:text-2xl">
@@ -73,7 +74,7 @@ export default function FeaturesPage() {
         </div>
 
         {/* CTA Section with Bezel Effect */}
-        <div className="px-4 sm:px-6 lg:px-8">
+        <div className="px-8 sm:px-12 lg:px-16">
             <section className="py-20 lg:py-32 bg-gradient-custom bg-cover bg-center rounded-2xl">
                 <div className="container mx-auto px-4 text-center">
                     <h2 className="text-4xl font-bold mb-6">Ready to build your next big idea?</h2>
@@ -89,16 +90,7 @@ export default function FeaturesPage() {
       </main>
 
       {/* Simplified Footer */}
-      <footer className="bg-black pt-4">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center">
-            <p className="text-sm text-gray-500">&copy; {new Date().getFullYear()} Nexus. All Rights Reserved.</p>
-            <div className="flex space-x-4">
-                <a href="#" className="text-gray-500 hover:text-white"><Twitter className="h-5 w-5" /></a>
-                <a href="#" className="text-gray-500 hover:text-white"><Github className="h-5 w-5" /></a>
-                <a href="#" className="text-gray-500 hover:text-white"><Linkedin className="h-5 w-5" /></a>
-            </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }
