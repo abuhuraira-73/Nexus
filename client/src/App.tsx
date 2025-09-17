@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+import { Toaster } from 'sonner';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
 import AppLayout from './pages'; // This is the main app layout with sidebar etc.
@@ -21,6 +22,7 @@ const isAuthenticated = false; // Set to `true` to simulate a logged-in user
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-center" theme="dark" />
       <Routes>
         {/* Public Facing Routes */}
         <Route path="/" element={!isAuthenticated ? <LandingPage /> : <Navigate to="/app" />} />

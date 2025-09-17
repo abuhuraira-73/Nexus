@@ -48,20 +48,23 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
     *   **Dedicated Landing Page:** A modern, content-rich marketing page.
     *   **Dedicated Features Page:** Detailed showcase of Nexus capabilities.
     *   **Dedicated Pricing Page:** Comprehensive comparison of Free, Premium, and Enterprise plans.
+    *   **Legal Pages:** Terms of Service & Privacy Policy pages.
 *   **🔄 Reusable Public Header:** Centralized navigation component for public pages.
+*   **🔔 Notification System:** Dark-themed toast notifications for user feedback.
 
 ### 🚀 Upcoming Features & Pages
 
-The next phase of development focuses on building out the public-facing SaaS website and adding premium features.
+The next phase of development focuses on building the backend and user account management.
 
-*   **🌐 Public Website:**
-    *   **Legal Pages:** Placeholder pages for Terms of Service and Privacy Policy.
+*   **☁️ Backend & Authentication:**
+    *   **Initial Backend Setup:** Create the Node.js/Express server foundation.
+    *   **User Authentication:** Implement secure login and registration endpoints.
+    *   **User Account Management:** Build pages for users to manage their profile and log out.
 *   **⚙️ App Functionality:**
     *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
 *   **☁️ Premium Backend Features:**
     *   **Cloud Persistence:** Saving boards to a central database.
     *   **Real-time Collaboration:** Multi-user editing, cursors, and presence.
-    *   **High-Quality Exports:** Exporting boards to PNG/JPG without watermarks.
 
 ## 🛠️ Technology Stack
 
