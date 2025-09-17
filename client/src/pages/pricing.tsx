@@ -76,7 +76,7 @@ export default function PricingPage() {
       <main className="flex-1">
         {/* Hero Section */}
         <section className="text-center py-20 lg:py-28">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter">
+            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter font-heading">
               Find the Plan That's Right for You
             </h1>
             <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
@@ -129,7 +129,7 @@ export default function PricingPage() {
                 {/* Comparison Table Section */}
                 <section className="py-20 lg:py-28">
                     <div className="container mx-auto px-4">
-                        <h2 className="text-4xl font-bold text-center mb-12">Compare All Features</h2>
+                        <h2 className="text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Compare All Features</h2>
                         <div className="bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 overflow-hidden">
                             {/* Table Header */}
                             <div className="grid grid-cols-4 p-4 border-b border-gray-700 font-bold">

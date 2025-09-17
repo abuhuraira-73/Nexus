@@ -26,7 +26,7 @@ export default function FeaturesPage() {
       <main className="flex-1">
         {/* Hero Section - Headline */}
         <section className="text-center py-20 lg:py-28 bg-black">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter">
+            <h1 className="text-6xl lg:text-7xl font-bold tracking-tighter font-heading">
               All The Tools You Need To Think Visually.
             </h1>
         </section>
@@ -77,7 +77,8 @@ export default function FeaturesPage() {
         <div className="px-8 sm:px-12 lg:px-16">
             <section className="py-20 lg:py-32 bg-gradient-custom bg-cover bg-center rounded-2xl">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-4xl font-bold mb-6">Ready to build your next big idea?</h2>
+                    <h2 className="text-6xl lg:text-7xl font-bold tracking-tighter font-heading">Ready to build your next big idea?</h2>
+                    <br/>
                     <p className="text-gray-300 text-lg mb-8">Get started with Nexus for free. No credit card required.</p>
                     <a href="/register">
                         <Button size="lg" className="transition-transform duration-300 hover:scale-105">

@@ -31,14 +31,16 @@ const faqs = [
 export default function ContactPage() {
   return (
     <div className="flex flex-col min-h-screen text-white bg-black">
+      {/* Header */}
       <PublicHeader />
+
       <main className="flex-1">
         {/* Black Hero Section */}
         <section className="text-center py-20 lg:py-28 bg-black">
-          <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter">Get in Touch</h1>
-          <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
-            Have a question, a sales inquiry, or some feedback? We'd love to hear from you.
-          </p>
+            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter font-heading">Get in Touch</h1>
+            <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
+              Have a question, a sales inquiry, or some feedback? We'd love to hear from you.
+            </p>
         </section>
 
         {/* Main Content Section: Form & Info (Gradient BG, Full Width) */}
@@ -75,7 +77,7 @@ export default function ContactPage() {
 
         {/* FAQ Section (Below, Full Width) */}
         <div className="mt-16">
-          <h2 className="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+          <h2 className="text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="w-full container mx-auto px-4">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`}>
