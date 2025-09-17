@@ -128,6 +128,22 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 17, 2025
+*   **Back to Top Button:** Added a "Back to Top" button for improved navigation on long pages.
+*   **Proposal Tab Logo:** Added a logo to the proposal tab.
+*   **Logo and Header Updates:**
+    *   Updated favicon in `index.html` to `Nexus-Logo.png`.
+    *   Replaced `Zap` icon with `Nexus-Logo.png` in `public-header.tsx`.
+    *   Applied `drop-shadow` to the logo in `public-header.tsx` with various color and intensity adjustments.
+    *   Increased logo size and adjusted shadow in `public-header.tsx`.
+*   **Font Implementation (Landing Page):**
+    *   Implemented `JUST Sans Outline ExBold` for headings and `Metropolis Thin` for body text.
+    *   Resolved font loading issues by correcting file paths and using robust CSS rules (`!important`).
+    *   Adjusted font sizes of main section headings (`h2`) to `text-7xl` for visual consistency.
+    *   Changed Feature Card Titles and "Get Started" sub-headings to `Metropolis Bold`.
+    *   Changed Pricing Card Titles ("Free", "Premium") to `Metropolis Bold`.
+    *   *(User-made change: Metropolis Thin was changed to Metropolis Light by the user.)*
+
 ### September 16, 2025
 *   **Landing Page Enhancements:**
     *   Applied thicker bezels to gradient sections.

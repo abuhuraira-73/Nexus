@@ -2,6 +2,31 @@
 
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'JustSans';
+  src: url('/fonts/JUST-Sans-Outline-ExBold.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Metropolis';
+  src: url('/fonts/Metropolis-Light.otf') format('opentype');
+}
+@font-face {
+  font-family: 'Metropolis-Bold';
+  src: url('/fonts/Metropolis-Bold.otf') format('opentype');
+}
+
+.font-heading {
+  font-family: 'JustSans', sans-serif !important;
+}
+
+.font-body {
+  font-family: 'Metropolis', sans-serif !important;
+}
+
+.font-metropolis-bold {
+  font-family: 'Metropolis-Bold', sans-serif !important;
+}
+
 
 @custom-variant dark (&:is(.dark *));
 
