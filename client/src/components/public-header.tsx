@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Zap } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 export default function PublicHeader() {
   return (
@@ -9,21 +11,61 @@ export default function PublicHeader() {
         <span className="ml-2 font-semibold text-lg">Nexus</span>
       </a>
       <nav className="ml-auto flex items-center gap-4 sm:gap-6">
-        <a className="text-sm font-medium hover:underline underline-offset-4" href="/">
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            cn(
+              "text-sm font-medium hover:underline underline-offset-4",
+              isActive && "underline"
+            )
+          }
+        >
           Home
-        </a>
-        <a className="text-sm font-medium hover:underline underline-offset-4" href="/features">
+        </NavLink>
+        <NavLink
+          to="/features"
+          className={({ isActive }) =>
+            cn(
+              "text-sm font-medium hover:underline underline-offset-4",
+              isActive && "underline"
+            )
+          }
+        >
           Features
-        </a>
-        <a className="text-sm font-medium hover:underline underline-offset-4" href="/pricing">
+        </NavLink>
+        <NavLink
+          to="/pricing"
+          className={({ isActive }) =>
+            cn(
+              "text-sm font-medium hover:underline underline-offset-4",
+              isActive && "underline"
+            )
+          }
+        >
           Pricing
-        </a>
-        <a className="text-sm font-medium hover:underline underline-offset-4" href="/contact">
+        </NavLink>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            cn(
+              "text-sm font-medium hover:underline underline-offset-4",
+              isActive && "underline"
+            )
+          }
+        >
           Contact
-        </a>
-        <a className="text-sm font-medium hover:underline underline-offset-4" href="/login">
+        </NavLink>
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            cn(
+              "text-sm font-medium hover:underline underline-offset-4",
+              isActive && "underline"
+            )
+          }
+        >
           Login
-        </a>
+        </NavLink>
         <a href="/register">
           <Button variant="secondary" size="sm" className="transition-transform duration-300 hover:scale-105">
             Sign Up

@@ -11,6 +11,8 @@ import PricingPage from './pages/pricing'; // Import the new pricing page
 import ForgotPasswordPage from './pages/forgot-password';
 import ContactPage from './pages/contact';
 
+import { BackToTopButton } from './components/back-to-top-button';
+
 // Mock authentication state
 const isAuthenticated = false; // Set to `true` to simulate a logged-in user
 
@@ -37,6 +39,7 @@ function App() {
         {/* Catch-all route to redirect */}
         <Route path="*" element={<Navigate to={isAuthenticated ? "/app" : "/"} />} />
       </Routes>
+      <BackToTopButton />
     </BrowserRouter>
   );
 }
