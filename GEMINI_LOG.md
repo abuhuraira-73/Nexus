@@ -153,14 +153,26 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ### September 18, 2025
 *   **Backend Authentication API - Complete:** Successfully built and tested the entire backend for user registration and login.
-    *   **Database Setup:** Created and configured a new MongoDB Atlas cluster, including database users and network access rules.
-    *   **Server Foundation:** Established the initial Express server in `index.js`, configured middleware (`cors`, `express.json`), and connected to the MongoDB database.
-    *   **Project Structure:** Created the standard backend folder structure (`controllers`, `models`, `routes`, `middleware`).
-    *   **User Model:** Defined the `User` schema in `models/User.js` with fields for `name`, `email`, and `password`. Implemented a pre-save hook to automatically hash passwords using `bcryptjs`.
-    *   **Authentication Controller:** Implemented the core logic for `registerUser` and `loginUser` in `controllers/authController.js`, including JWT generation for session management.
-    *   **API Routes:** Defined the `POST /api/auth/register` and `POST /api/auth/login` endpoints in `routes/authRoutes.js`.
-    *   **Integration & Debugging:** Integrated the routes into the main Express app. Performed extensive debugging of environment variables (`.env`) and code, resolving multiple issues to achieve a working API. Added fail-safe environment variable checks to the server startup.
-    *   **Testing:** Verified the entire registration flow by successfully creating a new user via a `curl` command and receiving a valid JWT token.
+    *   **Database Setup:** Created and configured a new MongoDB Atlas cluster.
+    *   **Server Foundation:** Established the initial Express server and connected to the database.
+    *   **Project Structure:** Created `controllers`, `models`, `routes`, `middleware` directories.
+    *   **User Model:** Defined the `User` schema with a pre-save hook for password hashing.
+    *   **Authentication Controller & Routes:** Implemented logic and routes for `registerUser` and `loginUser`.
+    *   **Integration & Debugging:** Debugged environment variables and code to create a fully functional API, verified with `curl`.
+*   **Frontend Registration Form - Complete:**
+    *   **State Management:** Added `useState` to the `register-form.tsx` component to manage inputs, errors, and loading states.
+    *   **API Integration:** Implemented a `handleSubmit` function to send user data to the backend `/api/auth/register` endpoint using `fetch`.
+    *   **UI Feedback:** The form now provides feedback for loading states, password mismatches, and errors returned from the backend.
+    *   **Environment Variables:** Created a `.env` file in the `client` directory for the `VITE_API_URL`.
+    *   **Testing:** Successfully tested the end-to-end flow by creating a user from the browser UI.
 *   **Logo Updates:**
     *   Replaced icon with Nexus logo (no shadow) on the Register page.
     *   Replaced icon with Nexus logo (with shadow) on the Forgot Password page.
+
+### Next Steps (as of end of day, September 18)
+1.  **Implement Frontend Login Form:**
+    *   Read the `login-form.tsx` file.
+    *   Add state management for `email`, `password`, `error`, and `isLoading`.
+    *   Create a `handleSubmit` function to call the `POST /api/auth/login` endpoint.
+    *   Handle the response, logging the received token and user data to the console on success.
+    *   Display any errors received from the backend.
