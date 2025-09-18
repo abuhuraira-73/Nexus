@@ -5,6 +5,15 @@ const mongoose = require('mongoose');
 
 dotenv.config();
 
+// Validate Environment Variables
+if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
+  console.error('FATAL ERROR: MONGO_URI and JWT_SECRET must be defined in .env file');
+  process.exit(1);
+}
+
+const authRoutes = require('./routes/authRoutes');
+
+
 const app = express();
 
 app.use(cors());
@@ -21,6 +30,8 @@ const connectDB = async () => {
 };
 
 connectDB();
+
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');
