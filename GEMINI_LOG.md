@@ -175,12 +175,24 @@ To build a highly flexible, collaborative digital whiteboard application similar
     *   **State & Actions:** Defined `token`, `user`, `isAuthenticated` state, and `login`, `logout` actions.
     *   **Persistence:** Implemented `localStorage` integration to persist user sessions across browser refreshes.
     *   **Form Integration:** Integrated the `useAuthStore` into both `RegisterForm` and `LoginForm` to update global state and redirect users upon successful authentication.
+*   **Protected Routes - Complete:**
+    *   **Component Creation:** Created `client/src/components/protected-route.tsx` to guard routes.
+    *   **Integration:** Integrated `ProtectedRoute` into `client/src/App.tsx` to protect application routes, redirecting unauthenticated users to the login page.
+*   **Logout Functionality - Complete:**
+    *   **Implementation:** Added `handleLogout` function to `client/src/components/nav-user.tsx` to clear authentication state and redirect to the landing page (`/`).
+    *   **UI:** Styled the logout button red.
+    *   **Testing:** Verified successful logout and redirection.
+*   **UI/Error Handling Improvements - Complete:**
+    *   **Sonner Notifications:** Replaced all native `alert()` calls with `sonner.toast()` for consistent and styled notifications across `login-form.tsx`, `register-form.tsx`, and `nav-projects.tsx`.
+    *   **TypeScript Type Safety:** Fixed `any` to `unknown` and added type guards for error handling in forms.
+    *   **Linting/Syntax Fixes:** Resolved various ESLint and TypeScript errors, including unused imports and JSX syntax issues in `landing.tsx` and `nav-projects.tsx`.
 *   **Logo Updates:**
     *   Replaced icon with Nexus logo (no shadow) on the Register page.
     *   Replaced icon with Nexus logo (with shadow) on the Forgot Password page.
 
 ### Next Steps (as of end of day, September 18)
-1.  **Implement Protected Routes:**
-    *   Create a `ProtectedRoute` component that checks the `isAuthenticated` status from `useAuthStore`.
-    *   Redirect unauthenticated users to the login page.
-    *   Integrate this component into `client/src/App.tsx` to wrap routes that require authentication.
+1.  **Display User Information:** Show the logged-in user's name/email in the UI (e.g., in the `NavUser` component).
+2.  **Authenticated API Calls:** Implement a pattern for making API calls that require authentication (e.g., fetching user-specific data, creating a new canvas).
+3.  **User Profile Management:** Allow users to view/edit their profile information.
+4.  **Canvas Persistence (Cloud):** Implement saving and loading board state to/from the database for authenticated users.
+5.  **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.

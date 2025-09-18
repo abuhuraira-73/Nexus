@@ -37,7 +37,11 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### ✅ Core Features (Implemented)
 
-*   **🔐 User Authentication:** Secure login and registration pages.
+*   **🔐 User Authentication:** Secure login and registration pages, including backend API, frontend forms, and global state management.
+*   **🔒 Protected Routes:** Restrict access to authenticated users for specific application sections.
+*   **🚪 Logout Functionality:** Clear user sessions and redirect to public pages.
+*   **🔔 Enhanced Notifications:** Replaced native alerts with consistent, styled toast notifications.
+*   **✨ UI/Codebase Refinements:** Various bug fixes, linting corrections, and type safety improvements.
 *   **無限 Infinite Canvas:** A pannable, zoomable, and interactive canvas.
 *   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
 *   **✏️ Rich Content & Drawing Tools:** Includes Text Cards, Image Cards, freehand drawing, and an eraser.
@@ -50,21 +54,15 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
     *   **Dedicated Pricing Page:** Comprehensive comparison of Free, Premium, and Enterprise plans.
     *   **Legal Pages:** Terms of Service & Privacy Policy pages.
 *   **🔄 Reusable Public Header:** Centralized navigation component for public pages.
-*   **🔔 Notification System:** Dark-themed toast notifications for user feedback.
 
 ### 🚀 Upcoming Features & Pages
 
-The next phase of development focuses on building the backend and user account management.
-
-*   **☁️ Backend & Authentication:**
-    *   **Initial Backend Setup:** Create the Node.js/Express server foundation.
-    *   **User Authentication:** Implement secure login and registration endpoints.
-    *   **User Account Management:** Build pages for users to manage their profile and log out.
-*   **⚙️ App Functionality:**
-    *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
-*   **☁️ Premium Backend Features:**
-    *   **Cloud Persistence:** Saving boards to a central database.
-    *   **Real-time Collaboration:** Multi-user editing, cursors, and presence.
+*   **Display User Information:** Show the logged-in user's name/email in the UI.
+*   **Authenticated API Calls:** Implement a pattern for making API calls that require authentication.
+*   **User Profile Management:** Allow users to view/edit their profile information.
+*   **Canvas Persistence (Cloud):** Implement saving and loading board state to/from the database for authenticated users.
+*   **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
+*   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
 
 ## 🛠️ Technology Stack
 
@@ -82,12 +80,17 @@ Nexus leverages a powerful and modern technology stack:
 *   **Konva.js** (via React Konva) - <img src="https://konvajs.org/assets/konva-logo.png" alt="Konva.js" width="20" height="20"/>
 *   **@tanstack/react-query** - <img src="https://raw.githubusercontent.com/TanStack/query/main/media/repo-icon.svg" alt="React Query" width="20" height="20"/>
 *   **Lucide React** - <img src="https://lucide.dev/logo.svg" alt="Lucide React" width="20" height="20"/>
+*   **sonner** - <img src="https://sonner.emilkowalski.studio/logo.svg" alt="sonner" width="20" height="20"/>
 *   **next-themes** - <img src="https://assets.vercel.com/image/upload/v1670824459/nextjs/Icon_light_background.png" alt="Next.js" width="20" height="20"/>
 
 ### Backend (Planned)
 
 *   **Node.js** (with Express.js) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="20" height="20"/>
 *   **MongoDB** (Mongoose) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="20" height="20"/>
+*   **bcryptjs**
+*   **jsonwebtoken**
+*   **dotenv**
+*   **cors**
 *   **Socket.IO** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg" alt="Socket.IO" width="20" height="20"/>
 
 ## 🚀 Installation & Setup
