@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import gradientImage1 from '@/assets/images/gradient/gradient-1.jpg';
+import gradientImage1 from '@/assets/images/gradient/gradient-1.jpg'
+import React, { useState } from "react"; 
+import { Link } from React-router-dom;
 // import gradientImage2 from '@/assets/images/gradient/gradient-2.jpg';
 // import gradientImage3 from '@/assets/images/gradient/gradient-3.jpg';
 
@@ -13,11 +15,43 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.msg || "Failed to login");
+      }
+      console.log("Login successful:", data);
+      alert("Login successful!");
+
+    } catch (error: any) {
+      setError(error.message);
+      console.error("Error during login:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -32,6 +66,8 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                 />
               </div>
               <div className="grid gap-3">
@@ -44,10 +80,18 @@ export function LoginForm({
                     Forgot your password?
                   </Link>
                 </div>
-                <Input id="password" type="password" required />
+                <Input 
+                id="password" 
+                type="password" 
+                required
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
+                />
               </div>
-              <Button type="submit" className="w-full">
-                Login
+              {error && <p className="text-sm text-red-500">{error}</p>}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Logging in..." : "Login"}
+                Loginhey
               </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
