@@ -38,7 +38,7 @@
 
 ## 🚀 Project Overview
 
-Nexus is a highly flexible, collaborative digital whiteboard application designed for visual organization, brainstorming, and real-time collaboration. Inspired by tools like Milanote, Nexus aims to provide an intuitive and powerful platform for unleashing creativity. This project follows a frontend-first iterative development approach, focusing on a robust MVP before scaling.
+Nexus is a highly flexible, collaborative digital whiteboard application designed for visual organization, brainstorming, and real-time collaboration. **Built from the ground up by a solo founder, this project showcases an original vision and dedicated effort.** Inspired by tools like Milanote, Nexus aims to provide an intuitive and powerful platform for unleashing creativity. This project follows a frontend-first iterative development approach, focusing on a robust MVP before scaling.
 
 <!-- Add a compelling screenshot or GIF here -->
 <!-- ![Nexus Demo](link-to-your-demo-gif.gif) -->
@@ -158,7 +158,9 @@ To get Nexus up and running on your local machine, follow these steps:
 
 ## 🤝 Contributing
 
-We welcome contributions to Nexus! Please read our guidelines:
+**Note from the Founder:** While Nexus is currently a solo endeavor, I warmly welcome and appreciate contributions from the community. Your help can make a significant impact!
+
+Please read our guidelines:
 
 *   [Contributing Guidelines](CONTRIBUTING.md)
 *   [Code of Conduct](CODE_OF_CONDUCT.md)
@@ -175,4 +177,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## 📧 Contact
 
-For questions, feedback, or collaboration inquiries, please reach out in Linkedin.
+For questions, feedback, or collaboration inquiries, please reach out to the solo founder, Abuhuraira Jamal:
+
+*   **LinkedIn:** [https://www.linkedin.com/in/abuhurairajamal/](https://www.linkedin.com/in/abuhurairajamal/)
+*   **For Issues/Support:** abuhuraira1514@gmail.com

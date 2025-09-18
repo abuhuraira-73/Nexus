@@ -7,6 +7,8 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## How Can I Contribute?
 
+**Note from the Founder:** As the solo developer of Nexus, I deeply appreciate any contributions. Your help is invaluable!
+
 ### Reporting Bugs
 - Ensure the bug hasn't already been reported.
 - Open a new issue on GitHub, providing a clear and concise description of the problem.
