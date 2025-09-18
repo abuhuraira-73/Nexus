@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import gradientImage1 from '@/assets/images/gradient/gradient-1.jpg';
 import { useAuthStore } from "@/store/authStore";
+import { toast } from "sonner";
 
 export function LoginForm({
   className,
@@ -41,7 +42,7 @@ export function LoginForm({
       }
 
       console.log('Login successful:', data);
-      alert('Login successful!');
+      toast.success('Login successful!');
       
       login(data.token, data.user); // Update global state with user's token and data
       navigate('/'); // Redirect to the main application page (e.g., dashboard)

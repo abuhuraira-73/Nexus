@@ -6,6 +6,9 @@ import {
   LogOut,
   Sparkles,
 } from "lucide-react"
+import { useNavigate } from "react-router-dom"; // New import
+import { useAuthStore } from "@/store/authStore"; // New import
+import { toast } from "sonner";
 
 import {
   Avatar,
@@ -38,6 +41,14 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const navigate = useNavigate(); // Initialize hook
+  const logout = useAuthStore((state) => state.logout); // Get logout action
+
+  const handleLogout = () => {
+    logout(); // Clear auth state
+    toast.success('Logout successful!'); // Show success notification
+    navigate('/'); // Redirect to landing page
+  };
 
   return (
     <SidebarMenu>
@@ -100,7 +111,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout} className="text-red-500 focus:text-red-500">
               <LogOut />
               Log out
             </DropdownMenuItem>

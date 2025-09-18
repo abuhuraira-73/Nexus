@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/authStore";
+import { toast } from "sonner";
 import {
   Card,
   CardContent,
@@ -56,9 +57,8 @@ export function RegisterForm({
 
       // --- Handle Success ---
       console.log("Registration successful:", data);
-      alert("Registration successful! Please log in.");
+      toast.success("Registration successful! Please log in.");
       
-      login(data.token, data.user); // Update global state with new user's token and data
       navigate("/login"); // Redirect to the login page
 
     } catch (error: unknown) {
