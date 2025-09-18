@@ -1,4 +1,3 @@
-import { Blocks } from "lucide-react";
 import { ForgotPasswordForm } from "../components/forgot-password-form";
 import gradientImage from "@/assets/images/gradient/abstract-gradient-background-with-grain-texture-captivating-noise-airbrush-minimalist-wallpaper.jpg";
 
@@ -8,9 +7,7 @@ export default function ForgotPasswordPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <a href="/" className="flex items-center gap-2 font-medium">
-            <div className="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md">
-              <Blocks className="size-4" />
-            </div>
+            <img src="/Nexus-Logo.png" alt="Nexus Logo" className="h-8 w-8" style={{ filter: 'drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 20px #8A2BE2)' }} />
             Nexus
           </a>
         </div>
