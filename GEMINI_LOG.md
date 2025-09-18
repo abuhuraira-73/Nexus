@@ -165,14 +165,22 @@ To build a highly flexible, collaborative digital whiteboard application similar
     *   **UI Feedback:** The form now provides feedback for loading states, password mismatches, and errors returned from the backend.
     *   **Environment Variables:** Created a `.env` file in the `client` directory for the `VITE_API_URL`.
     *   **Testing:** Successfully tested the end-to-end flow by creating a user from the browser UI.
+*   **Frontend Login Form - Complete:**
+    *   **State Management:** Added `useState` to the `login-form.tsx` component to manage inputs, errors, and loading states.
+    *   **API Integration:** Implemented a `handleSubmit` function to send user credentials to the backend `/api/auth/login` endpoint using `fetch`.
+    *   **UI Feedback:** The form now provides feedback for loading states and errors returned from the backend.
+    *   **Testing:** Successfully tested the end-to-end flow by logging in a user from the browser UI.
+*   **Zustand Auth Store - Complete:**
+    *   **Store Creation:** Created `client/src/store/authStore.ts` to manage global authentication state.
+    *   **State & Actions:** Defined `token`, `user`, `isAuthenticated` state, and `login`, `logout` actions.
+    *   **Persistence:** Implemented `localStorage` integration to persist user sessions across browser refreshes.
+    *   **Form Integration:** Integrated the `useAuthStore` into both `RegisterForm` and `LoginForm` to update global state and redirect users upon successful authentication.
 *   **Logo Updates:**
     *   Replaced icon with Nexus logo (no shadow) on the Register page.
     *   Replaced icon with Nexus logo (with shadow) on the Forgot Password page.
 
 ### Next Steps (as of end of day, September 18)
-1.  **Implement Frontend Login Form:**
-    *   Read the `login-form.tsx` file.
-    *   Add state management for `email`, `password`, `error`, and `isLoading`.
-    *   Create a `handleSubmit` function to call the `POST /api/auth/login` endpoint.
-    *   Handle the response, logging the received token and user data to the console on success.
-    *   Display any errors received from the backend.
+1.  **Implement Protected Routes:**
+    *   Create a `ProtectedRoute` component that checks the `isAuthenticated` status from `useAuthStore`.
+    *   Redirect unauthenticated users to the login page.
+    *   Integrate this component into `client/src/App.tsx` to wrap routes that require authentication.

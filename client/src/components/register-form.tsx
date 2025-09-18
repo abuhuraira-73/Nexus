@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/authStore";
 import {
   Card,
   CardContent,
@@ -22,6 +23,9 @@ export function RegisterForm({
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,15 +50,20 @@ export function RegisterForm({
       const data = await response.json();
 
       if (!response.ok) {
+        // If response is not 2xx, throw an error with the message from the backend
         throw new Error(data.msg || "Failed to register");
       }
 
+      // --- Handle Success ---
       console.log("Registration successful:", data);
       alert("Registration successful! Please log in.");
-      // In a real app, you would likely redirect to the login page
-      // or automatically log the user in.
-    } catch (error: any) {
-      setError(error.message);
+      
+      login(data.token, data.user); // Update global state with new user's token and data
+      navigate("/login"); // Redirect to the login page
+
+    } catch (error: unknown) {
+      // --- Handle Errors ---
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
       console.error("Error during registration:", error);
     } finally {
       setIsLoading(false);

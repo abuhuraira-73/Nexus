@@ -1,31 +1,35 @@
-import { Link } from "react-router-dom";
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import gradientImage1 from '@/assets/images/gradient/gradient-1.jpg'
-import React, { useState } from "react"; 
-import { Link } from React-router-dom;
-// import gradientImage2 from '@/assets/images/gradient/gradient-2.jpg';
-// import gradientImage3 from '@/assets/images/gradient/gradient-3.jpg';
-
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import gradientImage1 from '@/assets/images/gradient/gradient-1.jpg';
+import { useAuthStore } from "@/store/authStore";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const login = useAuthStore((state) => state.login);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError("");
+    setError('');
     setIsLoading(true);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
@@ -33,20 +37,23 @@ export function LoginForm({
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.msg || "Failed to login");
+        throw new Error(data.msg || 'Failed to login');
       }
-      console.log("Login successful:", data);
-      alert("Login successful!");
 
-    } catch (error: any) {
-      setError(error.message);
-      console.error("Error during login:", error);
+      console.log('Login successful:', data);
+      alert('Login successful!');
+      
+      login(data.token, data.user); // Update global state with user's token and data
+      navigate('/'); // Redirect to the main application page (e.g., dashboard)
+
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
+      console.error('Login error:', error);
     } finally {
       setIsLoading(false);
     }
   };
 
-  
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
@@ -66,8 +73,8 @@ export function LoginForm({
                   type="email"
                   placeholder="m@example.com"
                   required
-                  onChange={(e) => setEmail(e.target.value)}
                   value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div className="grid gap-3">
@@ -81,17 +88,16 @@ export function LoginForm({
                   </Link>
                 </div>
                 <Input 
-                id="password" 
-                type="password" 
-                required
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
+                  id="password" 
+                  type="password" 
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm font-medium text-red-500">{error}</p>}
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
-                Loginhey
+                {isLoading ? 'Logging in...' : 'Login'}
               </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -129,9 +135,9 @@ export function LoginForm({
               </div>
               <div className="text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <a href="/register" className="underline underline-offset-4">
+                <Link to="/register" className="underline underline-offset-4">
                   Sign up
-                </a>
+                </Link>
               </div>
             </div>
           </form>
@@ -149,5 +155,5 @@ export function LoginForm({
         and <a href="#">Privacy Policy</a>.
       </div>
     </div>
-  )
+  );
 }

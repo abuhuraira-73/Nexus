@@ -3,47 +3,54 @@ import './App.css';
 import { Toaster } from 'sonner';
 import LoginPage from './pages/login';
 import RegisterPage from './pages/register';
-import AppLayout from './pages'; // This is the main app layout with sidebar etc.
-import HeroSection from './pages/home'; // This is the logged-in homepage
+import AppLayout from './pages';
+import HeroSection from './pages/home';
 import InfiniteCanvasPage from './pages/infinite-canvas';
-import LandingPage from './pages/landing'; // This is the public landing page
+import LandingPage from './pages/landing';
 import FeaturesPage from './pages/features';
-import PricingPage from './pages/pricing'; // Import the new pricing page
+import PricingPage from './pages/pricing';
 import ForgotPasswordPage from './pages/forgot-password';
 import ContactPage from './pages/contact';
 import TermsOfServicePage from './pages/terms-of-service';
 import PrivacyPolicyPage from './pages/privacy-policy';
 
 import { BackToTopButton } from './components/back-to-top-button';
-
-// Mock authentication state
-const isAuthenticated = false; // Set to `true` to simulate a logged-in user
+import ProtectedRoute from './components/protected-route'; // New import
+import { useAuthStore } from './store/authStore'; // New import
 
 function App() {
+  const { isAuthenticated, isLoading } = useAuthStore(); // Get real auth state
+
+  // Show a loading indicator while the auth state is being initialized
+  if (isLoading) {
+    return <div>Loading application...</div>; // Or a proper loading spinner
+  }
+
   return (
     <BrowserRouter>
       <Toaster position="top-center" theme="dark" />
       <Routes>
         {/* Public Facing Routes */}
-        <Route path="/" element={!isAuthenticated ? <LandingPage /> : <Navigate to="/app" />} />
+        {/* If authenticated, redirect away from login/register/landing */}
+        <Route path="/" element={isAuthenticated ? <Navigate to="/app" /> : <LandingPage />} />
         <Route path="/features" element={<FeaturesPage />} />
         <Route path="/pricing" element={<PricingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/terms" element={<TermsOfServicePage />} />
         <Route path="/privacy" element={<PrivacyPolicyPage />} />
-        <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to="/app" />} />
-        <Route path="/register" element={!isAuthenticated ? <RegisterPage /> : <Navigate to="/app" />} />
+        <Route path="/login" element={isAuthenticated ? <Navigate to="/app" /> : <LoginPage />} />
+        <Route path="/register" element={isAuthenticated ? <Navigate to="/app" /> : <RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         {/* Protected Application Routes */}
-        {/* All routes here are wrapped by AppLayout */}
-        <Route path="/app" element={isAuthenticated ? <AppLayout /> : <Navigate to="/login" />} >
+        {/* All routes here are wrapped by ProtectedRoute */}
+        <Route path="/app" element={<ProtectedRoute><AppLayout /></ProtectedRoute>} >
           <Route index element={<HeroSection />} />
           <Route path="canvas" element={<InfiniteCanvasPage />} />
         </Route>
 
         {/* Catch-all route to redirect */}
-        <Route path="*" element={<Navigate to={isAuthenticated ? "/app" : "/"} />} />
+        <Route path="*" element={<Navigate to={isAuthenticated ? "/app" : "/"} replace />} />
       </Routes>
       <BackToTopButton />
     </BrowserRouter>

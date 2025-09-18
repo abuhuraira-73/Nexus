@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckCircle, Zap, Shield, Heart, Star, Users, BrainCircuit, Twitter, Github, Linkedin } from "lucide-react";
+import { CheckCircle, Zap, Shield, Heart, Star, Users, BrainCircuit } from "lucide-react";
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
 import PublicFooter from "@/components/public-footer";
 
