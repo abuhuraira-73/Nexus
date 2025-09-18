@@ -152,22 +152,15 @@ To build a highly flexible, collaborative digital whiteboard application similar
     *   *(User-made change: Metropolis Thin was changed to Metropolis Light by the user.)*
 
 ### September 18, 2025
+*   **Backend Authentication API - Complete:** Successfully built and tested the entire backend for user registration and login.
+    *   **Database Setup:** Created and configured a new MongoDB Atlas cluster, including database users and network access rules.
+    *   **Server Foundation:** Established the initial Express server in `index.js`, configured middleware (`cors`, `express.json`), and connected to the MongoDB database.
+    *   **Project Structure:** Created the standard backend folder structure (`controllers`, `models`, `routes`, `middleware`).
+    *   **User Model:** Defined the `User` schema in `models/User.js` with fields for `name`, `email`, and `password`. Implemented a pre-save hook to automatically hash passwords using `bcryptjs`.
+    *   **Authentication Controller:** Implemented the core logic for `registerUser` and `loginUser` in `controllers/authController.js`, including JWT generation for session management.
+    *   **API Routes:** Defined the `POST /api/auth/register` and `POST /api/auth/login` endpoints in `routes/authRoutes.js`.
+    *   **Integration & Debugging:** Integrated the routes into the main Express app. Performed extensive debugging of environment variables (`.env`) and code, resolving multiple issues to achieve a working API. Added fail-safe environment variable checks to the server startup.
+    *   **Testing:** Verified the entire registration flow by successfully creating a new user via a `curl` command and receiving a valid JWT token.
 *   **Logo Updates:**
     *   Replaced icon with Nexus logo (no shadow) on the Register page.
     *   Replaced icon with Nexus logo (with shadow) on the Forgot Password page.
-*   **Backend Authentication Implementation Plan:**
-    *   The detailed plan for implementing backend authentication (login, register, logout) is now being implemented. This plan includes:
-        1.  **Create Backend Project Directory:** Create a new `server` folder, navigate into it.
-        2.  **Initialize Node.js Project:** Run `npm init -y` to create `package.json`.
-        3.  **Install Core Dependencies:** Install `express`, `mongoose`, `bcryptjs`, `jsonwebtoken`, `dotenv`, `cors`.
-        4.  **Create Main Server File:** Create `index.js` (or `app.js`).
-        5.  **Create Environment Variables File:** Create `.env`.
-        6.  **Establish Basic Server Structure and MongoDB Connection:** Set up Express, middleware, MongoDB connection, and a test route in `index.js`.
-        7.  **Define Backend Folder Structure:** Create `models`, `routes`, `controllers`, `middleware` directories.
-        8.  **Create User Model:** Define Mongoose schema for `User` in `models/User.js`, including pre-save hook for password hashing.
-        9.  **Create Authentication Controller:** Implement `registerUser` and `loginUser` functions in `controllers/authController.js`.
-        10. **Create Authentication Routes:** Define POST routes for `/api/register` and `/api/login` in `routes/authRoutes.js`.
-        11. **Create Authentication Middleware:** Implement a `protect` middleware function in `middleware/authMiddleware.js` to verify JWTs.
-        12. **Integrate Authentication Routes into Main Server File:** Import and use `authRoutes` in `index.js`.
-        13. **Protect Routes (Example):** Apply `authMiddleware` to an example protected route.
-        14. **Frontend Integration (High-Level Overview):** Plan for frontend API service, form updates, JWT management, and logout.
