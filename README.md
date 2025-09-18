@@ -33,11 +33,15 @@
   <a href="https://github.com/your-username/Nexus/issues">
     <img src="https://img.shields.io/github/issues-pr/your-username/Nexus" alt="Pull Requests">
   </a>
+  <!-- Add more badges here, e.g., build status, code coverage -->
 </p>
 
 ## 🚀 Project Overview
 
 Nexus is a highly flexible, collaborative digital whiteboard application designed for visual organization, brainstorming, and real-time collaboration. Inspired by tools like Milanote, Nexus aims to provide an intuitive and powerful platform for unleashing creativity. This project follows a frontend-first iterative development approach, focusing on a robust MVP before scaling.
+
+<!-- Add a compelling screenshot or GIF here -->
+<!-- ![Nexus Demo](link-to-your-demo-gif.gif) -->
 
 ## ✨ Freemium Model
 
@@ -96,7 +100,7 @@ Nexus leverages a powerful and modern technology stack:
 *   **sonner** - <img src="https://sonner.emilkowalski.studio/logo.svg" alt="sonner" width="20" height="20"/>
 *   **next-themes** - <img src="https://assets.vercel.com/image/upload/v1670824459/nextjs/Icon_light_background.png" alt="Next.js" width="20" height="20"/>
 
-### Backend (Planned)
+### Backend
 
 *   **Node.js** (with Express.js) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="20" height="20"/>
 *   **MongoDB** (Mongoose) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="20" height="20"/>
@@ -105,6 +109,15 @@ Nexus leverages a powerful and modern technology stack:
 *   **dotenv**
 *   **cors**
 *   **Socket.IO** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg" alt="Socket.IO" width="20" height="20"/>
+
+## 📚 Documentation
+
+Explore the detailed documentation for Nexus:
+
+*   [Architecture Overview](docs/architecture.md): Understand the high-level structure and data flow.
+*   [API Documentation](docs/api.md): Reference for all backend API endpoints.
+*   [User Guide](docs/user-guide.md): Learn how to use Nexus features.
+*   [Deployment Guide](docs/deployment.md): Instructions for deploying Nexus to production.
 
 ## 🚀 Installation & Setup
 
@@ -115,29 +128,46 @@ To get Nexus up and running on your local machine, follow these steps:
     git clone https://github.com/your-username/Nexus.git
     cd Nexus
     ```
-2.  **Navigate to the client directory:**
+2.  **Install dependencies:**
     ```bash
-    cd client
+    cd client && npm install
+    cd ../server && npm install
     ```
-3.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
-4.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
+3.  **Configure Environment Variables:**
+    *   Create a `.env` file in the `client/` directory:
+        ```
+        VITE_API_URL=http://localhost:5000
+        ```
+    *   Create a `.env` file in the `server/` directory (replace with your actual MongoDB credentials and a strong secret):
+        ```
+        PORT=5000
+        MONGO_URI="mongodb+srv://your_new_username:your_new_password@nexus.cigvjke.mongodb.net/?retryWrites=true&w=majority&appName=Nexus"
+        JWT_SECRET=your_super_secret_key
+        ```
+4.  **Run the application:**
+    *   Start the backend server:
+        ```bash
+        cd server
+        npm start # or node index.js
+        ```
+    *   Start the frontend development server:
+        ```bash
+        cd client
+        npm run dev
+        ```
 
 ## 🤝 Contributing
 
-We welcome contributions to Nexus! If you're interested in helping out, please follow these steps:
+We welcome contributions to Nexus! Please read our guidelines:
 
-1.  **Fork the repository.**
-2.  **Create a new branch:** `git checkout -b feature/your-feature-name`
-3.  **Make your changes.**
-4.  **Commit your changes:** `git commit -m "Add some feature"`
-5.  **Push your branch:** `git push origin feature/your-feature-name`
-6.  **Open a Pull Request.**
+*   [Contributing Guidelines](CONTRIBUTING.md)
+*   [Code of Conduct](CODE_OF_CONDUCT.md)
+
+## 📜 Changelog
+
+Stay up-to-date with the latest changes and releases:
+
+*   [View Changelog](CHANGELOG.md)
 
 ## 📄 License
 
