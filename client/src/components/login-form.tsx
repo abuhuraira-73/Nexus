@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import gradientImage1 from '@/assets/images/gradient/gradient-1.jpg';
+import { ArrowLeft } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 import { toast } from "sonner";
 
@@ -59,6 +60,14 @@ export function LoginForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="absolute top-4 left-4 w-fit"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
           <form className="p-6 md:p-8" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
@@ -152,8 +161,8 @@ export function LoginForm({
         </CardContent>
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our <a href="/terms">Terms of Service</a>{" "}
+        and <a href="/privacy">Privacy Policy</a>.
       </div>
     </div>
   );

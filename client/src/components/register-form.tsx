@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { ArrowLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
 
 export function RegisterForm({
@@ -80,6 +81,14 @@ export function RegisterForm({
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="absolute top-4 left-4 w-fit"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back
+          </Button>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-6">
               {/* Social Logins (Optional) */}
@@ -156,8 +165,8 @@ export function RegisterForm({
       </Card>
       <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
         By clicking continue, you agree to our{" "}
-        <a href="/terms-of-service">Terms of Service</a> and{" "}
-        <a href="/privacy-policy">Privacy Policy</a>.
+        <a href="/terms">Terms of Service</a> and{" "}
+        <a href="/privacy">Privacy Policy</a>.
       </div>
     </div>
   );
