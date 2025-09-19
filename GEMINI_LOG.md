@@ -132,6 +132,17 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 19, 2025
+*   **UI/UX Consistency Pass:**
+    *   **Objective:** Unify the theme, branding, and design across all public and authentication pages to ensure a consistent user experience.
+    *   **Pages to Update:**
+        *   Landing Page (`landing.tsx`)
+        *   Pricing Page (`pricing.tsx`)
+        *   Features Page (`features.tsx`)
+        *   Login Page (`login.tsx`)
+        *   Register Page (`register.tsx`)
+    *   **Specifics:** Standardize the hero sections, color schemes, typography, and component styles based on a cohesive brand identity.
+
 ### September 17, 2025
 *   **Notification System:** Installed, configured, and integrated the `sonner` library to provide toast notifications. Styled the notifications with a dark theme for consistency with the UI.
 *   **Legal Pages:** Created and integrated the `TermsOfServicePage` and `PrivacyPolicyPage` components into the application routing.
