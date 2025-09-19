@@ -20,7 +20,7 @@ const pricingTiers = [
   },
   {
     name: "Premium",
-    price: "$10",
+    price: "$5",
     description: "For growing teams that need to collaborate and ship faster.",
     features: [
       "Unlimited Items per Board",

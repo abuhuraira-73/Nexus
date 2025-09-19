@@ -203,7 +203,7 @@ export default function LandingPage() {
                 <section id="pricing" className="py-20 lg:py-28">
                   <div className="container mx-auto px-4">
                     <h2 className="text-7xl font-bold text-center mb-12 font-heading">Choose Your Plan</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
                       <Card className="bg-gray-900/50 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
                         <CardHeader>
                           <CardTitle>Free</CardTitle>
@@ -225,7 +225,7 @@ export default function LandingPage() {
                           <p className="text-gray-300">The Collaboration & Pro Suite</p>
                         </CardHeader>
                         <CardContent className="space-y-6">
-                          <p className="text-5xl font-bold">$10<span className="text-xl font-normal text-gray-400">/month</span></p>
+                          <p className="text-5xl font-bold">$5<span className="text-xl font-normal text-gray-400">/month</span></p>
                           <ul className="space-y-3">
                             <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />Unlimited Items per Board</li>
                             <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />Real-time Collaboration</li>
@@ -233,6 +233,22 @@ export default function LandingPage() {
                             <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />Priority Support</li>
                           </ul>
                           <Button className="w-full bg-white text-black transition-colors duration-300 hover:bg-gray-200">Upgrade to Premium</Button>
+                        </CardContent>
+                      </Card>
+                      <Card className="bg-gray-900/50 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
+                        <CardHeader>
+                          <CardTitle>Enterprise</CardTitle>
+                          <p className="text-gray-400">For Large Organizations</p>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                          <p className="text-5xl font-bold">$10<span className="text-xl font-normal text-gray-400">/month</span></p>
+                          <ul className="space-y-3">
+                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Everything in Premium</li>
+                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Single Sign-On (SSO)</li>
+                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Advanced Security</li>
+                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Dedicated Support</li>
+                          </ul>
+                          <Button className="w-full" variant="outline">Contact Sales</Button>
                         </CardContent>
                       </Card>
                     </div>

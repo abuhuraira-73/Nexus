@@ -11,6 +11,7 @@
 3.  **Await Explicit Command for Code Changes:** Do not write, create, or modify any files or code until explicitly instructed to do so.
 4.  **Strict Adherence to Instructions:** All user instructions are to be followed precisely as stated.
 5.  **Backend & Database Implementation:** For all backend and database tasks, the user will perform most of the implementation. The AI will primarily provide guidance, explanations, and instructions, and will only execute code changes or file modifications when explicitly commanded to do so by the user.
+6.  **Code Integrity:** Ensure all code modifications are syntactically correct and free of errors. Double-check work to prevent recurring issues like expression or syntax errors.
 ---
 
 ## Objective
