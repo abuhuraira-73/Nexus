@@ -5,6 +5,8 @@ import {
   Star,
   Trash2,
   Undo2,
+  Edit,
+  Share2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -56,37 +58,46 @@ export function NavProjects({ projects, label, onToggleFavorite }: NavProjectsPr
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuAction showOnHover>
+                {/* Removed showOnHover to make it always visible */}
+                <SidebarMenuAction>
                   <MoreHorizontal />
                   <span className="sr-only">More</span>
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-48 rounded-lg"
+                className="w-48 rounded-lg bg-gray-900/50 backdrop-blur-sm border-none"
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
               >
                 {label === "Trash" ? (
                   <>
                     <DropdownMenuItem onSelect={() => alert("Restoring... (not implemented)")}>
-                      <Undo2 className="text-muted-foreground" />
+                      <Undo2 className="mr-2 h-4 w-4" />
                       <span>Restore</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onSelect={() => alert("Deleting permanently... (not implemented)")}>
-                      <Trash2 className="text-muted-foreground" />
+                    <DropdownMenuItem className="text-red-500 focus:text-red-500" onSelect={() => alert("Deleting permanently... (not implemented)")}>
+                      <Trash2 className="mr-2 h-4 w-4" />
                       <span>Delete Permanently</span>
                     </DropdownMenuItem>
                   </>
                 ) : (
                   <>
                     <DropdownMenuItem onSelect={() => onToggleFavorite?.(item.id)}>
-                      <Star className="text-muted-foreground" />
+                      <Star className="mr-2 h-4 w-4" />
                       <span>{item.isFavorite ? "Unfavorite" : "Favorite"}</span>
                     </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Edit className="mr-2 h-4 w-4" />
+                      <span>Rename</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Share2 className="mr-2 h-4 w-4" />
+                      <span>Share</span>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onSelect={() => alert("Deleting... (not implemented)")}>
-                      <Trash2 className="text-muted-foreground" />
+                    <DropdownMenuItem className="text-red-500 focus:text-red-500" onSelect={() => alert("Deleting... (not implemented)")}>
+                      <Trash2 className="mr-2 h-4 w-4" />
                       <span>Delete</span>
                     </DropdownMenuItem>
                   </>
