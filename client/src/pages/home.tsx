@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { PlusCircle, FileText, Folder, Sparkles, BrainCircuit, Map, GitFork, Presentation } from "lucide-react";
+import { PlusCircle, FileText, Folder, Sparkles, BrainCircuit, Map, GitFork, Presentation, MousePointerClick, Maximize, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
 
 // Placeholder for recent canvases data
 const recentCanvases = [
@@ -19,8 +20,27 @@ const templates = [
   { title: "Flowchart", icon: <GitFork className="h-10 w-10 text-red-400" /> },
 ];
 
+const quickTips = [
+  {
+    icon: <MousePointerClick className="h-8 w-8 text-blue-400" />,
+    title: "Use the Tools",
+    description: "Drag and drop shapes, text, and media from the sidebar onto your canvas.",
+  },
+  {
+    icon: <Maximize className="h-8 w-8 text-green-400" />,
+    title: "Explore Your Space",
+    description: "Use your mouse wheel to zoom and middle-click to pan around the infinite canvas.",
+  },
+  {
+    icon: <Users className="h-8 w-8 text-purple-400" />,
+    title: "Collaborate Instantly",
+    description: "Click the \'Share\' button on a canvas to invite your team and work together in real-time.",
+  },
+];
+
 export default function HeroSection() {
   const navigate = useNavigate();
+  const { user } = useAuthStore();
 
   const handleCreateCanvas = () => {
     // We can later make this a dynamic ID, e.g., `/canvas/${newCanvasId}`
@@ -77,6 +97,45 @@ export default function HeroSection() {
                   No recent canvases found. Click "Create New Canvas" to get started!
                 </p>
               )}
+            </div>
+          </section>
+        </div>
+      </div>
+
+      {/* --- GRADIENT WELCOME SECTION --- */}
+      <div className="px-8 sm:px-12 lg:px-16 pb-16 bg-black">
+        <div className="bg-gradient-custom bg-cover bg-center rounded-2xl">
+          <section className="py-20 lg:py-28 text-center">
+            <div className="container mx-auto px-4">
+              <h2 className="text-5xl font-bold mb-6 font-heading">
+                Welcome, {user?.name || 'Creator'}!
+              </h2>
+              <p className="max-w-[600px] mx-auto text-gray-300 md:text-xl mb-8">
+                Your creative space is ready. Create your first canvas to bring your ideas to life.
+              </p>
+              <Button
+                size="lg"
+                className="text-lg px-10 py-7 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+                onClick={handleCreateCanvas}
+              >
+                <PlusCircle className="mr-3 h-6 w-6" />
+                Create Your First Canvas
+              </Button>
+
+              <div className="mt-20">
+                <h3 className="text-4xl font-bold text-center mb-12 font-heading">Getting Started</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                  {quickTips.map((tip) => (
+                    <div key={tip.title} className="rounded-xl bg-gray-900/50 p-6 flex flex-col items-start gap-4">
+                      <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-gray-800">
+                        {tip.icon}
+                      </div>
+                      <h4 className="text-xl font-semibold text-white">{tip.title}</h4>
+                      <p className="text-gray-400">{tip.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </section>
         </div>
