@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import {
@@ -28,7 +26,6 @@ import {
   PieChart,
   Plus,
   RectangleHorizontal,
-  Settings2,
   Shapes,
   Square,
   Star,
@@ -37,6 +34,7 @@ import {
   Triangle,
   Type,
   Underline,
+  Undo2,
 } from "lucide-react"
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -69,6 +67,20 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { ImageUploadModal } from './image-upload-modal';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "./ui/button";
 
 
 import { Pencil } from "lucide-react";
@@ -573,6 +585,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             onClose={() => setIsImageModalOpen(false)} 
             onImageAdd={handleAddImage} 
         />
+
+
       <SidebarHeader>
         <TeamSwitcher teams={initialData.teams} />
       </SidebarHeader>
@@ -593,14 +607,41 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarGroup>
             <NavProjects projects={favoriteProjects} label="Favorites" onToggleFavorite={toggleFavorite} />
             <NavProjects projects={otherProjects} label="All Canvases" onToggleFavorite={toggleFavorite} />
-            <NavProjects projects={initialData.trash} label="Trash" />
             <SidebarGroup>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton>
-                            <Settings2/>
-                            <span>Settings</span>
-                        </SidebarMenuButton>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <SidebarMenuButton>
+                                    <Trash2/>
+                                    <span>Trash</span>
+                                </SidebarMenuButton>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                                <DropdownMenuLabel>Trash</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {initialData.trash.map((item) => (
+                                    <DropdownMenuSub key={item.id}>
+                                        <DropdownMenuSubTrigger>
+                                            <item.icon className="mr-2 h-4 w-4" />
+                                            <span>{item.name}</span>
+                                        </DropdownMenuSubTrigger>
+                                        <DropdownMenuPortal>
+                                            <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                                                <DropdownMenuItem>
+                                                    <Undo2 className="mr-2 h-4 w-4" />
+                                                    <span>Restore</span>
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem className="text-red-500 focus:text-red-500">
+                                                    <Trash2 className="mr-2 h-4 w-4" />
+                                                    <span>Delete</span>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuSubContent>
+                                        </DropdownMenuPortal>
+                                    </DropdownMenuSub>
+                                ))}
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarGroup>

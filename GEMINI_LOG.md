@@ -208,3 +208,4 @@ To build a highly flexible, collaborative digital whiteboard application similar
 3.  **User Profile Management:** Allow users to view/edit their profile information.
 4.  **Canvas Persistence (Cloud):** Implement saving and loading board state to/from the database for authenticated users.
 5.  **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
+
