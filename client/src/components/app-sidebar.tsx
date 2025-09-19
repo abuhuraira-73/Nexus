@@ -26,6 +26,7 @@ import {
   PieChart,
   Plus,
   RectangleHorizontal,
+  Redo2,
   Shapes,
   Square,
   Star,
@@ -113,7 +114,7 @@ const mediaTools = [
 ]
 
 const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
-  const { mode, setMode } = useCanvasStore();
+  const { mode, setMode, undo, redo } = useCanvasStore();
 
   const toggleDrawMode = () => {
     setMode(mode === 'draw' ? 'select' : 'draw');
@@ -127,6 +128,18 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
     <SidebarGroup>
       <SidebarGroupLabel>Tools</SidebarGroupLabel>
       <SidebarMenu>
+        <SidebarMenuItem>
+            <SidebarMenuButton onClick={undo}>
+                <Undo2 />
+                <span>Undo</span>
+            </SidebarMenuButton>
+        </SidebarMenuItem>
+        <SidebarMenuItem>
+            <SidebarMenuButton onClick={redo}>
+                <Redo2 />
+                <span>Redo</span>
+            </SidebarMenuButton>
+        </SidebarMenuItem>
         <SidebarMenuItem>
             <SidebarMenuButton
                 onClick={toggleEraserMode}

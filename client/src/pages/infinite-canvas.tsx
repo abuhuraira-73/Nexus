@@ -318,11 +318,8 @@ const InfiniteCanvas = () => {
   };
 
   return (
-    <div className="relative w-full h-[calc(100vh-8rem)] flex flex-col">
-      <div className="p-2 border-b flex gap-2">
-        <Button onClick={undo} size="sm" variant="outline">Undo</Button>
-        <Button onClick={redo} size="sm" variant="outline">Redo</Button>
-      </div>
+    <div className="relative w-full h-full flex flex-col">
+
       <div 
         ref={containerRef} 
         className="relative flex-1 w-full h-full"
