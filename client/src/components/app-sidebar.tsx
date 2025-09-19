@@ -656,9 +656,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </div>
         )}
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser />
-      </SidebarFooter>
+      {!isCanvasOpen && (
+        <SidebarFooter className="pb-4">
+          <NavUser />
+        </SidebarFooter>
+      )}
       <SidebarRail />
     </Sidebar>
   )
