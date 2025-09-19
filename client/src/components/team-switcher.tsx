@@ -44,14 +44,20 @@ export function TeamSwitcher({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                <activeTeam.logo className="size-4" />
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                {activeTeam.name === 'Nexus' ? (
+                  <img src="/Nexus-Logo.png" alt="Nexus Logo" className="h-6 w-6" style={{ filter: 'drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 20px #8A2BE2)' }} />
+                ) : (
+                  <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-full items-center justify-center rounded-lg">
+                    <activeTeam.logo className="size-4" />
+                  </div>
+                )}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{activeTeam.name}</span>
                 <span className="truncate text-xs">{activeTeam.plan}</span>
               </div>
-              <ChevronsUpDown className="ml-auto" />
+              {/* <ChevronsUpDown className="ml-auto" /> */}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
