@@ -68,7 +68,6 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { ImageUploadModal } from './image-upload-modal';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,7 +80,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
 
 
 import { Pencil } from "lucide-react";
@@ -165,7 +163,6 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                                 <SidebarMenuSubButton
                                     onClick={tool.isFunctional ? toggleDrawMode : undefined}
                                     className="text-sidebar-foreground/70"
-                                    disabled={!tool.isFunctional}
                                     isActive={tool.isFunctional && mode === 'draw'}
                                 >
                                     <tool.icon className="text-muted-foreground" />
@@ -254,7 +251,6 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                     <SidebarMenuSubButton
                       className="text-sidebar-foreground/70"
                       onClick={onImageToolClick}
-                      disabled={tool.disabled}
                     >
                       <tool.icon className="text-muted-foreground" />
                       <span>{tool.name}</span>
