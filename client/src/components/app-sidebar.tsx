@@ -82,7 +82,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 
-import { Pencil } from "lucide-react";
+import { Pencil, LucideIcon } from "lucide-react";
+
+export type Project = {
+  id: string;
+  name: string;
+  url: string;
+  icon: LucideIcon;
+  isFavorite: boolean;
+};
 
 const shapeTools = [
   { name: "Rectangle", icon: RectangleHorizontal, type: 'rectangle' },
@@ -463,7 +471,7 @@ const DrawProperties = () => {
 
 
 // This is sample data.
-const initialData = {
+export const initialData = {
   teams: [
     {
       name: "Nexus",
@@ -515,24 +523,23 @@ const initialData = {
   ]
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ 
+  setCreateModalOpen, 
+  favoriteProjects,
+  otherProjects,
+  toggleFavorite,
+  ...props 
+}: React.ComponentProps<typeof Sidebar> & { 
+  setCreateModalOpen: (isOpen: boolean) => void;
+  favoriteProjects: Project[];
+  otherProjects: Project[];
+  toggleFavorite: (projectId: string) => void;
+}) {
   const location = useLocation();
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
 
-  const [projects, setProjects] = React.useState(initialData.projects);
   const [isImageModalOpen, setIsImageModalOpen] = React.useState(false);
-
-  const toggleFavorite = (projectId: string) => {
-    setProjects(
-      projects.map((p) =>
-        p.id === projectId ? { ...p, isFavorite: !p.isFavorite } : p
-      )
-    );
-  };
-
-  const favoriteProjects = projects.filter((p) => p.isFavorite);
-  const otherProjects = projects.filter((p) => !p.isFavorite);
 
   const { selectedId, shapes, mode, addShape } = useCanvasStore();
   const selectedShape = shapes.find((shape) => shape.id === selectedId);
@@ -602,7 +609,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             <SidebarGroup>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => navigate('/app/canvas')}>
+                        <SidebarMenuButton onClick={() => setCreateModalOpen(true)}>
                             <Plus/>
                             <span>New Canvas</span>
                         </SidebarMenuButton>

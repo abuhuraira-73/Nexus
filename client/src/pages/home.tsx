@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { PlusCircle, FileText, Folder, Sparkles, BrainCircuit, Map, GitFork, Presentation, MousePointerClick, Maximize, Users } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 
 // Placeholder for recent canvases data
@@ -38,13 +38,17 @@ const quickTips = [
   },
 ];
 
+interface OutletContextType {
+  setCreateModalOpen: (isOpen: boolean) => void;
+}
+
 export default function HeroSection() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const { setCreateModalOpen } = useOutletContext<OutletContextType>();
 
   const handleCreateCanvas = () => {
-    // We can later make this a dynamic ID, e.g., `/canvas/${newCanvasId}`
-    navigate('/app/canvas');
+    setCreateModalOpen(true);
   };
 
   return (
