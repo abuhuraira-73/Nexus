@@ -46,7 +46,7 @@ function App() {
         {/* All routes here are wrapped by ProtectedRoute */}
         <Route path="/app" element={<ProtectedRoute><AppLayout /></ProtectedRoute>} >
           <Route index element={<HeroSection />} />
-          <Route path="canvas" element={<InfiniteCanvasPage />} />
+          <Route path="canvas/:id" element={<InfiniteCanvasPage />} />
         </Route>
 
         {/* Catch-all route to redirect */}

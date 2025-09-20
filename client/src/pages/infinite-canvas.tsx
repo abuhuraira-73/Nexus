@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line, Text, Group, Image as KonvaImage } from 'react-konva';
 import type { KonvaEventObject } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore';
-import { Button } from '@/components/ui/button';
+import { useAppStore } from '../store/appStore';
+import { api } from '@/lib/api';
+import { toast } from 'sonner';
 
 export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image';
 
@@ -36,6 +39,12 @@ export interface Shape {
   src?: string;
 }
 
+interface CanvasData {
+    _id: string;
+    name: string;
+    data: { shapes: Shape[] };
+}
+
 const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: any }) => {
     const [image, setImage] = useState<HTMLImageElement | null>(null);
 
@@ -59,6 +68,7 @@ const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: any }) =>
 };
 
 const InfiniteCanvas = () => {
+  const { id: canvasId } = useParams<{ id: string }>();
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
@@ -68,7 +78,8 @@ const InfiniteCanvas = () => {
     y: 0,
   });
 
-  const { shapes, addShape, updateShape, deleteShape, undo, redo, selectedId, selectShape, mode, strokeColor, strokeWidth } = useCanvasStore();
+  const { shapes, addShape, updateShape, deleteShape, selectedId, selectShape, mode, strokeColor, strokeWidth, setCanvas } = useCanvasStore();
+  const { setCurrentCanvasName } = useAppStore();
 
   const [currentLine, setCurrentLine] = useState<Shape | null>(null);
   const [isErasing, setIsErasing] = useState(false);
@@ -76,14 +87,36 @@ const InfiniteCanvas = () => {
   const trRef = useRef<TransformerType>(null);
   const shapeRefs = useRef<(Konva.Node | null)[]>([]);
 
+  // Fetch and load canvas data
   useEffect(() => {
-    if (containerRef.current) {
-      setDimensions({
-        width: containerRef.current.offsetWidth,
-        height: containerRef.current.offsetHeight,
-      });
+    if (canvasId) {
+      const fetchCanvasData = async () => {
+        try {
+          const canvasData = await api<CanvasData>(`/api/canvases/${canvasId}`);
+          if (canvasData) {
+            setCanvas(canvasData.data?.shapes || []);
+            setCurrentCanvasName(canvasData.name);
+          } else {
+            setCanvas([]);
+            setCurrentCanvasName(null);
+          }
+        } catch (error) {
+          toast.error('Failed to load canvas. It may not exist or you may not have permission to view it.');
+          setCurrentCanvasName(null);
+        }
+      };
+      fetchCanvasData();
+    } else {
+        // If there is no canvasId, ensure we are starting with a fresh canvas
+        // and no name is displayed.
+        setCanvas([]);
+        setCurrentCanvasName(null);
     }
-  }, []);
+
+    // Reset stage position and zoom when canvas changes
+    setStage({ scale: 1, x: 0, y: 0 });
+
+  }, [canvasId, setCanvas, setCurrentCanvasName]);
 
   useEffect(() => {
     if (selectedId && trRef.current) {

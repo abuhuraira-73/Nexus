@@ -17,7 +17,10 @@ Nexus is structured as a monorepo, containing separate `client` (frontend) and `
 - **Framework:** React + TypeScript
 - **Build Tool:** Vite
 - **Styling:** Tailwind CSS, Shadcn/UI
-- **State Management:** Zustand (for global UI/authentication state)
+- **State Management:** Zustand is used for global state. It is divided into:
+  - `authStore`: Manages user authentication, session, and user data.
+  - `appStore`: Manages non-auth global UI state, such as the name of the currently open canvas.
+  - `canvasStore`: Manages the state of the canvas itself, including shapes and history.
 - **Routing:** React Router DOM
 - **Canvas:** Konva.js (via react-konva) - *Planned*
 - **Data Fetching:** @tanstack/react-query - *Planned*

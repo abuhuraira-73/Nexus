@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { AppSidebar, initialData, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
+import { useAppStore } from "@/store/appStore";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -29,7 +30,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Download, MessageSquare, Presentation, Share2, Frame } from "lucide-react"
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { api } from '@/lib/api';
 
@@ -46,6 +47,7 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+  const { currentCanvasName } = useAppStore();
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoadingCanvases, setIsLoadingCanvases] = useState(true);
@@ -125,7 +127,7 @@ export default function AppLayout() {
       />
       <SidebarInset>
         {isCanvasOpen && (
-          <header className="sticky top-4 z-10 mx-4 flex h-16 shrink-0 items-center gap-2 rounded-lg border border-zinc-800 bg-black transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <header className="sticky top-4 z-10 mx-4 flex h-16 shrink-0 items-center justify-between gap-2 rounded-lg border border-zinc-800 bg-black transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 px-4">
               <SidebarTrigger className="-ml-1" />
               <Separator
@@ -135,13 +137,13 @@ export default function AppLayout() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href="#">
-                      Nexus
+                    <BreadcrumbLink asChild>
+                      <Link to="/app">Nexus</Link>
                     </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Home</BreadcrumbPage>
+                    <BreadcrumbPage>{currentCanvasName || 'Canvas'}</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>

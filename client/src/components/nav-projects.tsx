@@ -1,5 +1,6 @@
 "use client"
 
+import { Link } from "react-router-dom";
 import {
   MoreHorizontal,
   Star,
@@ -51,10 +52,10 @@ export function NavProjects({ projects, label, onToggleFavorite }: NavProjectsPr
         {projects.map((item) => (
           <SidebarMenuItem key={item.id}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
+              <Link to={item.url}>
                 <item.icon />
                 <span>{item.name}</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

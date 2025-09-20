@@ -13,6 +13,33 @@ const getCanvases = async (req, res) => {
   }
 };
 
+// @route   GET /api/canvases/:id
+// @desc    Get a single canvas by ID
+// @access  Private
+const getCanvasById = async (req, res) => {
+  try {
+    const canvas = await Canvas.findById(req.params.id);
+
+    if (!canvas) {
+      return res.status(404).json({ msg: 'Canvas not found' });
+    }
+
+    // Ensure the user owns the canvas
+    if (canvas.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'Not authorized' });
+    }
+
+    res.json(canvas);
+  } catch (err) {
+    console.error(err.message);
+    // If the ID format is invalid, it will throw an error
+    if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Canvas not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+};
+
 
 // @route   POST /api/canvases
 // @desc    Create a new canvas
@@ -40,4 +67,4 @@ const createCanvas = async (req, res) => {
   }
 };
 
-module.exports = { createCanvas, getCanvases };
+module.exports = { createCanvas, getCanvases, getCanvasById };

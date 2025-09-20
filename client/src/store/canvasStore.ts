@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import type { Shape } from '../pages/infinite-canvas';
 
 export type CanvasMode = 'select' | 'draw' | 'erase';
@@ -22,11 +21,10 @@ interface CanvasState {
   setStrokeWidth: (width: number) => void;
   undo: () => void;
   redo: () => void;
+  setCanvas: (shapes: Shape[]) => void; // New action
 }
 
-export const useCanvasStore = create<CanvasState>()(
-  persist(
-    (set) => ({
+export const useCanvasStore = create<CanvasState>()((set) => ({
       shapes: [],
       history: [],
       future: [],
@@ -114,10 +112,13 @@ export const useCanvasStore = create<CanvasState>()(
           };
         });
       },
-    }),
-    {
-      name: 'canvas-storage', // unique name
-      partialize: (state) => ({ shapes: state.shapes }), // only persist the 'shapes' state
-    }
-  )
-);
+
+      setCanvas: (shapes) => {
+        set({
+          shapes: shapes,
+          history: [],
+          future: [],
+          selectedId: null,
+        });
+      },
+}));

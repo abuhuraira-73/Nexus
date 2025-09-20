@@ -60,6 +60,70 @@ This document outlines the REST API endpoints for the Nexus backend.
   - `400 Bad Request`: `{"msg": "Invalid credentials"}`
   - `500 Internal Server Error`: `{"msg": "Server error"}`
 
+## Canvas Endpoints
+
+Authentication: All canvas endpoints require a valid JWT to be sent in the `Authorization: Bearer <token>` header.
+
+### 1. Create Canvas
+- **URL:** `/canvases`
+- **Method:** `POST`
+- **Description:** Creates a new, empty canvas.
+- **Request Body (JSON):**
+  ```json
+  {
+    "name": "My New Canvas"
+  }
+  ```
+- **Success Response (201 Created):**
+  ```json
+  {
+    "_id": "68ce69...",
+    "name": "My New Canvas",
+    "user": "68cc41...",
+    "data": {},
+    "createdAt": "2025-09-20T...",
+    "updatedAt": "2025-09-20T..."
+  }
+  ```
+
+### 2. Get All Canvases
+- **URL:** `/canvases`
+- **Method:** `GET`
+- **Description:** Retrieves a list of all canvases belonging to the authenticated user.
+- **Success Response (200 OK):**
+  ```json
+  [
+    {
+      "_id": "68ce69...",
+      "name": "My New Canvas",
+      "user": "68cc41...",
+      "createdAt": "2025-09-20T...",
+      "updatedAt": "2025-09-20T..."
+    }
+  ]
+  ```
+
+### 3. Get Canvas by ID
+- **URL:** `/canvases/:id`
+- **Method:** `GET`
+- **Description:** Retrieves a single canvas by its unique ID.
+- **Success Response (200 OK):**
+  ```json
+  {
+    "_id": "68ce69...",
+    "name": "My New Canvas",
+    "user": "68cc41...",
+    "data": {
+      "shapes": []
+    },
+    "createdAt": "2025-09-20T...",
+    "updatedAt": "2025-09-20T..."
+  }
+  ```
+- **Error Responses (JSON):**
+  - `404 Not Found`: `{"msg": "Canvas not found"}`
+  - `401 Unauthorized`: `{"msg": "Not authorized"}`
+
 ## Future Endpoints (Planned)
 - `/boards`: CRUD operations for user boards.
 - `/elements`: CRUD operations for elements within a board.
