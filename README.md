@@ -54,7 +54,10 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### ✅ Core Features (Implemented)
 
+*   **☁️ Cloud Canvas Lifecycle:** Full end-to-end feature for creating canvases, which are saved to the database. Canvases are now fetched and listed in the sidebar, and can be opened to view their content.
 *   **🔐 User Authentication:** Secure login and registration pages, including backend API, frontend forms, and global state management.
+*   **👤 User Information Display:** The logged-in user's name and email are now displayed in the user navigation menu.
+*   **📞 Authenticated API Calls:** Implemented a reusable utility for making authenticated API calls from the frontend.
 *   **🔒 Protected Routes:** Restrict access to authenticated users for specific application sections.
 *   **🚪 Logout Functionality:** Clear user sessions and redirect to public pages.
 *   **🔔 Enhanced Notifications:** Replaced native alerts with consistent, styled toast notifications.
@@ -74,10 +77,8 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### 🚀 Upcoming Features & Pages
 
-*   **Display User Information:** Show the logged-in user's name/email in the UI.
-*   **Authenticated API Calls:** Implement a pattern for making API calls that require authentication.
+*   **💾 Canvas Content Persistence:** Saving the actual content (shapes, text, etc.) of a canvas to the database.
 *   **User Profile Management:** Allow users to view/edit their profile information.
-*   **Canvas Persistence (Cloud):** Implement saving and loading board state to/from the database for authenticated users.
 *   **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
 *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
 

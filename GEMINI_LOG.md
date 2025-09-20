@@ -132,6 +132,29 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 20, 2025
+*   **End-to-End Canvas Lifecycle - Implemented:**
+    *   **Backend API:** Built a complete REST API for canvases (`/api/canvases`) including:
+        *   `Canvas.js` Mongoose model to define the database schema.
+        *   `authMiddleware.js` to protect routes and verify users.
+        *   `POST /`: Endpoint to create a new canvas.
+        *   `GET /`: Endpoint to fetch all canvases for the logged-in user.
+        *   `GET /:id`: Endpoint to fetch a single canvas by its ID.
+    *   **Frontend Integration:**
+        *   Replaced the hardcoded project list in the sidebar with a dynamic list fetched from the backend.
+        *   Implemented the logic to open a specific canvas when its link is clicked in the sidebar.
+        *   The application now successfully loads canvas data from the database.
+*   **UI Component Implementation:**
+    *   **Create Canvas Modal:** Developed a modal component that prompts the user for a canvas name upon creation. The modal is now triggered from both the sidebar and the main hero section.
+    *   **Dropdown Menus:** Implemented dropdown menus for actions on individual canvases (e.g., rename, delete) and for the user account section (e.g., logout).
+*   **Dynamic Breadcrumb & Navigation:**
+    *   The top navigation bar now dynamically displays the name of the currently open canvas (e.g., "Nexus / My Project").
+    *   The "Nexus" breadcrumb now correctly links back to the main application home page (`/app`).
+*   **Bug Fixes & Refactoring:**
+    *   **State Management:** Refactored component state by lifting it to parent components (`AppLayout`) and creating a new global store (`appStore`) to manage shared UI state like the current canvas name.
+    *   **Routing:** Fixed multiple routing bugs, including replacing `<a>` tags with `Link` components to prevent page reloads and correcting the route path for individual canvases to use the `:id` parameter.
+    *   **Syntax & Logic Errors:** Resolved several JSX syntax errors and fixed a race condition that prevented the dynamic canvas name from displaying correctly.
+
 ### September 19, 2025
 *   **UI/UX Consistency Pass:**
     *   **Objective:** Unify the theme, branding, and design across all public and authentication pages to ensure a consistent user experience.
