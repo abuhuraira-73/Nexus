@@ -225,10 +225,28 @@ To build a highly flexible, collaborative digital whiteboard application similar
     *   Replaced icon with Nexus logo (no shadow) on the Register page.
     *   Replaced icon with Nexus logo (with shadow) on the Forgot Password page.
 
-### Next Steps (as of end of day, September 18)
-1.  **Display User Information:** Show the logged-in user's name/email in the UI (e.g., in the `NavUser` component).
-2.  **Authenticated API Calls:** Implement a pattern for making API calls that require authentication (e.g., fetching user-specific data, creating a new canvas).
-3.  **User Profile Management:** Allow users to view/edit their profile information.
-4.  **Canvas Persistence (Cloud):** Implement saving and loading board state to/from the database for authenticated users.
-5.  **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
+### Current Status & Next Steps (as of end of day, September 20)
+
+#### Immediate Priority: Save Canvas Content
+
+The most critical feature to implement next is saving the actual content of the canvases (shapes, drawings, text, etc.) to the database. Without this, the application is not yet useful as a creative tool.
+
+**The Plan:**
+1.  **Backend:** Create a `PUT /api/canvases/:id` endpoint that can receive the canvas content and update the corresponding document in the database.
+2.  **Frontend:** Modify the canvas page to automatically send the content to this new endpoint. This will likely be implemented with a "debounce" function to create a seamless auto-save experience.
+
+#### Future Roadmap
+
+Once the core feature of saving canvas content is complete, the following major features are next in line for development:
+
+*   **Core Functionality:**
+    *   **Deleting Canvases:** Implement the full lifecycle for deleting canvases (moving to trash, permanent deletion).
+    *   **Favorites System:** Persist the "favorite" status of canvases to the database.
+    *   **Image/File Uploads:** Connect the image upload modal to a backend storage solution.
+
+*   **Major New Features:**
+    *   **User Profile Management:** A dedicated page for users to manage their account details.
+    *   **Real-time Collaboration:** The largest upcoming feature, allowing multiple users to edit a canvas simultaneously.
+    *   **Advanced Drawing Tools:** Add tools like connectors and arrows for diagramming.
+    *   **Exporting:** Allow users to export their canvases to various formats (PNG, PDF, etc.).
 
