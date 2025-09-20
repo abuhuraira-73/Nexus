@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Check, X, Zap, Twitter, Github, Linkedin } from "lucide-react";
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
 import PublicFooter from "@/components/public-footer";
+import { PricingToggle } from "@/components/pricing-toggle";
 
 const pricingTiers = [
   {
@@ -68,6 +70,55 @@ const Checkmark = ({ available }) => {
 
 
 export default function PricingPage() {
+  const [isYearly, setIsYearly] = useState(false);
+
+  const pricingTiers = [
+    {
+      name: "Free",
+      priceMonthly: "$0",
+      priceYearly: "$0",
+      description: "For individuals and small projects just getting started.",
+      features: [
+        "100 Items per Board",
+        "3 Boards per Workspace",
+        "Core Drawing & Content Tools",
+        "Community Support",
+      ],
+      cta: "Get Started for Free",
+      isFeatured: false,
+    },
+    {
+      name: "Premium",
+      priceMonthly: "$5",
+      priceYearly: "$50",
+      description: "For growing teams that need to collaborate and ship faster.",
+      features: [
+        "Unlimited Items per Board",
+        "Unlimited Boards",
+        "Real-time Collaboration",
+        "High-Quality Exports",
+        "Priority Email Support",
+      ],
+      cta: "Upgrade to Premium",
+      isFeatured: true,
+    },
+    {
+      name: "Enterprise",
+      priceMonthly: "$20",
+      priceYearly: "$110",
+      description: "For large organizations with advanced security and support needs.",
+      features: [
+        "Everything in Premium",
+        "Single Sign-On (SSO)",
+        "Advanced Security & Auditing",
+        "Dedicated Account Manager",
+        "Custom Integrations",
+      ],
+      cta: "Contact Sales",
+      isFeatured: false,
+    },
+  ];
+
   return (
     <div className="flex flex-col min-h-screen text-white bg-black">
       {/* Header */}
@@ -90,6 +141,9 @@ export default function PricingPage() {
                 {/* Pricing Table Section */}
                 <section className="pt-20 lg:pt-28">
                   <div className="container mx-auto px-4">
+                    <div className="flex justify-center items-center gap-4 mb-8">
+                        <PricingToggle isYearly={isYearly} onToggle={setIsYearly} />
+                    </div>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                       {pricingTiers.map((tier) => (
                         <Card
@@ -99,8 +153,8 @@ export default function PricingPage() {
                             <CardTitle className="text-3xl font-bold">{tier.name}</CardTitle>
                             <p className="text-gray-400 h-12">{tier.description}</p>
                             <div className="text-5xl font-bold mt-4">
-                              {tier.price}
-                              {tier.price !== "$0" && <span className="text-lg font-normal text-gray-400">/ month</span>}
+                              {isYearly ? tier.priceYearly : tier.priceMonthly}
+                              {tier.name !== "Free" && <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>}
                             </div>
                           </CardHeader>
                           <CardContent className="flex flex-col flex-grow">

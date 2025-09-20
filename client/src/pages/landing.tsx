@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { CheckCircle, Zap, Shield, Heart, Star, Users, BrainCircuit } from "lucide-react";
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
 import PublicFooter from "@/components/public-footer";
+import { PricingToggle } from "@/components/pricing-toggle";
 
 const features = [
   { icon: <Zap className="h-8 w-8 text-white transition-colors duration-300" />, title: "Infinite Canvas", description: "Never run out of space. Pan, zoom, and create on a limitless canvas that grows with your ideas." },
@@ -67,6 +69,8 @@ const testimonials = [
 ];
 
 export default function LandingPage() {
+  const [isYearly, setIsYearly] = useState(false);
+
   return (
     <div className="flex flex-col min-h-screen text-white bg-black">
       {/* Header */}
@@ -203,52 +207,63 @@ export default function LandingPage() {
                 <section id="pricing" className="py-20 lg:py-28">
                   <div className="container mx-auto px-4">
                     <h2 className="text-7xl font-bold text-center mb-12 font-heading">Choose Your Plan</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                      <Card className="bg-gray-900/50 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                        <CardHeader>
-                          <CardTitle>Free</CardTitle>
-                          <p className="text-gray-400">The Creative Sandbox</p>
+                    <div className="flex justify-center items-center gap-4 mb-8">
+                        <PricingToggle isYearly={isYearly} onToggle={setIsYearly} />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
+                      <Card className="bg-gray-900/50 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full">
+                        <CardHeader className="text-center">
+                          <CardTitle className="text-3xl font-bold">Free</CardTitle>
+                          <p className="text-gray-400 h-12">The Creative Sandbox</p>
+                          <div className="text-5xl font-bold mt-4">
+                            $0
+                          </div>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                          <p className="text-5xl font-bold">$0<span className="text-xl font-normal text-gray-400">/month</span></p>
-                          <ul className="space-y-3">
-                            <li className="flex items-center"><CheckCircle className="h-5 w-5 mr-2 text-green-500" />Full Infinite Canvas Access</li>
-                            <li className="flex items-center"><CheckCircle className="h-5 w-5 mr-2 text-green-500" />All Drawing & Content Tools</li>
-                            <li className="flex items-center"><CheckCircle className="h-5 w-5 mr-2 text-green-500" />100 Items per Board</li>
+                        <CardContent className="flex flex-col flex-grow">
+                          <Button className="w-full text-lg py-6" variant="outline">Get Started</Button>
+                          <ul className="space-y-4 mt-8 text-left flex-grow">
+                            <li className="flex items-start"><CheckCircle className="h-6 w-6 mr-3 text-green-500 flex-shrink-0" /><span>Full Infinite Canvas Access</span></li>
+                            <li className="flex items-start"><CheckCircle className="h-6 w-6 mr-3 text-green-500 flex-shrink-0" /><span>All Drawing & Content Tools</span></li>
+                            <li className="flex items-start"><CheckCircle className="h-6 w-6 mr-3 text-green-500 flex-shrink-0" /><span>100 Items per Board</span></li>
                           </ul>
-                          <Button className="w-full transition-colors duration-300" variant="outline">Get Started</Button>
                         </CardContent>
                       </Card>
-                      <Card className="border-purple-500 ring-2 ring-purple-500 bg-purple-500/10 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                        <CardHeader>
-                          <CardTitle>Premium</CardTitle>
-                          <p className="text-gray-300">The Collaboration & Pro Suite</p>
+                      <Card className="border-purple-500 ring-2 ring-purple-500 bg-purple-500/10 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full">
+                        <CardHeader className="text-center">
+                          <CardTitle className="text-3xl font-bold">Premium</CardTitle>
+                          <p className="text-gray-300 h-12">The Collaboration & Pro Suite</p>
+                          <div className="text-5xl font-bold mt-4">
+                            {isYearly ? "$50" : "$5"}
+                            <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>
+                          </div>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                          <p className="text-5xl font-bold">$5<span className="text-xl font-normal text-gray-400">/month</span></p>
-                          <ul className="space-y-3">
-                            <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />Unlimited Items per Board</li>
-                            <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />Real-time Collaboration</li>
-                            <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />High-Quality Exports</li>
-                            <li className="flex items-center"><Heart className="h-5 w-5 mr-2 text-pink-500" />Priority Support</li>
+                        <CardContent className="flex flex-col flex-grow">
+                          <Button className="w-full text-lg py-6 bg-white text-black hover:bg-gray-200">Upgrade to Premium</Button>
+                          <ul className="space-y-4 mt-8 text-left flex-grow">
+                            <li className="flex items-start"><Heart className="h-6 w-6 mr-3 text-pink-500 flex-shrink-0" /><span>Unlimited Items per Board</span></li>
+                            <li className="flex items-start"><Heart className="h-6 w-6 mr-3 text-pink-500 flex-shrink-0" /><span>Real-time Collaboration</span></li>
+                            <li className="flex items-start"><Heart className="h-6 w-6 mr-3 text-pink-500 flex-shrink-0" /><span>High-Quality Exports</span></li>
+                            <li className="flex items-start"><Heart className="h-6 w-6 mr-3 text-pink-500 flex-shrink-0" /><span>Priority Support</span></li>
                           </ul>
-                          <Button className="w-full bg-white text-black transition-colors duration-300 hover:bg-gray-200">Upgrade to Premium</Button>
                         </CardContent>
                       </Card>
-                      <Card className="bg-gray-900/50 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl">
-                        <CardHeader>
-                          <CardTitle>Enterprise</CardTitle>
-                          <p className="text-gray-400">For Large Organizations</p>
+                      <Card className="bg-gray-900/50 backdrop-blur-sm transition-transform duration-300 hover:scale-105 hover:shadow-2xl flex flex-col h-full">
+                        <CardHeader className="text-center">
+                          <CardTitle className="text-3xl font-bold">Enterprise</CardTitle>
+                          <p className="text-gray-400 h-12">For Large Organizations</p>
+                           <div className="text-5xl font-bold mt-4">
+                            {isYearly ? "$110" : "$10"}
+                            <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>
+                          </div>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                          <p className="text-5xl font-bold">$10<span className="text-xl font-normal text-gray-400">/month</span></p>
-                          <ul className="space-y-3">
-                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Everything in Premium</li>
-                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Single Sign-On (SSO)</li>
-                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Advanced Security</li>
-                            <li className="flex items-center"><Shield className="h-5 w-5 mr-2 text-blue-500" />Dedicated Support</li>
+                        <CardContent className="flex flex-col flex-grow">
+                          <Button className="w-full text-lg py-6" variant="outline">Contact Sales</Button>
+                          <ul className="space-y-4 mt-8 text-left flex-grow">
+                            <li className="flex items-start"><Shield className="h-6 w-6 mr-3 text-blue-500 flex-shrink-0" /><span>Everything in Premium</span></li>
+                            <li className="flex items-start"><Shield className="h-6 w-6 mr-3 text-blue-500 flex-shrink-0" /><span>Single Sign-On (SSO)</span></li>
+                            <li className="flex items-start"><Shield className="h-6 w-6 mr-3 text-blue-500 flex-shrink-0" /><span>Advanced Security</span></li>
+                            <li className="flex items-start"><Shield className="h-6 w-6 mr-3 text-blue-500 flex-shrink-0" /><span>Dedicated Support</span></li>
                           </ul>
-                          <Button className="w-full" variant="outline">Contact Sales</Button>
                         </CardContent>
                       </Card>
                     </div>

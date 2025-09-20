@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AppSidebar, initialData, type Project } from "@/components/app-sidebar";
+import { AppSidebar, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
 import { useAppStore } from "@/store/appStore";
 import {
@@ -66,7 +66,8 @@ export default function AppLayout() {
         }));
         setProjects(formattedProjects);
       } catch (error) {
-        toast.error('Could not fetch your canvases.');
+        console.error("Failed to fetch canvases:", error);
+        toast.error(`Could not fetch your canvases: ${error instanceof Error ? error.message : String(error)}`);
       } finally {
         setIsLoadingCanvases(false);
       }
