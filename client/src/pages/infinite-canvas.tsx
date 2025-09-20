@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line, Text, Group, Image as KonvaImage } from 'react-konva';
-import type { KonvaEventObject } from 'konva/lib/Node';
+import type { KonvaEventObject, NodeConfig } from 'konva/lib/Node';
 import type { Transformer as TransformerType } from 'konva/lib/shapes/Transformer';
 import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore';
@@ -45,7 +45,15 @@ interface CanvasData {
     data: { shapes: Shape[] };
 }
 
-const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: any }) => {
+// Define a type for the common props to avoid using `any`
+type CommonShapeProps = NodeConfig & {
+    onDragEnd: (e: KonvaEventObject<DragEvent>) => void;
+    onTransformEnd: (e: KonvaEventObject<Event>) => void;
+    onClick: (e: KonvaEventObject<MouseEvent>) => void;
+    onTap: (e: KonvaEventObject<MouseEvent>) => void;
+};
+
+const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: Partial<CommonShapeProps> }) => {
     const [image, setImage] = useState<HTMLImageElement | null>(null);
 
     useEffect(() => {
@@ -56,6 +64,10 @@ const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: any }) =>
             setImage(img);
         };
     }, [shape.src]);
+
+    if (!image) {
+        return null;
+    }
 
     return (
         <KonvaImage
@@ -103,7 +115,8 @@ const InfiniteCanvas = () => {
             setCurrentCanvasName(null);
           }
         } catch (error) {
-          toast.error('Failed to load canvas. It may not exist or you may not have permission to view it.');
+          console.error("Failed to load canvas:", error);
+          toast.error(`Failed to load canvas: ${error instanceof Error ? error.message : String(error)}`);
           setCurrentCanvasName(null);
         } finally {
           setIsLoading(false);
@@ -414,7 +427,7 @@ const InfiniteCanvas = () => {
           if (type === 'text') {
             const textBase = {
                 ...baseShape,
-                type: 'text',
+                type: 'text' as const,
                 fill: '#000000',
                 fontFamily: 'Inter',
             }

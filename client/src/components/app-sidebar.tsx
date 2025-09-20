@@ -6,24 +6,18 @@ import {
   AlignRight,
   ArrowLeft,
   ArrowRight,
-  AudioWaveform,
   Bold,
   ChevronRight,
   Circle,
-  Command,
   Eraser,
   File,
   Film,
-  Frame,
-  GalleryVerticalEnd,
   Heading1,
   Highlighter,
   Image,
   Italic,
   Link,
-  Map,
   Pen,
-  PieChart,
   Plus,
   RectangleHorizontal,
   Redo2,
@@ -68,6 +62,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { ImageUploadModal } from './image-upload-modal';
+import { initialData } from "@/lib/data";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -82,7 +77,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 
-import { Pencil, LucideIcon } from "lucide-react";
+import { Pencil, type LucideIcon } from "lucide-react";
 
 export type Project = {
   id: string;
@@ -470,58 +465,7 @@ const DrawProperties = () => {
 }
 
 
-// This is sample data.
-export const initialData = {
-  teams: [
-    {
-      name: "Nexus",
-      logo: GalleryVerticalEnd,
-      plan: "",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  projects: [
-    {
-      id: "proj-1",
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-      isFavorite: true,
-    },
-    {
-      id: "proj-2",
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-      isFavorite: false,
-    },
-    {
-      id: "proj-3",
-      name: "Travel",
-      url: "#",
-      icon: Map,
-      isFavorite: false,
-    },
-  ],
-  trash: [
-    {
-        id: "proj-4",
-        name: "Old Brainstorm",
-        url: "#",
-        icon: Trash2,
-        isFavorite: false,
-    }
-  ]
-}
+
 
 export function AppSidebar({ 
   setCreateModalOpen, 
