@@ -71,6 +71,7 @@ const InfiniteCanvas = () => {
   const { id: canvasId } = useParams<{ id: string }>();
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [isLoading, setIsLoading] = useState(true);
 
   const [stage, setStage] = useState({
     scale: 1,
@@ -89,6 +90,7 @@ const InfiniteCanvas = () => {
 
   // Fetch and load canvas data
   useEffect(() => {
+    setIsLoading(true);
     if (canvasId) {
       const fetchCanvasData = async () => {
         try {
@@ -103,20 +105,40 @@ const InfiniteCanvas = () => {
         } catch (error) {
           toast.error('Failed to load canvas. It may not exist or you may not have permission to view it.');
           setCurrentCanvasName(null);
+        } finally {
+          setIsLoading(false);
         }
       };
       fetchCanvasData();
     } else {
-        // If there is no canvasId, ensure we are starting with a fresh canvas
-        // and no name is displayed.
         setCanvas([]);
         setCurrentCanvasName(null);
+        setIsLoading(false);
     }
 
     // Reset stage position and zoom when canvas changes
     setStage({ scale: 1, x: 0, y: 0 });
 
   }, [canvasId, setCanvas, setCurrentCanvasName]);
+
+  // Set up ResizeObserver to keep canvas dimensions in sync with its container
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(() => {
+      setDimensions({
+        width: container.offsetWidth,
+        height: container.offsetHeight,
+      });
+    });
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []); // Empty dependency array ensures this runs once to set up the observer
 
   useEffect(() => {
     if (selectedId && trRef.current) {
@@ -255,7 +277,6 @@ const InfiniteCanvas = () => {
 
   const renderShape = (shape: Shape, i: number) => {
     const commonProps = {
-      key: shape.id,
       ref: (el: Konva.Node | null) => { shapeRefs.current[i] = el; },
       id: shape.id,
       x: shape.x,
@@ -308,20 +329,20 @@ const InfiniteCanvas = () => {
     switch (shape.type) {
       case 'rectangle':
       case 'square':
-        return <Rect {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} width={shape.width} height={shape.height} />;
+        return <Rect key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} width={shape.width} height={shape.height} />;
       case 'circle':
-        return <Circle {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} radius={shape.radius} />;
+        return <Circle key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} radius={shape.radius} />;
       case 'triangle':
-        return <RegularPolygon {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={3} radius={shape.radius || 60} />;
+        return <RegularPolygon key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={3} radius={shape.radius || 60} />;
       case 'star':
-        return <RegularPolygon {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
+        return <RegularPolygon key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
       case 'arrow':
-        return <Arrow {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
+        return <Arrow key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
       case 'line':
-        return <Line {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
+        return <Line key={shape.id} {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
       case 'text':
         return (
-            <Group {...commonProps}>
+            <Group key={shape.id} {...commonProps}>
                 {shape.backgroundColor && (
                     <Rect
                         width={shape.width}
@@ -344,7 +365,7 @@ const InfiniteCanvas = () => {
             </Group>
         )
       case 'image':
-        return <URLImage shape={shape} commonProps={commonProps} />;
+        return <URLImage key={shape.id} shape={shape} commonProps={commonProps} />;
       default:
         return null;
     }
@@ -352,7 +373,11 @@ const InfiniteCanvas = () => {
 
   return (
     <div className="relative w-full h-full flex flex-col">
-
+      {isLoading && (
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+          <p className="text-white text-lg">Loading Canvas...</p>
+        </div>
+      )}
       <div 
         ref={containerRef} 
         className="relative flex-1 w-full h-full"
