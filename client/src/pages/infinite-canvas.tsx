@@ -144,13 +144,16 @@ const InfiniteCanvas = () => {
 
     const handler = setTimeout(() => {
       const saveData = async () => {
+        const { setIsSaving, setLastSaved } = useAppStore.getState();
+        setIsSaving(true);
         try {
           await updateCanvas(canvasId, { data: { shapes } });
-          // Optional: show a subtle success indicator
-          // console.log('Canvas saved!');
+          setLastSaved(new Date());
         } catch (error) {
           console.error("Failed to save canvas:", error);
           toast.error(`Failed to save canvas: ${error instanceof Error ? error.message : String(error)}`);
+        } finally {
+          setIsSaving(false);
         }
       };
       saveData();

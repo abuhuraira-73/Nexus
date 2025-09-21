@@ -31,7 +31,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Download, MessageSquare, Presentation, Share2, Frame } from "lucide-react"
+import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2 } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { api, updateCanvasStatus } from '@/lib/api';
@@ -49,7 +49,19 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const { currentCanvasName } = useAppStore();
+  const { currentCanvasName, isSaving, lastSaved } = useAppStore();
+
+  const [showSavedIndicator, setShowSavedIndicator] = useState(false);
+
+  useEffect(() => {
+    if (lastSaved) {
+      setShowSavedIndicator(true);
+      const timer = setTimeout(() => {
+        setShowSavedIndicator(false);
+      }, 3000); // Hide after 3 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [lastSaved]);
 
   const [projects, setProjects] = useState<Project[]>([]);
   const [trashedProjects, setTrashedProjects] = useState<Project[]>([]);
@@ -220,6 +232,24 @@ export default function AppLayout() {
                 </BreadcrumbList>
               </Breadcrumb>
             </div>
+
+            {/* Save Status Indicator */}
+            <div className="flex-1 flex justify-center items-center">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground transition-opacity duration-300 ease-in-out">
+                    {isSaving ? (
+                        <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span>Saving...</span>
+                        </>
+                    ) : showSavedIndicator ? (
+                        <>
+                            <CheckCircle2 className="h-4 w-4 text-green-500" />
+                            <span>All changes saved</span>
+                        </>
+                    ) : null}
+                </div>
+            </div>
+
             <div className="ml-auto flex items-center gap-2 px-4">
               <DropdownMenu>
                 <Tooltip>
