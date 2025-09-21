@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { UploadCloud, X } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface ImageUploadModalProps {
     isOpen: boolean;
@@ -19,7 +20,12 @@ export const ImageUploadModal = ({ isOpen, onClose, onImageAdd }: ImageUploadMod
     const onDrop = useCallback((acceptedFiles: File[]) => {
         const file = acceptedFiles[0];
         if (file) {
-            // For now, we just handle the preview. Validation will be in the next step.
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                toast.error('Image size exceeds 5MB', {
+                    description: 'Please choose a smaller file.',
+                });
+                return;
+            }
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreview(reader.result as string);
@@ -61,7 +67,7 @@ export const ImageUploadModal = ({ isOpen, onClose, onImageAdd }: ImageUploadMod
                 <DialogHeader>
                     <DialogTitle>Upload Image</DialogTitle>
                     <DialogDescription>
-                        Drag and drop an image file here, or click to select a file. Max size: 2MB.
+                        Drag and drop an image file here, or click to select a file. Max size: 5MB.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">

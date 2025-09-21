@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { createCanvas, getCanvases, getCanvasById } = require('../controllers/canvasController');
+const { createCanvas, getCanvases, getCanvasById, updateCanvas } = require('../controllers/canvasController');
 const authMiddleware = require('../middleware/authMiddleware');
 
 // @route   POST /api/canvases
@@ -17,5 +17,10 @@ router.get('/', authMiddleware, getCanvases);
 // @desc    Get a canvas by ID
 // @access  Private
 router.get('/:id', authMiddleware, getCanvasById);
+
+// @route   PUT /api/canvases/:id
+// @desc    Update a canvas
+// @access  Private
+router.put('/:id', authMiddleware, updateCanvas);
 
 module.exports = router;

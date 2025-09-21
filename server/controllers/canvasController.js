@@ -60,6 +60,7 @@ const createCanvas = async (req, res) => {
     });
 
     const canvas = await newCanvas.save();
+    res.setHeader('Content-Type', 'application/json');
     res.status(201).json(canvas);
   } catch (err) {
     console.error(err.message);
@@ -67,4 +68,47 @@ const createCanvas = async (req, res) => {
   }
 };
 
-module.exports = { createCanvas, getCanvases, getCanvasById };
+const updateCanvas = async (req, res) => {
+  console.log('--- UPDATE CANVAS REQUEST RECEIVED ---');
+  console.log('Request Params ID:', req.params.id);
+  console.log('User ID from Token:', req.user.id);
+
+  const { name, data } = req.body;
+
+  try {
+    console.log('Searching for canvas with ID:', req.params.id);
+    let canvas = await Canvas.findById(req.params.id);
+
+    console.log('Canvas.findById result:', canvas);
+
+    if (!canvas) {
+      console.log('Canvas not found in database. Sending 404.');
+      return res.status(404).json({ msg: 'Canvas not found' });
+    }
+
+    // Ensure the user owns the canvas
+    if (canvas.user.toString() !== req.user.id) {
+      console.log('Authorization failed. User mismatch.');
+      return res.status(401).json({ msg: 'Not authorized' });
+    }
+
+    console.log('Canvas found and user authorized. Proceeding with update.');
+
+    // Update fields
+    if (name) canvas.name = name;
+    if (data) canvas.data = data;
+
+    canvas = await canvas.save();
+
+    console.log('Canvas updated and saved successfully.');
+    res.json(canvas);
+  } catch (err) {
+    console.error('--- ERROR IN updateCanvas ---', err.message);
+    if (err.kind === 'ObjectId') {
+        return res.status(404).json({ msg: 'Canvas not found' });
+    }
+    res.status(500).send('Server Error');
+  }
+};
+
+module.exports = { createCanvas, getCanvases, getCanvasById, updateCanvas };

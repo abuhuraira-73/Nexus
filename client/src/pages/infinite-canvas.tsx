@@ -6,10 +6,11 @@ import type { Transformer as TransformerType } from 'konva/lib/shapes/Transforme
 import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore';
 import { useAppStore } from '../store/appStore';
-import { api } from '@/lib/api';
+import { api, updateCanvas } from '@/lib/api';
 import { toast } from 'sonner';
 
 export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image';
+
 
 export interface Shape {
   id: string;
@@ -133,6 +134,34 @@ const InfiniteCanvas = () => {
     setStage({ scale: 1, x: 0, y: 0 });
 
   }, [canvasId, setCanvas, setCurrentCanvasName]);
+
+  // Auto-save canvas content with debounce
+  useEffect(() => {
+    // Don't save when the component is first loading or if there's no canvasId
+    if (isLoading || !canvasId) {
+      return;
+    }
+
+    const handler = setTimeout(() => {
+      const saveData = async () => {
+        try {
+          await updateCanvas(canvasId, { data: { shapes } });
+          // Optional: show a subtle success indicator
+          // console.log('Canvas saved!');
+        } catch (error) {
+          console.error("Failed to save canvas:", error);
+          toast.error(`Failed to save canvas: ${error instanceof Error ? error.message : String(error)}`);
+        }
+      };
+      saveData();
+    }, 1500); // Wait 1.5 seconds after the last change
+
+    // Cleanup function to cancel the timeout if shapes change again
+    return () => {
+      clearTimeout(handler);
+    };
+
+  }, [shapes, canvasId, isLoading]);
 
   // Set up ResizeObserver to keep canvas dimensions in sync with its container
   useEffect(() => {
