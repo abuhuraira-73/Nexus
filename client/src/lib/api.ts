@@ -64,3 +64,24 @@ export const updateCanvas = async (canvasId: string, canvasData: { name?: string
     body: JSON.stringify(canvasData),
   });
 };
+
+/**
+ * Fetches all canvases marked as 'trashed' for the current user.
+ */
+export const getTrashedCanvases = async () => {
+  return api('/api/canvases/trash');
+};
+
+/**
+ * Updates the status of a specific canvas.
+ *
+ * @param canvasId The ID of the canvas to update.
+ * @param status The new status: 'active', 'trashed', or 'archived'.
+ * @returns A promise that resolves to the updated canvas data.
+ */
+export const updateCanvasStatus = async (canvasId: string, status: 'active' | 'trashed' | 'archived') => {
+  return api(`/api/canvases/${canvasId}/status`, {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  });
+};

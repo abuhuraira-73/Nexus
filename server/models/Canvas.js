@@ -15,6 +15,11 @@ const CanvasSchema = new mongoose.Schema({
     type: Object,
     default: {},
   },
+  status: {
+    type: String,
+    enum: ['active', 'trashed', 'archived'],
+    default: 'active',
+  },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Canvas', CanvasSchema);

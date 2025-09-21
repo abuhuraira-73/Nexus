@@ -5,7 +5,7 @@ const Canvas = require('../models/Canvas');
 // @access  Private
 const getCanvases = async (req, res) => {
   try {
-    const canvases = await Canvas.find({ user: req.user.id }).sort({ updatedAt: -1 });
+    const canvases = await Canvas.find({ user: req.user.id, status: 'active' }).sort({ updatedAt: -1 });
     res.json(canvases);
   } catch (err) {
     console.error(err.message);
@@ -68,6 +68,9 @@ const createCanvas = async (req, res) => {
   }
 };
 
+// @route   PUT /api/canvases/:id
+// @desc    Update a canvas
+// @access  Private
 const updateCanvas = async (req, res) => {
   console.log('--- UPDATE CANVAS REQUEST RECEIVED ---');
   console.log('Request Params ID:', req.params.id);
@@ -111,4 +114,57 @@ const updateCanvas = async (req, res) => {
   }
 };
 
-module.exports = { createCanvas, getCanvases, getCanvasById, updateCanvas };
+// @route   GET /api/canvases/trash
+// @desc    Get all trashed canvases for a user
+// @access  Private
+const getTrashedCanvases = async (req, res) => {
+  try {
+    const canvases = await Canvas.find({ user: req.user.id, status: 'trashed' }).sort({ updatedAt: -1 });
+    res.json(canvases);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+// @route   PATCH /api/canvases/:id/status
+// @desc    Update canvas status (trash, restore, etc.)
+// @access  Private
+const updateCanvasStatus = async (req, res) => {
+  const { status } = req.body;
+
+  // Validate status
+  const allowedStatuses = ['active', 'trashed', 'archived'];
+  if (!allowedStatuses.includes(status)) {
+    return res.status(400).json({ msg: 'Invalid status update.' });
+  }
+
+  try {
+    let canvas = await Canvas.findById(req.params.id);
+
+    if (!canvas) {
+      return res.status(404).json({ msg: 'Canvas not found' });
+    }
+
+    if (canvas.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'Not authorized' });
+    }
+
+    canvas.status = status;
+    await canvas.save();
+
+    res.json(canvas);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+};
+
+module.exports = { 
+    createCanvas, 
+    getCanvases, 
+    getCanvasById, 
+    updateCanvas, 
+    getTrashedCanvases, 
+    updateCanvasStatus 
+};

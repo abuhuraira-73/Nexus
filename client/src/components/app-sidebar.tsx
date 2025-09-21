@@ -1,3 +1,5 @@
+'use client';
+
 import * as React from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import {
@@ -75,8 +77,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-
 import { Pencil, type LucideIcon } from "lucide-react";
 
 export type Project = {
@@ -464,20 +464,25 @@ const DrawProperties = () => {
   )
 }
 
-
-
-
 export function AppSidebar({ 
   setCreateModalOpen, 
   favoriteProjects,
   otherProjects,
   toggleFavorite,
+  onTrashCanvas,
+  trashedProjects,
+  onRestoreCanvas,
+  onPermanentDelete,
   ...props 
 }: React.ComponentProps<typeof Sidebar> & { 
   setCreateModalOpen: (isOpen: boolean) => void;
   favoriteProjects: Project[];
   otherProjects: Project[];
   toggleFavorite: (projectId: string) => void;
+  onTrashCanvas: (projectId: string) => void;
+  trashedProjects: Project[];
+  onRestoreCanvas: (projectId: string) => void;
+  onPermanentDelete: (projectId: string) => void;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -560,8 +565,8 @@ export function AppSidebar({
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarGroup>
-            <NavProjects projects={favoriteProjects} label="Favorites" onToggleFavorite={toggleFavorite} />
-            <NavProjects projects={otherProjects} label="All Canvases" onToggleFavorite={toggleFavorite} />
+            <NavProjects projects={favoriteProjects} label="Favorites" onToggleFavorite={toggleFavorite} onTrash={onTrashCanvas} />
+            <NavProjects projects={otherProjects} label="All Canvases" onToggleFavorite={toggleFavorite} onTrash={onTrashCanvas} />
             <SidebarGroup>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -575,26 +580,30 @@ export function AppSidebar({
                             <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
                                 <DropdownMenuLabel>Trash</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                {initialData.trash.map((item) => (
-                                    <DropdownMenuSub key={item.id}>
-                                        <DropdownMenuSubTrigger>
-                                            <item.icon className="mr-2 h-4 w-4" />
-                                            <span>{item.name}</span>
-                                        </DropdownMenuSubTrigger>
-                                        <DropdownMenuPortal>
-                                            <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
-                                                <DropdownMenuItem>
-                                                    <Undo2 className="mr-2 h-4 w-4" />
-                                                    <span>Restore</span>
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem className="text-red-500 focus:text-red-500">
-                                                    <Trash2 className="mr-2 h-4 w-4" />
-                                                    <span>Delete</span>
-                                                </DropdownMenuItem>
-                                            </DropdownMenuSubContent>
-                                        </DropdownMenuPortal>
-                                    </DropdownMenuSub>
-                                ))}
+                                {trashedProjects.length > 0 ? (
+                                    trashedProjects.map((item) => (
+                                        <DropdownMenuSub key={item.id}>
+                                            <DropdownMenuSubTrigger>
+                                                <item.icon className="mr-2 h-4 w-4" />
+                                                <span>{item.name}</span>
+                                            </DropdownMenuSubTrigger>
+                                            <DropdownMenuPortal>
+                                                <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                                                    <DropdownMenuItem onSelect={() => onRestoreCanvas(item.id)}>
+                                                        <Undo2 className="mr-2 h-4 w-4" />
+                                                        <span>Restore</span>
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem className="text-red-500 focus:text-red-500" onSelect={() => onPermanentDelete(item.id)}>
+                                                        <Trash2 className="mr-2 h-4 w-4" />
+                                                        <span>Delete Permanently</span>
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuSubContent>
+                                            </DropdownMenuPortal>
+                                        </DropdownMenuSub>
+                                    ))
+                                ) : (
+                                    <DropdownMenuItem disabled>Trash is empty</DropdownMenuItem>
+                                )}
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </SidebarMenuItem>

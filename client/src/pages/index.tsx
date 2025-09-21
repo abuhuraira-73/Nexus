@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useEffect } from "react";
 import { AppSidebar, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
@@ -32,7 +34,7 @@ import {
 import { Download, MessageSquare, Presentation, Share2, Frame } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import { api } from '@/lib/api';
+import { api, updateCanvasStatus } from '@/lib/api';
 
 // Define the type for the API response when creating a canvas
 interface CanvasResponse {
@@ -50,21 +52,35 @@ export default function AppLayout() {
   const { currentCanvasName } = useAppStore();
 
   const [projects, setProjects] = useState<Project[]>([]);
+  const [trashedProjects, setTrashedProjects] = useState<Project[]>([]);
   const [isLoadingCanvases, setIsLoadingCanvases] = useState(true);
 
   useEffect(() => {
-    const fetchCanvases = async () => {
+    const fetchAllCanvases = async () => {
       try {
         setIsLoadingCanvases(true);
-        const canvases = await api<CanvasResponse[]>(('/api/canvases'));
-        const formattedProjects: Project[] = canvases.map(canvas => ({
+        // Fetch active canvases
+        const activeCanvases = await api<CanvasResponse[]>(('/api/canvases'));
+        const formattedActive: Project[] = activeCanvases.map(canvas => ({
           id: canvas._id,
           name: canvas.name,
           url: `/app/canvas/${canvas._id}`,
-          icon: Frame, // Default icon
-          isFavorite: false, // Add logic for favorites later
+          icon: Frame,
+          isFavorite: false,
         }));
-        setProjects(formattedProjects);
+        setProjects(formattedActive);
+
+        // Fetch trashed canvases
+        const trashedCanvases = await api<CanvasResponse[]>(('/api/canvases/trash'));
+        const formattedTrashed: Project[] = trashedCanvases.map(canvas => ({
+          id: canvas._id,
+          name: canvas.name,
+          url: '#', // Trashed items don't navigate
+          icon: Frame,
+          isFavorite: false,
+        }));
+        setTrashedProjects(formattedTrashed);
+
       } catch (error) {
         console.error("Failed to fetch canvases:", error);
         toast.error(`Could not fetch your canvases: ${error instanceof Error ? error.message : String(error)}`);
@@ -73,7 +89,7 @@ export default function AppLayout() {
       }
     };
 
-    fetchCanvases();
+    fetchAllCanvases();
   }, []);
 
   const toggleFavorite = (projectId: string) => {
@@ -96,13 +112,11 @@ export default function AppLayout() {
     toast.promise(promise, {
       loading: 'Creating canvas...',
       success: (newCanvas) => {
-        // This is a temporary solution to add the new canvas to the UI.
-        // We should ideally fetch the updated list from the server.
         const newProject: Project = {
           id: newCanvas._id,
           name: newCanvas.name,
           url: `/app/canvas/${newCanvas._id}`,
-          icon: Frame, // Default icon, we might want to change this
+          icon: Frame,
           isFavorite: false,
         };
         setProjects((prevProjects) => [...prevProjects, newProject]);
@@ -110,6 +124,59 @@ export default function AppLayout() {
         return `Canvas "${newCanvas.name}" created!`;
       },
       error: 'Failed to create canvas',
+    });
+  };
+
+  const handleTrashCanvas = (canvasId: string) => {
+    const promise = updateCanvasStatus(canvasId, 'trashed');
+
+    toast.promise(promise, {
+      loading: 'Moving to trash...',
+      success: (updatedCanvas) => {
+        setProjects((prevProjects) => prevProjects.filter(p => p.id !== canvasId));
+        const trashedProject: Project = {
+            id: updatedCanvas._id,
+            name: updatedCanvas.name,
+            url: '#',
+            icon: Frame,
+            isFavorite: false,
+        };
+        setTrashedProjects(prev => [...prev, trashedProject]);
+        return `Canvas "${updatedCanvas.name}" moved to trash.`;
+      },
+      error: 'Failed to move to trash',
+    });
+  };
+
+  const handleRestoreCanvas = (canvasId: string) => {
+    const promise = updateCanvasStatus(canvasId, 'active');
+    toast.promise(promise, {
+      loading: 'Restoring canvas...',
+      success: (restoredCanvas) => {
+        setTrashedProjects(prev => prev.filter(p => p.id !== canvasId));
+        const restoredProject: Project = {
+          id: restoredCanvas._id,
+          name: restoredCanvas.name,
+          url: `/app/canvas/${restoredCanvas._id}`,
+          icon: Frame,
+          isFavorite: false,
+        };
+        setProjects(prev => [...prev, restoredProject]);
+        return `Canvas "${restoredCanvas.name}" restored.`;
+      },
+      error: 'Failed to restore canvas',
+    });
+  };
+
+  const handlePermanentDelete = (canvasId: string) => {
+    const promise = updateCanvasStatus(canvasId, 'archived');
+    toast.promise(promise, {
+      loading: 'Permanently deleting canvas...',
+      success: () => {
+        setTrashedProjects(prev => prev.filter(p => p.id !== canvasId));
+        return `Canvas permanently deleted.`;
+      },
+      error: 'Failed to permanently delete',
     });
   };
 
@@ -125,6 +192,10 @@ export default function AppLayout() {
         favoriteProjects={favoriteProjects}
         otherProjects={otherProjects}
         toggleFavorite={toggleFavorite}
+        onTrashCanvas={handleTrashCanvas}
+        trashedProjects={trashedProjects}
+        onRestoreCanvas={handleRestoreCanvas}
+        onPermanentDelete={handlePermanentDelete}
       />
       <SidebarInset>
         {isCanvasOpen && (
