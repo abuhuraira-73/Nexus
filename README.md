@@ -54,6 +54,9 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### ✅ Core Features (Implemented)
 
+*   **💾 Canvas Content Persistence:** The contents of each canvas (shapes, text, images, etc.) are now saved to the database with a debounced auto-save feature for a seamless user experience.
+*   **🗑️ Trash & Restore:** Canvases can be moved to a trash can instead of being deleted immediately. From the trash, they can either be restored or permanently deleted.
+*   **✨ Save Status Indicator:** The UI now provides real-time feedback in the header, showing when a canvas is being saved and confirming when all changes are saved.
 *   **☁️ Cloud Canvas Lifecycle:** Full end-to-end feature for creating canvases, which are saved to the database. Canvases are now fetched and listed in the sidebar, and can be opened to view their content.
 *   **🔐 User Authentication:** Secure login and registration pages, including backend API, frontend forms, and global state management.
 *   **👤 User Information Display:** The logged-in user's name and email are now displayed in the user navigation menu.

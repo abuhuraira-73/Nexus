@@ -229,6 +229,42 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 #### Immediate Priority: Save Canvas Content
 
+This feature is now complete.
+
+
+#### Future Roadmap
+
+Once the core feature of saving canvas content is complete, the following major features are next in line for development:
+
+*   **Core Functionality:**
+    *   **Deleting Canvases:** Implement the full lifecycle for deleting canvases (moving to trash, permanent deletion).
+    *   **Favorites System:** Persist the "favorite" status of canvases to the database.
+    *   **Image/File Uploads:** Connect the image upload modal to a backend storage solution.
+
+*   **Major New Features:**
+    *   **User Profile Management:** A dedicated page for users to manage their account details.
+    *   **Real-time Collaboration:** The largest upcoming feature, allowing multiple users to edit a canvas simultaneously.
+    *   **Advanced Drawing Tools:** Add tools like connectors and arrows for diagramming.
+    *   **Exporting:** Allow users to export their canvases to various formats (PNG, PDF, etc.).
+
+e.tsx` to guard routes.
+    *   **Integration:** Integrated `ProtectedRoute` into `client/src/App.tsx` to protect application routes, redirecting unauthenticated users to the login page.
+*   **Logout Functionality - Complete:**
+    *   **Implementation:** Added `handleLogout` function to `client/src/components/nav-user.tsx` to clear authentication state and redirect to the landing page (`/`).
+    *   **UI:** Styled the logout button red.
+    *   **Testing:** Verified successful logout and redirection.
+*   **UI/Error Handling Improvements - Complete:**
+    *   **Sonner Notifications:** Replaced all native `alert()` calls with `sonner.toast()` for consistent and styled notifications across `login-form.tsx`, `register-form.tsx`, and `nav-projects.tsx`.
+    *   **TypeScript Type Safety:** Fixed `any` to `unknown` and added type guards for error handling in forms.
+    *   **Linting/Syntax Fixes:** Resolved various ESLint and TypeScript errors, including unused imports and JSX syntax issues in `landing.tsx` and `nav-projects.tsx`.
+*   **Logo Updates:**
+    *   Replaced icon with Nexus logo (no shadow) on the Register page.
+    *   Replaced icon with Nexus logo (with shadow) on the Forgot Password page.
+
+### Current Status & Next Steps (as of end of day, September 20)
+
+#### Immediate Priority: Save Canvas Content
+
 The most critical feature to implement next is saving the actual content of the canvases (shapes, drawings, text, etc.) to the database. Without this, the application is not yet useful as a creative tool.
 
 **The Plan:**
