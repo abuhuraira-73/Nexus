@@ -80,7 +80,6 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### 🚀 Upcoming Features & Pages
 
-*   **💾 Canvas Content Persistence:** Saving the actual content (shapes, text, etc.) of a canvas to the database.
 *   **User Profile Management:** Allow users to view/edit their profile information.
 *   **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
 *   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.

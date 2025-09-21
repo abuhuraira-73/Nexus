@@ -44,6 +44,7 @@ interface CanvasData {
     _id: string;
     name: string;
     data: { shapes: Shape[] };
+    backgroundColor?: string;
 }
 
 // Define a type for the common props to avoid using `any`
@@ -92,7 +93,7 @@ const InfiniteCanvas = () => {
     y: 0,
   });
 
-  const { shapes, addShape, updateShape, deleteShape, selectedId, selectShape, mode, strokeColor, strokeWidth, setCanvas } = useCanvasStore();
+  const { shapes, addShape, updateShape, deleteShape, selectedId, selectShape, mode, strokeColor, strokeWidth, setCanvas, backgroundColor } = useCanvasStore();
   const { setCurrentCanvasName } = useAppStore();
 
   const [currentLine, setCurrentLine] = useState<Shape | null>(null);
@@ -109,7 +110,7 @@ const InfiniteCanvas = () => {
         try {
           const canvasData = await api<CanvasData>(`/api/canvases/${canvasId}`);
           if (canvasData) {
-            setCanvas(canvasData.data?.shapes || []);
+            setCanvas(canvasData.data?.shapes || [], canvasData.backgroundColor);
             setCurrentCanvasName(canvasData.name);
           } else {
             setCanvas([]);
@@ -147,7 +148,10 @@ const InfiniteCanvas = () => {
         const { setIsSaving, setLastSaved } = useAppStore.getState();
         setIsSaving(true);
         try {
-          await updateCanvas(canvasId, { data: { shapes } });
+          await updateCanvas(canvasId, { 
+            data: { shapes }, 
+            backgroundColor: backgroundColor 
+          });
           setLastSaved(new Date());
         } catch (error) {
           console.error("Failed to save canvas:", error);
@@ -164,7 +168,7 @@ const InfiniteCanvas = () => {
       clearTimeout(handler);
     };
 
-  }, [shapes, canvasId, isLoading]);
+  }, [shapes, backgroundColor, canvasId, isLoading]);
 
   // Set up ResizeObserver to keep canvas dimensions in sync with its container
   useEffect(() => {
@@ -426,6 +430,7 @@ const InfiniteCanvas = () => {
       <div 
         ref={containerRef} 
         className="relative flex-1 w-full h-full"
+        style={{ backgroundColor }}
         onDragOver={(e) => e.preventDefault()} // Allow drop
         onDrop={(e) => {
           e.preventDefault();

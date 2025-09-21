@@ -3,10 +3,14 @@ import type { Shape } from '../pages/infinite-canvas';
 
 export type CanvasMode = 'select' | 'draw' | 'erase';
 
+// The history will now store a tuple of [shapes, backgroundColor]
+type HistoryEntry = [Shape[], string];
+
 interface CanvasState {
   shapes: Shape[];
-  history: Shape[][]; // Array of past shape states
-  future: Shape[][]; // Array of future shape states for redo
+  backgroundColor: string;
+  history: HistoryEntry[];
+  future: HistoryEntry[];
   selectedId: string | null;
   mode: CanvasMode;
   strokeColor: string;
@@ -19,13 +23,15 @@ interface CanvasState {
   setMode: (mode: CanvasMode) => void;
   setStrokeColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
+  setBackgroundColor: (color: string) => void;
   undo: () => void;
   redo: () => void;
-  setCanvas: (shapes: Shape[]) => void; // New action
+  setCanvas: (shapes: Shape[], backgroundColor?: string) => void;
 }
 
 export const useCanvasStore = create<CanvasState>()((set) => ({
       shapes: [],
+      backgroundColor: '#F8F8F8', // Default background color
       history: [],
       future: [],
       selectedId: null,
@@ -35,18 +41,18 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
 
       addShape: (newShape) => {
         set((state) => {
-          const newHistory = [...state.history, state.shapes]; // Save current state to history
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
           return {
             shapes: [...state.shapes, newShape],
             history: newHistory,
-            future: [], // Clear future on new action
+            future: [],
           };
         });
       },
 
       updateShape: (updatedShape) => {
         set((state) => {
-          const newHistory = [...state.history, state.shapes]; // Save current state to history
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
           return {
             shapes: state.shapes.map((shape) =>
               shape.id === updatedShape.id
@@ -54,19 +60,19 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
                 : shape
             ),
             history: newHistory,
-            future: [], // Clear future on new action
+            future: [],
           };
         });
       },
 
       deleteShape: (id) => {
         set((state) => {
-          const newHistory = [...state.history, state.shapes]; // Save current state to history
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
           return {
             shapes: state.shapes.filter((shape) => shape.id !== id),
             history: newHistory,
-            future: [], // Clear future on new action
-            selectedId: null, // Deselect on deletion
+            future: [],
+            selectedId: null,
           };
         });
       },
@@ -79,43 +85,57 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
 
       setStrokeWidth: (width) => set({ strokeWidth: width }),
 
+      setBackgroundColor: (color) => {
+        set((state) => {
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
+          return {
+            backgroundColor: color,
+            history: newHistory,
+            future: [],
+          };
+        });
+      },
+
       undo: () => {
         set((state) => {
-          if (state.history.length === 0) return state; // Nothing to undo
+          if (state.history.length === 0) return state;
 
-          const previousShapes = state.history[state.history.length - 1];
-          const newHistory = state.history.slice(0, -1); // Remove last history entry
-          const newFuture = [state.shapes, ...state.future]; // Add current state to future
+          const [previousShapes, previousBgColor] = state.history[state.history.length - 1];
+          const newHistory = state.history.slice(0, -1);
+          const newFuture: HistoryEntry[] = [[state.shapes, state.backgroundColor], ...state.future];
 
           return {
             shapes: previousShapes,
+            backgroundColor: previousBgColor,
             history: newHistory,
             future: newFuture,
-            selectedId: null, // Deselect on undo
+            selectedId: null,
           };
         });
       },
 
       redo: () => {
         set((state) => {
-          if (state.future.length === 0) return state; // Nothing to redo
+          if (state.future.length === 0) return state;
 
-          const nextShapes = state.future[0];
-          const newFuture = state.future.slice(1); // Remove first future entry
-          const newHistory = [...state.history, state.shapes]; // Add current state to history
+          const [nextShapes, nextBgColor] = state.future[0];
+          const newFuture = state.future.slice(1);
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
 
           return {
             shapes: nextShapes,
+            backgroundColor: nextBgColor,
             history: newHistory,
             future: newFuture,
-            selectedId: null, // Deselect on redo
+            selectedId: null,
           };
         });
       },
 
-      setCanvas: (shapes) => {
+      setCanvas: (shapes, backgroundColor) => {
         set({
           shapes: shapes,
+          backgroundColor: backgroundColor || '#F8F8F8', // Use provided color or default
           history: [],
           future: [],
           selectedId: null,

@@ -132,6 +132,17 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 21, 2025
+*   **Canvas Content Persistence - Implemented & Verified:**
+    *   **Backend:** Confirmed the existence of the `PUT /api/canvases/:id` endpoint which receives canvas content and updates the corresponding document in the database.
+    *   **Frontend:** Verified that the canvas page (`infinite-canvas.tsx`) uses a debounced function to automatically send canvas content to the backend, creating a seamless auto-save experience.
+*   **Save Status Indicator - Implemented & Verified:**
+    *   **UI:** Confirmed that the main application layout (`index.tsx`) displays a real-time indicator in the header.
+    *   **Functionality:** The indicator shows a "Saving..." message while the API call is in progress and an "All changes saved" confirmation when the save is complete, providing clear feedback to the user.
+*   **Documentation:**
+    *   Updated `README.md` to move "Canvas Content Persistence" to the implemented features list.
+    *   Updated this `GEMINI_LOG.md` to reflect the latest implemented features.
+
 ### September 20, 2025
 *   **End-to-End Canvas Lifecycle - Implemented:**
     *   **Backend API:** Built a complete REST API for canvases (`/api/canvases`) including:
@@ -285,4 +296,3 @@ Once the core feature of saving canvas content is complete, the following major 
     *   **Real-time Collaboration:** The largest upcoming feature, allowing multiple users to edit a canvas simultaneously.
     *   **Advanced Drawing Tools:** Add tools like connectors and arrows for diagramming.
     *   **Exporting:** Allow users to export their canvases to various formats (PNG, PDF, etc.).
-

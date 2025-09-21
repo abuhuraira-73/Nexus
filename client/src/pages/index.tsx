@@ -31,6 +31,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { CanvasColorPicker } from "@/components/ui/canvas-color-picker";
 import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2 } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -251,6 +252,7 @@ export default function AppLayout() {
             </div>
 
             <div className="ml-auto flex items-center gap-2 px-4">
+              <CanvasColorPicker />
               <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
