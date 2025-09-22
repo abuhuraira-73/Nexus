@@ -5,6 +5,7 @@ import { Check, X, Zap, Twitter, Github, Linkedin } from "lucide-react";
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
 import PublicFooter from "@/components/public-footer";
 import { PricingToggle } from "@/components/pricing-toggle";
+import { motion, AnimatePresence } from "framer-motion";
 
 const pricingTiers = [
   {
@@ -152,9 +153,19 @@ export default function PricingPage() {
                           <CardHeader className="text-center">
                             <CardTitle className="text-3xl font-bold">{tier.name}</CardTitle>
                             <p className="text-gray-400 h-12">{tier.description}</p>
-                            <div className="text-5xl font-bold mt-4">
-                              {isYearly ? tier.priceYearly : tier.priceMonthly}
-                              {tier.name !== "Free" && <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>}
+                            <div className="text-5xl font-bold mt-4 h-16 flex items-center justify-center">
+                              <AnimatePresence mode="wait">
+                                <motion.div
+                                  key={isYearly ? "yearly" : "monthly"}
+                                  initial={{ opacity: 0, y: 20 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: -20 }}
+                                  transition={{ duration: 0.3 }}
+                                >
+                                  {isYearly ? tier.priceYearly : tier.priceMonthly}
+                                  {tier.name !== "Free" && <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>}
+                                </motion.div>
+                              </AnimatePresence>
                             </div>
                           </CardHeader>
                           <CardContent className="flex flex-col flex-grow">

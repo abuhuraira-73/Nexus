@@ -6,6 +6,7 @@ import { CheckCircle, Zap, Shield, Heart, Star, Users, BrainCircuit } from "luci
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
 import PublicFooter from "@/components/public-footer";
 import { PricingToggle } from "@/components/pricing-toggle";
+import { motion, AnimatePresence } from "framer-motion";
 
 const features = [
   { icon: <Zap className="h-8 w-8 text-white transition-colors duration-300" />, title: "Infinite Canvas", description: "Never run out of space. Pan, zoom, and create on a limitless canvas that grows with your ideas." },
@@ -215,8 +216,19 @@ export default function LandingPage() {
                         <CardHeader className="text-center">
                           <CardTitle className="text-3xl font-bold">Free</CardTitle>
                           <p className="text-gray-400 h-12">The Creative Sandbox</p>
-                          <div className="text-5xl font-bold mt-4">
-                            $0
+                          <div className="text-5xl font-bold mt-4 h-16 flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                              <motion.div
+                                key={isYearly ? "yearly" : "monthly"}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                $0
+                                <span className="text-lg font-normal text-gray-400">/{isYearly ? "yr" : "mo"}</span>
+                              </motion.div>
+                            </AnimatePresence>
                           </div>
                         </CardHeader>
                         <CardContent className="flex flex-col flex-grow">
@@ -232,9 +244,19 @@ export default function LandingPage() {
                         <CardHeader className="text-center">
                           <CardTitle className="text-3xl font-bold">Premium</CardTitle>
                           <p className="text-gray-300 h-12">The Collaboration & Pro Suite</p>
-                          <div className="text-5xl font-bold mt-4">
-                            {isYearly ? "$50" : "$5"}
-                            <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>
+                          <div className="text-5xl font-bold mt-4 h-16 flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                              <motion.div
+                                key={isYearly ? "yearly" : "monthly"}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                {isYearly ? "$50" : "$5"}
+                                <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>
+                              </motion.div>
+                            </AnimatePresence>
                           </div>
                         </CardHeader>
                         <CardContent className="flex flex-col flex-grow">
@@ -251,9 +273,19 @@ export default function LandingPage() {
                         <CardHeader className="text-center">
                           <CardTitle className="text-3xl font-bold">Enterprise</CardTitle>
                           <p className="text-gray-400 h-12">For Large Organizations</p>
-                           <div className="text-5xl font-bold mt-4">
-                            {isYearly ? "$110" : "$10"}
-                            <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>
+                           <div className="text-5xl font-bold mt-4 h-16 flex items-center justify-center">
+                            <AnimatePresence mode="wait">
+                              <motion.div
+                                key={isYearly ? "yearly" : "monthly"}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -20 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                {isYearly ? "$110" : "$10"}
+                                <span className="text-lg font-normal text-gray-400">/{isYearly ? "year" : "month"}</span>
+                              </motion.div>
+                            </AnimatePresence>
                           </div>
                         </CardHeader>
                         <CardContent className="flex flex-col flex-grow">
