@@ -14,6 +14,11 @@ if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
 const authRoutes = require('./routes/authRoutes');
 const canvasRoutes = require('./routes/canvasRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const passport = require('passport');
+
+// Passport config
+require('./config/passport')(passport);
+
 
 
 const app = express();
@@ -21,6 +26,9 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
+
+// Passport middleware
+app.use(passport.initialize());
 
 const connectDB = async () => {
   try {

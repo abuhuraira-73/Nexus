@@ -15,9 +15,12 @@ const userSchema = new mongoose.Schema({
       'Please add a valid email',
     ],
   },
-    password: {
+  googleId: {
     type: String,
-    required: [true, 'Please add a password'],
+  },
+  password: {
+    type: String,
+    required: function() { return !this.googleId; },
     minlength: 6,
     select: false,
   },

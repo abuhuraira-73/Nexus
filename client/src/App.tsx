@@ -13,6 +13,7 @@ import ForgotPasswordPage from './pages/forgot-password';
 import ContactPage from './pages/contact';
 import TermsOfServicePage from './pages/terms-of-service';
 import PrivacyPolicyPage from './pages/privacy-policy';
+import LoginSuccess from './pages/LoginSuccess'; // New import
 import Loader from './components/ui/loader';
 import { AnimatePresence } from 'framer-motion';
 import PageTransition from './components/page-transition';
@@ -68,6 +69,7 @@ function App() {
             <Route path="/login" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><LoginPage /></PageTransition>} />
             <Route path="/register" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><RegisterPage /></PageTransition>} />
             <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
+            <Route path="/login/success" element={<PageTransition><LoginSuccess /></PageTransition>} />
 
             {/* Protected Application Routes */}
             {/* All routes here are wrapped by ProtectedRoute */}
