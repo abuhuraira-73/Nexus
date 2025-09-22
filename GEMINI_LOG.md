@@ -133,9 +133,11 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
-*   **Next Task:** Redesign Canvas Text Boxes
-    *   **Objective:** Enhance the UI of text boxes on the canvas to resemble the card-based design of applications like Milanote, improving the overall aesthetic and user experience.
-    *   **Details:** This involves converting the current text elements into composite "note card" components. Each card will have a distinct background, border, and shadow. The work will require analyzing the current `react-konva` implementation and creating a new, styled component that combines `Konva.Rect` and `Konva.Text` to achieve the desired look and feel.
+*   **Next Task:** Implement Canvas Usability Features.
+    *   **Feature 1: Zoom Control & Display:** Add a UI element to show the current zoom percentage and allow users to set a specific zoom level. This involves moving the stage state to the global store.
+    *   **Feature 2: Snap to Grid:** Implement logic so that objects snap to an invisible grid when being moved, making alignment easier.
+    *   **Feature 3: Canvas Background Patterns:** Add UI controls and rendering logic to allow the canvas background to be set to patterns like dots or lines.
+    *   **Implementation Order:** 1. Zoom Control, 2. Snap to Grid, 3. Background Patterns.
 
 
 ### September 21, 2025
