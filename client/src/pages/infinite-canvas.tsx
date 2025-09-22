@@ -8,6 +8,7 @@ import { useCanvasStore } from '../store/canvasStore';
 import { useAppStore } from '../store/appStore';
 import { api, updateCanvas } from '@/lib/api';
 import { toast } from 'sonner';
+import { TextCard } from '@/components/canvas/TextCard';
 
 export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image';
 
@@ -29,15 +30,18 @@ export interface Shape {
   strokeWidth?: number;
   // Text-specific properties
   text?: string;
+  textColor?: string;
   fontSize?: number;
   fontFamily?: string;
   fontStyle?: string; // 'normal', 'bold', 'italic', 'bold italic'
   textDecoration?: string; // 'underline'
   align?: string; // 'left', 'center', 'right'
+  cornerRadius?: number; // For rounded corners on cards
   backgroundColor?: string; // For sticky note background
   padding?: number;
   // Image-specific properties
   src?: string;
+  opacity?: number;
 }
 
 interface CanvasData {
@@ -390,6 +394,9 @@ const InfiniteCanvas = () => {
       case 'line':
         return <Line key={shape.id} {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
       case 'text':
+        if (shape.subType === 'textCard') {
+          return <TextCard key={shape.id} shape={shape} {...commonProps} />;
+        }
         return (
             <Group key={shape.id} {...commonProps}>
                 {shape.backgroundColor && (
@@ -474,6 +481,9 @@ const InfiniteCanvas = () => {
                     break;
                 case 'stickyNote':
                     newShape = { ...textBase, subType, text: 'Sticky note...', fontSize: 18, width: 200, height: 200, backgroundColor: '#FFFFA5', padding: 20, fontFamily: 'Caveat' };
+                    break;
+                case 'textCard':
+                    newShape = { ...textBase, subType, text: 'New Text Card', fontSize: 14, width: 250, height: 58, backgroundColor: '#F9F9F9', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333', opacity: 1 };
                     break;
                 case 'plain':
                 default:

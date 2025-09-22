@@ -13,6 +13,7 @@ import {
   Circle,
   Eraser,
   File,
+  FileText,
   Film,
   Heading1,
   Highlighter,
@@ -104,8 +105,8 @@ const drawingTools = [
 ]
 
 const textTools = [
-    { name: "Plain Text", icon: Type, subType: 'plain' },
-    { name: "Heading", icon: Heading1, subType: 'heading' },
+    { name: "Text", icon: Type, subType: 'plain' },
+    { name: "Text Card", icon: FileText, subType: 'textCard' },
     { name: "Sticky Note", icon: StickyNote, subType: 'stickyNote' },
 ]
 
@@ -127,146 +128,163 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
   }
 
   return (
-    <SidebarGroup>
-      <SidebarGroupLabel>Tools</SidebarGroupLabel>
-      <SidebarMenu>
-        <SidebarMenuItem>
-            <SidebarMenuButton onClick={undo}>
-                <Undo2 />
-                <span>Undo</span>
+    <>
+      <SidebarGroup>
+        <SidebarGroupLabel>Actions</SidebarGroupLabel>
+        <SidebarMenu>
+          <SidebarMenuItem className="grid grid-cols-2 gap-2">
+            <SidebarMenuButton onClick={undo} className="justify-center">
+              <Undo2 />
+              <span className="sr-only">Undo</span>
             </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-            <SidebarMenuButton onClick={redo}>
-                <Redo2 />
-                <span>Redo</span>
+            <SidebarMenuButton onClick={redo} className="justify-center">
+              <Redo2 />
+              <span className="sr-only">Redo</span>
             </SidebarMenuButton>
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-            <SidebarMenuButton
-                onClick={toggleEraserMode}
-                isActive={mode === 'erase'}
-            >
-                <Eraser />
-                <span>Eraser</span>
-            </SidebarMenuButton>
-        </SidebarMenuItem>
-        <Collapsible asChild className="group/collapsible">
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarGroup>
+
+      <Separator className="my-2" />
+
+      <SidebarGroup>
+        <SidebarGroupLabel>Tools</SidebarGroupLabel>
+        <SidebarMenu>
+          {/* Text Tools */}
+          <Collapsible asChild className="group/collapsible">
             <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                    <SidebarMenuButton>
-                        <Pencil />
-                        <span>Draw</span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                    </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                    <SidebarMenuSub>
-                        {drawingTools.map((tool) => (
-                            <SidebarMenuSubItem key={tool.name}>
-                                <SidebarMenuSubButton
-                                    onClick={tool.isFunctional ? toggleDrawMode : undefined}
-                                    className="text-sidebar-foreground/70"
-                                    isActive={tool.isFunctional && mode === 'draw'}
-                                >
-                                    <tool.icon className="text-muted-foreground" />
-                                    <span>{tool.name}</span>
-                                </SidebarMenuSubButton>
-                            </SidebarMenuSubItem>
-                        ))}
-                    </SidebarMenuSub>
-                </CollapsibleContent>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton>
+                  <Type />
+                  <span>Text</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {textTools.map((tool) => (
+                    <SidebarMenuSubItem key={tool.name}>
+                      <SidebarMenuSubButton
+                        className="text-sidebar-foreground/70"
+                        draggable={true}
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData("application/reactflow", "text");
+                          e.dataTransfer.setData("application/subtype", tool.subType);
+                          e.dataTransfer.effectAllowed = "move";
+                        }}
+                      >
+                        <tool.icon className="text-muted-foreground" />
+                        <span>{tool.name}</span>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
             </SidebarMenuItem>
-        </Collapsible>
-        <Collapsible asChild className="group/collapsible">
+          </Collapsible>
+
+          {/* Shape Tools */}
+          <Collapsible asChild className="group/collapsible">
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton>
+                  <Shapes />
+                  <span>Shapes</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {shapeTools.map((tool) => (
+                    <SidebarMenuSubItem key={tool.name}>
+                      <SidebarMenuSubButton
+                        className="text-sidebar-foreground/70"
+                        draggable={true}
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData("application/reactflow", tool.type);
+                          e.dataTransfer.effectAllowed = "move";
+                        }}
+                      >
+                        <tool.icon className="text-muted-foreground" />
+                        <span>{tool.name}</span>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+
+          {/* Drawing Tools */}
+          <Collapsible asChild className="group/collapsible">
+              <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                      <SidebarMenuButton>
+                          <Pencil />
+                          <span>Draw</span>
+                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                      <SidebarMenuSub>
+                          {drawingTools.map((tool) => (
+                              <SidebarMenuSubItem key={tool.name}>
+                                  <SidebarMenuSubButton
+                                      onClick={tool.isFunctional ? toggleDrawMode : undefined}
+                                      className="text-sidebar-foreground/70"
+                                      isActive={tool.isFunctional && mode === 'draw'}
+                                  >
+                                      <tool.icon className="text-muted-foreground" />
+                                      <span>{tool.name}</span>
+                                  </SidebarMenuSubButton>
+                              </SidebarMenuSubItem>
+                          ))}
+                      </SidebarMenuSub>
+                  </CollapsibleContent>
+              </SidebarMenuItem>
+          </Collapsible>
+
+          {/* Media Tools */}
+          <Collapsible asChild className="group/collapsible">
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton>
+                  <Film />
+                  <span>Media</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {mediaTools.map((tool) => (
+                    <SidebarMenuSubItem key={tool.name}>
+                      <SidebarMenuSubButton
+                        className="text-sidebar-foreground/70"
+                        onClick={onImageToolClick}
+                      >
+                        <tool.icon className="text-muted-foreground" />
+                        <span>{tool.name}</span>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+
+          {/* Eraser */}
           <SidebarMenuItem>
-            <CollapsibleTrigger asChild>
-              <SidebarMenuButton>
-                <Shapes />
-                <span>Shapes</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              <SidebarMenuButton
+                  onClick={toggleEraserMode}
+                  isActive={mode === 'erase'}
+              >
+                  <Eraser />
+                  <span>Eraser</span>
               </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                {shapeTools.map((tool) => (
-                  <SidebarMenuSubItem key={tool.name}>
-                    <SidebarMenuSubButton
-                      className="text-sidebar-foreground/70"
-                      draggable={true}
-                      onDragStart={(e) => {
-                        e.dataTransfer.setData("application/reactflow", tool.type);
-                        e.dataTransfer.effectAllowed = "move";
-                      }}
-                    >
-                      <tool.icon className="text-muted-foreground" />
-                      <span>{tool.name}</span>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
-              </SidebarMenuSub>
-            </CollapsibleContent>
           </SidebarMenuItem>
-        </Collapsible>
-        <Collapsible asChild className="group/collapsible">
-          <SidebarMenuItem>
-            <CollapsibleTrigger asChild>
-              <SidebarMenuButton>
-                <Type />
-                <span>Text</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                {textTools.map((tool) => (
-                  <SidebarMenuSubItem key={tool.name}>
-                    <SidebarMenuSubButton
-                      className="text-sidebar-foreground/70"
-                      draggable={true}
-                      onDragStart={(e) => {
-                        e.dataTransfer.setData("application/reactflow", "text");
-                        e.dataTransfer.setData("application/subtype", tool.subType);
-                        e.dataTransfer.effectAllowed = "move";
-                      }}
-                    >
-                      <tool.icon className="text-muted-foreground" />
-                      <span>{tool.name}</span>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </SidebarMenuItem>
-        </Collapsible>
-        <Collapsible asChild className="group/collapsible">
-          <SidebarMenuItem>
-            <CollapsibleTrigger asChild>
-              <SidebarMenuButton>
-                <Film />
-                <span>Media</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                {mediaTools.map((tool) => (
-                  <SidebarMenuSubItem key={tool.name}>
-                    <SidebarMenuSubButton
-                      className="text-sidebar-foreground/70"
-                      onClick={onImageToolClick}
-                    >
-                      <tool.icon className="text-muted-foreground" />
-                      <span>{tool.name}</span>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSubItem>
-                ))}
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </SidebarMenuItem>
-        </Collapsible>
-      </SidebarMenu>
-    </SidebarGroup>
+        </SidebarMenu>
+      </SidebarGroup>
+    </>
   );
 };
 
@@ -410,15 +428,66 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                         <Input id="font-size" type="number" value={shape.fontSize} onChange={(e) => updateShape({ id: shape.id, fontSize: parseInt(e.target.value, 10) || 16 })} />
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="font-color">Font Color</Label>
-                        <Input id="font-color" type="color" className="h-8" value={shape.fill} onChange={(e) => updateShape({ id: shape.id, fill: e.target.value })} />
+                        <Label htmlFor="opacity">Opacity</Label>
+                        <div className="flex items-center gap-2">
+                            <Input 
+                                id="opacity" 
+                                type="number" 
+                                min="0" 
+                                max="100" 
+                                value={Math.round((shape.opacity ?? 1) * 100)} 
+                                onChange={(e) => {
+                                    const percentage = parseInt(e.target.value, 10) || 0;
+                                    updateShape({ id: shape.id, opacity: Math.max(0, Math.min(100, percentage)) / 100 });
+                                }}
+                            />
+                            <span className="text-sm text-muted-foreground">%</span>
+                        </div>
                     </div>
                 </div>
-                {shape.subType === 'stickyNote' && (
+
+                <Separator className="my-2" />
+                <SidebarGroupLabel>Colors</SidebarGroupLabel>
+                <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="bg-color">Background</Label>
-                        <Input id="bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShape({ id: shape.id, backgroundColor: e.target.value })} />
+                        <Label htmlFor="font-color">Font</Label>
+                        <Input id="font-color" type="color" className="h-8" value={shape.textColor} onChange={(e) => updateShape({ id: shape.id, textColor: e.target.value })} />
                     </div>
+                    {shape.subType === 'textCard' && (
+                        <div className="grid gap-2">
+                            <Label htmlFor="card-bg-color">Card</Label>
+                            <Input id="card-bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShape({ id: shape.id, backgroundColor: e.target.value })} />
+                        </div>
+                    )}
+                    {shape.subType === 'textCard' && (
+                         <div className="grid gap-2">
+                            <Label htmlFor="card-border-color">Border</Label>
+                            <Input id="card-border-color" type="color" className="h-8" value={shape.stroke} onChange={(e) => updateShape({ id: shape.id, stroke: e.target.value })} />
+                        </div>
+                    )}
+                    {shape.subType === 'stickyNote' && (
+                        <div className="grid gap-2">
+                            <Label htmlFor="bg-color">Background</Label>
+                            <Input id="bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShape({ id: shape.id, backgroundColor: e.target.value })} />
+                        </div>
+                    )}
+                </div>
+
+                {shape.subType === 'textCard' && (
+                    <>
+                        <Separator className="my-4" />
+                        <SidebarGroupLabel>Card Properties</SidebarGroupLabel>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className="grid gap-2">
+                                <Label htmlFor="corner-radius">Corners</Label>
+                                <Input id="corner-radius" type="number" value={shape.cornerRadius} onChange={(e) => updateShape({ id: shape.id, cornerRadius: parseInt(e.target.value, 10) || 0 })} />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="shadow-blur">Shadow</Label>
+                                <Input id="shadow-blur" type="number" value={shape.shadowBlur} onChange={(e) => updateShape({ id: shape.id, shadowBlur: parseInt(e.target.value, 10) || 0 })} />
+                            </div>
+                        </div>
+                    </>
                 )}
             </div>
         </SidebarGroup>
