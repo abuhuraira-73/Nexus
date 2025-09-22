@@ -57,6 +57,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "./ui/separator";
 import { Label } from "./ui/label";
@@ -150,7 +151,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                 <span>Eraser</span>
             </SidebarMenuButton>
         </SidebarMenuItem>
-        <Collapsible asChild className="group/collapsible" defaultOpen>
+        <Collapsible asChild className="group/collapsible">
             <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
                     <SidebarMenuButton>
@@ -177,7 +178,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                 </CollapsibleContent>
             </SidebarMenuItem>
         </Collapsible>
-        <Collapsible asChild className="group/collapsible" defaultOpen>
+        <Collapsible asChild className="group/collapsible">
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton>
@@ -207,7 +208,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
             </CollapsibleContent>
           </SidebarMenuItem>
         </Collapsible>
-        <Collapsible asChild className="group/collapsible" defaultOpen>
+        <Collapsible asChild className="group/collapsible">
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton>
@@ -238,7 +239,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
             </CollapsibleContent>
           </SidebarMenuItem>
         </Collapsible>
-        <Collapsible asChild className="group/collapsible" defaultOpen>
+        <Collapsible asChild className="group/collapsible">
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton>
@@ -612,11 +613,11 @@ export function AppSidebar({
           </div>
         )}
       </SidebarContent>
-      {!isCanvasOpen && (
-        <SidebarFooter className="pb-4">
+      <SidebarFooter className="mt-auto pb-4">
+        <div className="flex-grow">
           <NavUser />
-        </SidebarFooter>
-      )}
+        </div>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )
