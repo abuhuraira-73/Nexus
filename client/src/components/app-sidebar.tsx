@@ -539,7 +539,7 @@ export function AppSidebar({
   };
 
   return (
-    <Sidebar collapsible="icon" variant="floating" {...props}>
+    <Sidebar collapsible="icon" variant="floating" className="bg-black/50 backdrop-blur-sm" {...props}>
         <ImageUploadModal 
             isOpen={isImageModalOpen} 
             onClose={() => setIsImageModalOpen(false)} 

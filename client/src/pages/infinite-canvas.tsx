@@ -421,7 +421,7 @@ const InfiniteCanvas = () => {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col">
+    <div className="absolute inset-0">
       {isLoading && (
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <p className="text-white text-lg">Loading Canvas...</p>
@@ -429,7 +429,7 @@ const InfiniteCanvas = () => {
       )}
       <div 
         ref={containerRef} 
-        className="relative flex-1 w-full h-full"
+        className="absolute inset-0"
         style={{ backgroundColor }}
         onDragOver={(e) => e.preventDefault()} // Allow drop
         onDrop={(e) => {

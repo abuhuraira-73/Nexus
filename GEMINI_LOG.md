@@ -132,6 +132,11 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
+### September 22, 2025
+*   **Next Task:** Refactor the layout for the infinite canvas page.
+    *   **Objective:** Create a more immersive user experience by making the infinite canvas take up the full screen.
+    *   **Details:** When a user opens a canvas, the main content area will be removed. The infinite canvas will expand to fill the entire viewport. The existing glassmorphic top bar and the canvas tools sidebar will float on top of the canvas, providing a seamless, layered interface. The main application sidebar, which lists the user's canvases, will remain unchanged and function as it does now on the home page. This change is specific to the canvas view to maximize the creative workspace.
+
 ### September 21, 2025
 *   **Canvas Content Persistence - Implemented & Verified:**
     *   **Backend:** Confirmed the existence of the `PUT /api/canvases/:id` endpoint which receives canvas content and updates the corresponding document in the database.
