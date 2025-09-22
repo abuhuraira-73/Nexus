@@ -6,7 +6,7 @@ export default function PublicHeader() {
   return (
     <header className="sticky top-0 z-50 px-4 lg:px-6 h-16 flex items-center bg-black/30 backdrop-blur-lg">
       <a className="flex items-center justify-center" href="/">
-        <img src="/Nexus-Logo.png" alt="Nexus Logo" className="h-8 w-8" style={{ filter: 'drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 20px #8A2BE2)' }} />
+        <img src="/Nexus-N-png.png" alt="Nexus Logo" className="h-8 w-8" />
         <span className="ml-2 font-semibold text-lg">Nexus</span>
       </a>
       <nav className="ml-auto flex items-center gap-4 sm:gap-6">

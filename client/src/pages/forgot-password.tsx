@@ -7,7 +7,7 @@ export default function ForgotPasswordPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <a href="/" className="flex items-center gap-2 font-medium">
-            <img src="/Nexus-Logo.png" alt="Nexus Logo" className="h-8 w-8" style={{ filter: 'drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 20px #8A2BE2)' }} />
+            <img src="/Nexus-N-png.png" alt="Nexus Logo" className="h-8 w-8" />
             Nexus
           </a>
         </div>

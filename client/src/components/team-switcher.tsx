@@ -46,7 +46,7 @@ export function TeamSwitcher({
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                 {activeTeam.name === 'Nexus' ? (
-                  <img src="/Nexus-Logo.png" alt="Nexus Logo" className="h-6 w-6" style={{ filter: 'drop-shadow(0 0 8px #8A2BE2) drop-shadow(0 0 20px #8A2BE2)' }} />
+                  <img src="/Nexus-N-png.png" alt="Nexus Logo" className="h-6 w-6" />
                 ) : (
                   <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-full items-center justify-center rounded-lg">
                     <activeTeam.logo className="size-4" />
