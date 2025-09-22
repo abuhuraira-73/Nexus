@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { Shape } from '../pages/infinite-canvas';
 
 export type CanvasMode = 'select' | 'draw' | 'erase';
+export type BackgroundPattern = 'solid' | 'dotted' | 'lined';
 
 // The history will now store a tuple of [shapes, backgroundColor]
 type HistoryEntry = [Shape[], string];
@@ -9,6 +10,7 @@ type HistoryEntry = [Shape[], string];
 interface CanvasState {
   shapes: Shape[];
   backgroundColor: string;
+  backgroundPattern: BackgroundPattern;
   history: HistoryEntry[];
   future: HistoryEntry[];
   selectedId: string | null;
@@ -27,6 +29,7 @@ interface CanvasState {
   setStrokeColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
   setBackgroundColor: (color: string) => void;
+  setBackgroundPattern: (pattern: BackgroundPattern) => void;
   setStage: (stage: { scale?: number; x?: number; y?: number }) => void;
   undo: () => void;
   redo: () => void;
@@ -36,6 +39,7 @@ interface CanvasState {
 export const useCanvasStore = create<CanvasState>()((set) => ({
       shapes: [],
       backgroundColor: '#F8F8F8', // Default background color
+      backgroundPattern: 'solid',
       history: [],
       future: [],
       selectedId: null,
@@ -108,6 +112,8 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
           };
         });
       },
+
+      setBackgroundPattern: (pattern) => set({ backgroundPattern: pattern }),
 
       undo: () => {
         set((state) => {

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AppSidebar, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
 import { useAppStore } from "@/store/appStore";
+import { useCanvasStore, type BackgroundPattern } from "@/store/canvasStore";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -34,7 +35,7 @@ import {
 } from "@/components/ui/tooltip"
 import { CanvasColorPicker } from "@/components/ui/canvas-color-picker";
 import { ZoomControl } from "@/components/ui/zoom-control";
-import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2 } from "lucide-react"
+import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2, Grid3x3 } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { api, updateCanvasStatus } from '@/lib/api';
@@ -53,6 +54,7 @@ function AppLayoutContent() {
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const { currentCanvasName, isSaving, lastSaved } = useAppStore();
+  const { setBackgroundPattern } = useCanvasStore();
   const { state: sidebarState } = useSidebar();
 
   const [showSavedIndicator, setShowSavedIndicator] = useState(false);
@@ -259,6 +261,26 @@ function AppLayoutContent() {
 
             <div className="flex items-center gap-2">
               <CanvasColorPicker />
+              <DropdownMenu>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon">
+                        <Grid3x3 className="h-4 w-4" />
+                        <span className="sr-only">Change Background</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Change Background</p>
+                  </TooltipContent>
+                </Tooltip>
+                <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                  <DropdownMenuItem onSelect={() => setBackgroundPattern('solid')}>Solid</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setBackgroundPattern('dotted')}>Dotted</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setBackgroundPattern('lined')}>Lined</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>

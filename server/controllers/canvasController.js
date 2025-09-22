@@ -72,7 +72,7 @@ const createCanvas = async (req, res) => {
 // @desc    Update a canvas
 // @access  Private
 const updateCanvas = async (req, res) => {
-  const { name, data, backgroundColor } = req.body;
+  const { name, data, backgroundColor, backgroundPattern } = req.body;
 
   try {
     let canvas = await Canvas.findById(req.params.id);
@@ -90,6 +90,7 @@ const updateCanvas = async (req, res) => {
     if (name) canvas.name = name;
     if (data) canvas.data = data;
     if (backgroundColor) canvas.backgroundColor = backgroundColor;
+    if (backgroundPattern) canvas.backgroundPattern = backgroundPattern;
 
     canvas = await canvas.save();
 

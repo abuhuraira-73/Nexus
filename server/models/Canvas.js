@@ -17,7 +17,11 @@ const CanvasSchema = new mongoose.Schema({
   },
   backgroundColor: {
     type: String,
-    default: '#F8F8F8',
+    default: '#F8F8F8'
+  },
+  backgroundPattern: {
+    type: String,
+    default: 'solid'
   },
   status: {
     type: String,

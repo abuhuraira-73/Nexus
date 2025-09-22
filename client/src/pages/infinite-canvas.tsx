@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Stage, Layer, Rect, Circle, RegularPolygon, Arrow, Transformer, Line, Text, Group, Image as KonvaImage } from 'react-konva';
 import type { KonvaEventObject, NodeConfig } from 'konva/lib/Node';
@@ -86,6 +86,8 @@ const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: Partial<C
 };
 
 const InfiniteCanvas = () => {
+  const gridSize = 20;
+  const getSnapPosition = (pos: number) => Math.round(pos / gridSize) * gridSize;
   const { id: canvasId } = useParams<{ id: string }>();
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
@@ -106,7 +108,8 @@ const InfiniteCanvas = () => {
     stageScale, 
     stageX, 
     stageY, 
-    setStage 
+    setStage, 
+    backgroundPattern
   } = useCanvasStore();
   const { setCurrentCanvasName } = useAppStore();
 
@@ -164,7 +167,8 @@ const InfiniteCanvas = () => {
         try {
           await updateCanvas(canvasId, { 
             data: { shapes }, 
-            backgroundColor: backgroundColor 
+            backgroundColor: backgroundColor, 
+            backgroundPattern: backgroundPattern 
           });
           setLastSaved(new Date());
         } catch (error) {
@@ -182,7 +186,7 @@ const InfiniteCanvas = () => {
       clearTimeout(handler);
     };
 
-  }, [shapes, backgroundColor, canvasId, isLoading]);
+  }, [shapes, backgroundColor, backgroundPattern, canvasId, isLoading]);
 
   // Set up ResizeObserver to keep canvas dimensions in sync with its container
   useEffect(() => {
@@ -232,6 +236,21 @@ const InfiniteCanvas = () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [selectedId, deleteShape, selectShape]);
+
+  const backgroundStyle = React.useMemo(() => {
+    const style: React.CSSProperties = { backgroundColor };
+    const dotColor = 'rgba(0,0,0,0.1)';
+    const lineColor = 'rgba(0,0,0,0.07)';
+
+    if (backgroundPattern === 'dotted') {
+      style.backgroundImage = `radial-gradient(${dotColor} 1px, transparent 1px)`;
+      style.backgroundSize = `20px 20px`;
+    } else if (backgroundPattern === 'lined') {
+      style.backgroundImage = `linear-gradient(to bottom, ${lineColor} 1px, transparent 1px)`;
+      style.backgroundSize = `100% 20px`;
+    }
+    return style;
+  }, [backgroundColor, backgroundPattern]);
 
 
   const handleWheel = (e: KonvaEventObject<WheelEvent>) => {
@@ -369,7 +388,9 @@ const InfiniteCanvas = () => {
         e.evt.stopPropagation();
       },
       onDragEnd: (e: KonvaEventObject<DragEvent>) => {
-        updateShape({ ...shape, x: e.target.x(), y: e.target.y() });
+        const newX = getSnapPosition(e.target.x());
+        const newY = getSnapPosition(e.target.y());
+        updateShape({ ...shape, x: newX, y: newY });
       },
       onTransformEnd: (e: KonvaEventObject<Event>) => {
         const node = e.target;
@@ -447,7 +468,7 @@ const InfiniteCanvas = () => {
       <div 
         ref={containerRef} 
         className="absolute inset-0"
-        style={{ backgroundColor }}
+        style={backgroundStyle}
         onDragOver={(e) => e.preventDefault()} // Allow drop
         onDrop={(e) => {
           e.preventDefault();
