@@ -91,13 +91,23 @@ const InfiniteCanvas = () => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [isLoading, setIsLoading] = useState(true);
 
-  const [stage, setStage] = useState({
-    scale: 1,
-    x: 0,
-    y: 0,
-  });
-
-  const { shapes, addShape, updateShape, deleteShape, selectedId, selectShape, mode, strokeColor, strokeWidth, setCanvas, backgroundColor } = useCanvasStore();
+  const { 
+    shapes, 
+    addShape, 
+    updateShape, 
+    deleteShape, 
+    selectedId, 
+    selectShape, 
+    mode, 
+    strokeColor, 
+    strokeWidth, 
+    setCanvas, 
+    backgroundColor, 
+    stageScale, 
+    stageX, 
+    stageY, 
+    setStage 
+  } = useCanvasStore();
   const { setCurrentCanvasName } = useAppStore();
 
   const [currentLine, setCurrentLine] = useState<Shape | null>(null);
@@ -233,8 +243,8 @@ const InfiniteCanvas = () => {
     const pointer = stage.getPointerPosition();
     if (!pointer) return;
     const mousePointTo = {
-      x: pointer.x / oldScale - stage.x() / oldScale,
-      y: pointer.y / oldScale - stage.y() / oldScale,
+      x: pointer.x / oldScale - stageX / oldScale,
+      y: pointer.y / oldScale - stageY / oldScale,
     };
     const newScale = e.evt.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
     setStage({
@@ -248,7 +258,7 @@ const InfiniteCanvas = () => {
     // only update stage position if the drag was directly on the stage
     if (e.target === e.currentTarget) {
       if (mode === 'select') {
-        setStage({ ...stage, x: e.target.x(), y: e.target.y() });
+        setStage({ x: e.target.x(), y: e.target.y() });
       }
     }
   };
@@ -455,8 +465,8 @@ const InfiniteCanvas = () => {
           };
 
           const newPos = {
-            x: (position.x - stage.x) / stage.scale,
-            y: (position.y - stage.y) / stage.scale,
+            x: (position.x - stageX) / stageScale,
+            y: (position.y - stageY) / stageScale,
           };
 
           let newShape: Shape;
@@ -531,10 +541,10 @@ const InfiniteCanvas = () => {
           onWheel={handleWheel}
           onDragEnd={handleStageDragEnd}
           draggable={mode === 'select'}
-          scaleX={stage.scale}
-          scaleY={stage.scale}
-          x={stage.x}
-          y={stage.y}
+          scaleX={stageScale}
+          scaleY={stageScale}
+          x={stageX}
+          y={stageY}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}

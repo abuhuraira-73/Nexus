@@ -33,6 +33,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { CanvasColorPicker } from "@/components/ui/canvas-color-picker";
+import { ZoomControl } from "@/components/ui/zoom-control";
 import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2 } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -232,6 +233,11 @@ function AppLayoutContent() {
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
+            </div>
+
+            {/* Zoom Control */}
+            <div className="flex-1 flex justify-center">
+              {isCanvasOpen && <ZoomControl />}
             </div>
 
             {/* Save Status Indicator */}

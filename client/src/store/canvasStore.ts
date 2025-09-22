@@ -15,6 +15,9 @@ interface CanvasState {
   mode: CanvasMode;
   strokeColor: string;
   strokeWidth: number;
+  stageScale: number;
+  stageX: number;
+  stageY: number;
 
   addShape: (newShape: Shape) => void;
   updateShape: (updatedShape: Partial<Shape> & { id: string }) => void;
@@ -24,6 +27,7 @@ interface CanvasState {
   setStrokeColor: (color: string) => void;
   setStrokeWidth: (width: number) => void;
   setBackgroundColor: (color: string) => void;
+  setStage: (stage: { scale?: number; x?: number; y?: number }) => void;
   undo: () => void;
   redo: () => void;
   setCanvas: (shapes: Shape[], backgroundColor?: string) => void;
@@ -38,6 +42,9 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
       mode: 'select',
       strokeColor: '#000000',
       strokeWidth: 2,
+      stageScale: 1,
+      stageX: 0,
+      stageY: 0,
 
       addShape: (newShape) => {
         set((state) => {
@@ -84,6 +91,12 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
       setStrokeColor: (color) => set({ strokeColor: color }),
 
       setStrokeWidth: (width) => set({ strokeWidth: width }),
+
+      setStage: (stage) => set((state) => ({ 
+        stageScale: stage.scale ?? state.stageScale, 
+        stageX: stage.x ?? state.stageX, 
+        stageY: stage.y ?? state.stageY 
+      })),
 
       setBackgroundColor: (color) => {
         set((state) => {
