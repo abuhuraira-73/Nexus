@@ -40,6 +40,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 ### Backend (provisional)
 *   **Runtime:** Node.js + Express
 *   **Database:** MongoDB (Mongoose) / MongoDB Atlas (for production)
+*   **Authentication:** passport, passport-google-oauth20, jsonwebtoken, bcryptjs
 *   **Real-time Communication:** [To be decided: e.g., Socket.IO server] - *New*
 
 ---
@@ -82,7 +83,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
 ### Planned / Advanced Features (Paid/Premium Version)
 *   **Rich Content Types:** Drag & drop images, embed links, upload files (PDFs, videos).
 *   **Real-time Collaboration:** Multi-user editing with presence indicators.
-*   **User Authentication & Authorization:** Secure user accounts and board sharing.
+*   **User Authentication & Authorization:** Secure user accounts and board sharing. (Implemented: Email/Password, Google Login)
 *   **Cloud Board Persistence:** Save and load boards to/from a database.
 *   **Advanced Drawing Tools:** Smart shapes, connectors, lines, and arrows.
 *   **Version History & Undo/Redo:** Track changes and revert to previous states. (Implemented - Manual Zustand)
@@ -132,10 +133,10 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
-### September 22, 2025
-*   **Next Task:** Refactor the layout for the infinite canvas page.
-    *   **Objective:** Create a more immersive user experience by making the infinite canvas take up the full screen.
-    *   **Details:** When a user opens a canvas, the main content area will be removed. The infinite canvas will expand to fill the entire viewport. The existing glassmorphic top bar and the canvas tools sidebar will float on top of the canvas, providing a seamless, layered interface. The main application sidebar, which lists the user's canvases, will remain unchanged and function as it does now on the home page. This change is specific to the canvas view to maximize the creative workspace.
+*   **Next Task:** Redesign Canvas Text Boxes
+    *   **Objective:** Enhance the UI of text boxes on the canvas to resemble the card-based design of applications like Milanote, improving the overall aesthetic and user experience.
+    *   **Details:** This involves converting the current text elements into composite "note card" components. Each card will have a distinct background, border, and shadow. The work will require analyzing the current `react-konva` implementation and creating a new, styled component that combines `Konva.Rect` and `Konva.Text` to achieve the desired look and feel.
+
 
 ### September 21, 2025
 *   **Canvas Content Persistence - Implemented & Verified:**

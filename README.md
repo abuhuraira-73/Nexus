@@ -58,7 +58,7 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **🗑️ Trash & Restore:** Canvases can be moved to a trash can instead of being deleted immediately. From the trash, they can either be restored or permanently deleted.
 *   **✨ Save Status Indicator:** The UI now provides real-time feedback in the header, showing when a canvas is being saved and confirming when all changes are saved.
 *   **☁️ Cloud Canvas Lifecycle:** Full end-to-end feature for creating canvases, which are saved to the database. Canvases are now fetched and listed in the sidebar, and can be opened to view their content.
-*   **🔐 User Authentication:** Secure login and registration pages, including backend API, frontend forms, and global state management.
+*   **🔐 User Authentication:** Secure login and registration with email/password and Google.
 *   **👤 User Information Display:** The logged-in user's name and email are now displayed in the user navigation menu.
 *   **📞 Authenticated API Calls:** Implemented a reusable utility for making authenticated API calls from the frontend.
 *   **🔒 Protected Routes:** Restrict access to authenticated users for specific application sections.
@@ -109,6 +109,8 @@ Nexus leverages a powerful and modern technology stack:
 *   **MongoDB** (Mongoose) - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="20" height="20"/>
 *   **bcryptjs**
 *   **jsonwebtoken**
+*   **passport**
+*   **passport-google-oauth20**
 *   **dotenv**
 *   **cors**
 *   **Socket.IO** - <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/socketio/socketio-original.svg" alt="Socket.IO" width="20" height="20"/>
