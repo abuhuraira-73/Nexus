@@ -26,6 +26,7 @@
     "@tailwindcss/vite": "^4.1.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.2.12",
     "konva": "^9.3.22",
     "lucide-react": "^0.542.0",
     "react": "^19.1.1",
