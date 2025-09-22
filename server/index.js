@@ -13,6 +13,7 @@ if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
 
 const authRoutes = require('./routes/authRoutes');
 const canvasRoutes = require('./routes/canvasRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 
 const app = express();
@@ -35,6 +36,7 @@ connectDB();
 
 app.use('/api/auth', authRoutes);
 app.use('/api/canvases', canvasRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');
