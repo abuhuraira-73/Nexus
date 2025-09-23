@@ -20,6 +20,7 @@ import {
   Image,
   Italic,
   Link,
+  ListTodo,
   Pen,
   Plus,
   RectangleHorizontal,
@@ -28,11 +29,13 @@ import {
   Square,
   Star,
   StickyNote,
+  Table,
   Trash2,
   Triangle,
   Type,
   Underline,
   Undo2,
+  MessageSquare,
 } from "lucide-react"
 
 import { useCanvasStore } from "@/store/canvasStore";
@@ -61,6 +64,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Separator } from "./ui/separator";
+import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -108,6 +112,9 @@ const textTools = [
     { name: "Text", icon: Type, subType: 'plain' },
     { name: "Text Card", icon: FileText, subType: 'textCard' },
     { name: "Sticky Note", icon: StickyNote, subType: 'stickyNote' },
+    { name: "Comment", icon: MessageSquare, subType: 'comment' },
+    { name: "Checklist", icon: ListTodo, subType: 'checklist' },
+    { name: "Table", icon: Table, subType: 'table' },
 ]
 
 const mediaTools = [
@@ -289,7 +296,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
 };
 
 const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
-  const { updateShape } = useCanvasStore();
+  const { updateShapeAndPushHistory } = useCanvasStore();
 
   return (
     <SidebarGroup>
@@ -302,7 +309,7 @@ const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").S
             type="color"
             className="h-8"
             value={shape.fill}
-            onChange={(e) => updateShape({ id: shape.id, fill: e.target.value })}
+            onChange={(e) => updateShapeAndPushHistory({ id: shape.id, fill: e.target.value })}
           />
         </div>
         <div className="grid gap-2">
@@ -311,17 +318,17 @@ const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").S
             id="rotation"
             type="number"
             value={shape.rotation || 0}
-            onChange={(e) => updateShape({ id: shape.id, rotation: parseInt(e.target.value, 10) || 0 })}
+            onChange={(e) => updateShapeAndPushHistory({ id: shape.id, rotation: parseInt(e.target.value, 10) || 0 })}
           />
         </div>
         <div className="grid grid-cols-2 gap-2">
             <div className="grid gap-2">
                 <Label htmlFor="pos-x">X</Label>
-                <Input id="pos-x" type="number" value={Math.round(shape.x)} onChange={(e) => updateShape({ id: shape.id, x: parseInt(e.target.value, 10) || 0 })} />
+                <Input id="pos-x" type="number" value={Math.round(shape.x)} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, x: parseInt(e.target.value, 10) || 0 })} />
             </div>
             <div className="grid gap-2">
                 <Label htmlFor="pos-y">Y</Label>
-                <Input id="pos-y" type="number" value={Math.round(shape.y)} onChange={(e) => updateShape({ id: shape.id, y: parseInt(e.target.value, 10) || 0 })} />
+                <Input id="pos-y" type="number" value={Math.round(shape.y)} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, y: parseInt(e.target.value, 10) || 0 })} />
             </div>
         </div>
       </div>
@@ -329,8 +336,85 @@ const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").S
   )
 }
 
+const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
+    const { updateShapeAndPushHistory } = useCanvasStore();
+
+    const addRow = () => {
+        const newRow = new Array(shape.tableData[0].length).fill({ text: '' });
+        const newTableData = [...shape.tableData, newRow];
+        const newRowHeights = [...shape.rowHeights, 40];
+        updateShapeAndPushHistory({ id: shape.id, tableData: newTableData, rowHeights: newRowHeights });
+    };
+
+    const removeRow = () => {
+        if (shape.tableData.length > 1) {
+            const newTableData = shape.tableData.slice(0, -1);
+            const newRowHeights = shape.rowHeights.slice(0, -1);
+            updateShapeAndPushHistory({ id: shape.id, tableData: newTableData, rowHeights: newRowHeights });
+        }
+    };
+
+    const addColumn = () => {
+        const newTableData = shape.tableData.map(row => [...row, { text: '' }]);
+        const newColumnWidths = [...shape.columnWidths, 150];
+        updateShapeAndPushHistory({ id: shape.id, tableData: newTableData, columnWidths: newColumnWidths });
+    };
+
+    const removeColumn = () => {
+        if (shape.tableData[0].length > 1) {
+            const newTableData = shape.tableData.map(row => row.slice(0, -1));
+            const newColumnWidths = shape.columnWidths.slice(0, -1);
+            updateShapeAndPushHistory({ id: shape.id, tableData: newTableData, columnWidths: newColumnWidths });
+        }
+    };
+
+
+
+    return (
+        <SidebarGroup>
+            <SidebarGroupLabel>Table Properties</SidebarGroupLabel>
+            <div className="p-4 space-y-4">
+                <div className="grid grid-cols-2 gap-2">
+                    <Button onClick={addRow}>Add Row</Button>
+                    <Button onClick={removeRow} disabled={shape.tableData.length <= 1}>Remove Row</Button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                    <Button onClick={addColumn}>Add Column</Button>
+                    <Button onClick={removeColumn} disabled={shape.tableData[0].length <= 1}>Remove Column</Button>
+                </div>
+                <Separator />
+                <div>
+                    <Label>Border Color</Label>
+                    <Input
+                        type="color"
+                        value={shape.stroke}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, stroke: e.target.value })}
+                    />
+                </div>
+                <div>
+                    <Label>Border Width</Label>
+                    <Input
+                        type="number"
+                        value={shape.strokeWidth}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, strokeWidth: parseInt(e.target.value, 10) || 1 })}
+                    />
+                </div>
+                <Separator />
+                <div>
+                    <Label>Background Color</Label>
+                    <Input
+                        type="color"
+                        value={shape.backgroundColor}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, backgroundColor: e.target.value })}
+                    />
+                </div>
+            </div>
+        </SidebarGroup>
+    )
+}
+
 const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
-    const { updateShape } = useCanvasStore();
+    const { updateShapeAndPushHistory } = useCanvasStore();
 
     const handleFontStyleChange = (value: string[]) => {
         const isBold = value.includes('bold');
@@ -339,12 +423,12 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
         if (isBold && isItalic) fontStyle = 'bold italic';
         else if (isBold) fontStyle = 'bold';
         else if (isItalic) fontStyle = 'italic';
-        updateShape({ id: shape.id, fontStyle });
+        updateShapeAndPushHistory({ id: shape.id, fontStyle });
     }
 
     const handleTextDecorationChange = (value: string[]) => {
         const isUnderline = value.includes('underline');
-        updateShape({ id: shape.id, textDecoration: isUnderline ? 'underline' : 'normal' });
+        updateShapeAndPushHistory({ id: shape.id, textDecoration: isUnderline ? 'underline' : 'normal' });
     }
 
     const fonts = ['Inter', 'Caveat', 'Roboto', 'Source Code Pro', 'Playfair Display'];
@@ -358,7 +442,7 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                     <Textarea
                         id="text-content"
                         value={shape.text}
-                        onChange={(e) => updateShape({ id: shape.id, text: e.target.value })}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, text: e.target.value })}
                     />
                 </div>
                 <div className="grid gap-2">
@@ -367,7 +451,7 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                         id="font-family"
                         className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         value={shape.fontFamily}
-                        onChange={(e) => updateShape({ id: shape.id, fontFamily: e.target.value })}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, fontFamily: e.target.value })}
                     >
                         {fonts.map(font => (
                             <option key={font} value={font}>{font}</option>
@@ -409,7 +493,7 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                         type="single" 
                         variant="outline" 
                         defaultValue={shape.align || 'left'}
-                        onValueChange={(value) => updateShape({ id: shape.id, align: value })}
+                        onValueChange={(value) => updateShapeAndPushHistory({ id: shape.id, align: value })}
                     >
                         <ToggleGroupItem value="left" aria-label="Toggle left">
                             <AlignLeft className="h-4 w-4" />
@@ -425,7 +509,7 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                 <div className="grid grid-cols-2 gap-2">
                     <div className="grid gap-2">
                         <Label htmlFor="font-size">Font Size</Label>
-                        <Input id="font-size" type="number" value={shape.fontSize} onChange={(e) => updateShape({ id: shape.id, fontSize: parseInt(e.target.value, 10) || 16 })} />
+                        <Input id="font-size" type="number" value={shape.fontSize} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, fontSize: parseInt(e.target.value, 10) || 16 })} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="opacity">Opacity</Label>
@@ -438,7 +522,7 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                                 value={Math.round((shape.opacity ?? 1) * 100)} 
                                 onChange={(e) => {
                                     const percentage = parseInt(e.target.value, 10) || 0;
-                                    updateShape({ id: shape.id, opacity: Math.max(0, Math.min(100, percentage)) / 100 });
+                                    updateShapeAndPushHistory({ id: shape.id, opacity: Math.max(0, Math.min(100, percentage)) / 100 });
                                 }}
                             />
                             <span className="text-sm text-muted-foreground">%</span>
@@ -451,40 +535,40 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
                 <div className="grid grid-cols-2 gap-4">
                     <div className="grid gap-2">
                         <Label htmlFor="font-color">Font</Label>
-                        <Input id="font-color" type="color" className="h-8" value={shape.textColor} onChange={(e) => updateShape({ id: shape.id, textColor: e.target.value })} />
+                        <Input id="font-color" type="color" className="h-8" value={shape.textColor} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, textColor: e.target.value })} />
                     </div>
-                    {shape.subType === 'textCard' && (
+                    {(shape.subType === 'textCard' || shape.subType === 'comment') && (
                         <div className="grid gap-2">
                             <Label htmlFor="card-bg-color">Card</Label>
-                            <Input id="card-bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShape({ id: shape.id, backgroundColor: e.target.value })} />
+                            <Input id="card-bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, backgroundColor: e.target.value })} />
                         </div>
                     )}
-                    {shape.subType === 'textCard' && (
+                    {(shape.subType === 'textCard' || shape.subType === 'comment') && (
                          <div className="grid gap-2">
                             <Label htmlFor="card-border-color">Border</Label>
-                            <Input id="card-border-color" type="color" className="h-8" value={shape.stroke} onChange={(e) => updateShape({ id: shape.id, stroke: e.target.value })} />
+                            <Input id="card-border-color" type="color" className="h-8" value={shape.stroke} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, stroke: e.target.value })} />
                         </div>
                     )}
                     {shape.subType === 'stickyNote' && (
                         <div className="grid gap-2">
                             <Label htmlFor="bg-color">Background</Label>
-                            <Input id="bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShape({ id: shape.id, backgroundColor: e.target.value })} />
+                            <Input id="bg-color" type="color" className="h-8" value={shape.backgroundColor} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, backgroundColor: e.target.value })} />
                         </div>
                     )}
                 </div>
 
-                {shape.subType === 'textCard' && (
+                {(shape.subType === 'textCard' || shape.subType === 'comment') && (
                     <>
                         <Separator className="my-4" />
                         <SidebarGroupLabel>Card Properties</SidebarGroupLabel>
                         <div className="grid grid-cols-2 gap-2">
                             <div className="grid gap-2">
                                 <Label htmlFor="corner-radius">Corners</Label>
-                                <Input id="corner-radius" type="number" value={shape.cornerRadius} onChange={(e) => updateShape({ id: shape.id, cornerRadius: parseInt(e.target.value, 10) || 0 })} />
+                                <Input id="corner-radius" type="number" value={shape.cornerRadius} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, cornerRadius: parseInt(e.target.value, 10) || 0 })} />
                             </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="shadow-blur">Shadow</Label>
-                                <Input id="shadow-blur" type="number" value={shape.shadowBlur} onChange={(e) => updateShape({ id: shape.id, shadowBlur: parseInt(e.target.value, 10) || 0 })} />
+                                <Input id="shadow-blur" type="number" value={shape.shadowBlur} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, shadowBlur: parseInt(e.target.value, 10) || 0 })} />
                             </div>
                         </div>
                     </>
@@ -585,6 +669,9 @@ export function AppSidebar({
 
     if (selectedShape) {
         if (selectedShape.type === 'text') {
+            if (selectedShape.subType === 'table') {
+                return <TablePropertiesPanel shape={selectedShape} />;
+            }
             return <TextPropertiesPanel shape={selectedShape} />;
         }
         return <PropertiesPanel shape={selectedShape} />;

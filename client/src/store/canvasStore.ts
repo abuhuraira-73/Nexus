@@ -31,9 +31,12 @@ interface CanvasState {
   setBackgroundColor: (color: string) => void;
   setBackgroundPattern: (pattern: BackgroundPattern) => void;
   setStage: (stage: { scale?: number; x?: number; y?: number }) => void;
+  pushToHistory: () => void;
   undo: () => void;
   redo: () => void;
   setCanvas: (shapes: Shape[], backgroundColor?: string) => void;
+  moveSelectedShape: (dx: number, dy: number) => void;
+  updateShapeAndPushHistory: (updatedShape: Partial<Shape> & { id: string }) => void;
 }
 
 export const useCanvasStore = create<CanvasState>()((set) => ({
@@ -50,6 +53,23 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
       stageX: 0,
       stageY: 0,
 
+      pushToHistory: () => {
+        set((state) => {
+          // Don't push duplicate states
+          if (state.history.length > 0) {
+            const lastHistoryEntry = state.history[state.history.length - 1];
+            if (
+              JSON.stringify(lastHistoryEntry[0]) === JSON.stringify(state.shapes) &&
+              lastHistoryEntry[1] === state.backgroundColor
+            ) {
+              return {};
+            }
+          }
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
+          return { history: newHistory, future: [] };
+        });
+      },
+
       addShape: (newShape) => {
         set((state) => {
           const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
@@ -62,18 +82,13 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
       },
 
       updateShape: (updatedShape) => {
-        set((state) => {
-          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
-          return {
-            shapes: state.shapes.map((shape) =>
-              shape.id === updatedShape.id
-                ? { ...shape, ...updatedShape }
-                : shape
-            ),
-            history: newHistory,
-            future: [],
-          };
-        });
+        set((state) => ({
+          shapes: state.shapes.map((shape) =>
+            shape.id === updatedShape.id
+              ? { ...shape, ...updatedShape }
+              : shape
+          ),
+        }));
       },
 
       deleteShape: (id) => {
@@ -81,9 +96,9 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
           const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
           return {
             shapes: state.shapes.filter((shape) => shape.id !== id),
+            selectedId: null,
             history: newHistory,
             future: [],
-            selectedId: null,
           };
         });
       },
@@ -103,14 +118,7 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
       })),
 
       setBackgroundColor: (color) => {
-        set((state) => {
-          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
-          return {
-            backgroundColor: color,
-            history: newHistory,
-            future: [],
-          };
-        });
+        set({ backgroundColor: color });
       },
 
       setBackgroundPattern: (pattern) => set({ backgroundPattern: pattern }),
@@ -158,6 +166,32 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
           history: [],
           future: [],
           selectedId: null,
+        });
+      },
+
+      moveSelectedShape: (dx, dy) => {
+        set((state) => {
+          if (!state.selectedId) return state;
+          const newShapes = state.shapes.map((shape) =>
+            shape.id === state.selectedId
+              ? { ...shape, x: shape.x + dx, y: shape.y + dy }
+              : shape
+          );
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
+          return { shapes: newShapes, history: newHistory, future: [] };
+        });
+      },
+
+      updateShapeAndPushHistory: (updatedShape) => {
+        set((state) => {
+          const newShapes = state.shapes.map((shape) =>
+            shape.id === updatedShape.id
+              ? { ...shape, ...updatedShape }
+              : shape
+          );
+
+          const newHistory: HistoryEntry[] = [...state.history, [state.shapes, state.backgroundColor]];
+          return { shapes: newShapes, history: newHistory, future: [] };
         });
       },
 }));

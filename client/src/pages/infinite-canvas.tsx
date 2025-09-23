@@ -6,17 +6,31 @@ import type { Transformer as TransformerType } from 'konva/lib/shapes/Transforme
 import Konva from 'konva';
 import { useCanvasStore } from '../store/canvasStore';
 import { useAppStore } from '../store/appStore';
+import { useAuthStore } from '../store/authStore';
 import { api, updateCanvas } from '@/lib/api';
 import { toast } from 'sonner';
 import { TextCard } from '@/components/canvas/TextCard';
+import { CommentCard } from '@/components/canvas/CommentCard';
+import { ChecklistCard } from '@/components/canvas/ChecklistCard';
+import { Table } from '@/components/canvas/Table';
 
 export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image';
 
 
+export interface ChecklistItem {
+  id: string;
+  text: string;
+  checked: boolean;
+}
+
+export interface TableCell {
+  text: string;
+}
+
 export interface Shape {
   id: string;
   type: ShapeType;
-  subType?: 'plain' | 'heading' | 'stickyNote';
+  subType?: 'plain' | 'heading' | 'stickyNote' | 'comment' | 'textCard' | 'checklist' | 'table';
   x: number;
   y: number;
   width?: number;
@@ -39,6 +53,11 @@ export interface Shape {
   cornerRadius?: number; // For rounded corners on cards
   backgroundColor?: string; // For sticky note background
   padding?: number;
+  author?: string;
+  items?: ChecklistItem[];
+  tableData?: TableCell[][];
+  columnWidths?: number[];
+  rowHeights?: number[];
   // Image-specific properties
   src?: string;
   opacity?: number;
@@ -109,7 +128,10 @@ const InfiniteCanvas = () => {
     stageX, 
     stageY, 
     setStage, 
-    backgroundPattern
+    backgroundPattern,
+    pushToHistory,
+    moveSelectedShape,
+    updateShapeAndPushHistory
   } = useCanvasStore();
   const { setCurrentCanvasName } = useAppStore();
 
@@ -224,9 +246,39 @@ const InfiniteCanvas = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.key === 'Delete' || event.key === 'Backspace') && selectedId) {
-        deleteShape(selectedId);
-        selectShape(null);
+      if (!selectedId) return;
+
+      const moveAmount = event.shiftKey ? 10 : 1;
+      let moved = false;
+
+      switch (event.key) {
+        case 'Delete':
+        case 'Backspace':
+          deleteShape(selectedId);
+          selectShape(null);
+          break;
+        case 'ArrowUp':
+          moveSelectedShape(0, -moveAmount);
+          moved = true;
+          break;
+        case 'ArrowDown':
+          moveSelectedShape(0, moveAmount);
+          moved = true;
+          break;
+        case 'ArrowLeft':
+          moveSelectedShape(-moveAmount, 0);
+          moved = true;
+          break;
+        case 'ArrowRight':
+          moveSelectedShape(moveAmount, 0);
+          moved = true;
+          break;
+        default:
+          break;
+      }
+
+      if (moved) {
+        event.preventDefault(); // Prevent browser from scrolling
       }
     };
 
@@ -235,7 +287,7 @@ const InfiniteCanvas = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [selectedId, deleteShape, selectShape]);
+  }, [selectedId, deleteShape, selectShape, moveSelectedShape]);
 
   const backgroundStyle = React.useMemo(() => {
     const style: React.CSSProperties = { backgroundColor };
@@ -390,7 +442,7 @@ const InfiniteCanvas = () => {
       onDragEnd: (e: KonvaEventObject<DragEvent>) => {
         const newX = getSnapPosition(e.target.x());
         const newY = getSnapPosition(e.target.y());
-        updateShape({ ...shape, x: newX, y: newY });
+        updateShapeAndPushHistory({ id: shape.id, x: newX, y: newY });
       },
       onTransformEnd: (e: KonvaEventObject<Event>) => {
         const node = e.target;
@@ -398,8 +450,8 @@ const InfiniteCanvas = () => {
         const scaleY = node.scaleY();
         node.scaleX(1);
         node.scaleY(1);
-        updateShape({
-          ...shape,
+        updateShapeAndPushHistory({
+          id: shape.id,
           x: node.x(),
           y: node.y(),
           width: shape.width ? Math.max(5, shape.width * scaleX) : undefined,
@@ -427,6 +479,15 @@ const InfiniteCanvas = () => {
       case 'text':
         if (shape.subType === 'textCard') {
           return <TextCard key={shape.id} shape={shape} {...commonProps} />;
+        }
+        if (shape.subType === 'comment') {
+            return <CommentCard key={shape.id} shape={shape} {...commonProps} />;
+        }
+        if (shape.subType === 'checklist') {
+            return <ChecklistCard key={shape.id} shape={shape} {...commonProps} />;
+        }
+        if (shape.subType === 'table') {
+            return <Table key={shape.id} shape={shape} {...commonProps} />;
         }
         return (
             <Group key={shape.id} {...commonProps}>
@@ -515,6 +576,16 @@ const InfiniteCanvas = () => {
                     break;
                 case 'textCard':
                     newShape = { ...textBase, subType, text: 'New Text Card', fontSize: 14, width: 250, height: 58, backgroundColor: '#F9F9F9', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333', opacity: 1 };
+                    break;
+                case 'comment':
+                    const user = useAuthStore.getState().user;
+                    newShape = { ...textBase, subType, text: 'Add a comment...', author: user?.name || 'User', fontSize: 14, width: 250, height: 100, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333' };
+                    break;
+                case 'checklist':
+                    newShape = { ...textBase, subType, items: [{ id: String(Date.now()), text: 'To-do item', checked: false }], width: 250, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10 };
+                    break;
+                case 'table':
+                    newShape = { ...textBase, subType, tableData: [[{ text: 'Header 1' }, { text: 'Header 2' }],[{ text: 'Cell 1' }, { text: 'Cell 2' }]], columnWidths: [150, 150], rowHeights: [40, 40], stroke: '#000000', strokeWidth: 1 };
                     break;
                 case 'plain':
                 default:
