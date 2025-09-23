@@ -13,7 +13,7 @@ import { TextCard } from '@/components/canvas/TextCard';
 import { CommentCard } from '@/components/canvas/CommentCard';
 import { ChecklistCard } from '@/components/canvas/ChecklistCard';
 import { Table } from '@/components/canvas/Table';
-import { Connector } from '@/components/canvas/Connector';
+import { Connector } from '@/components/canvas/Connector'; 
 
 export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image' | 'connector';
 
