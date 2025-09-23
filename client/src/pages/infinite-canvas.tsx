@@ -13,8 +13,9 @@ import { TextCard } from '@/components/canvas/TextCard';
 import { CommentCard } from '@/components/canvas/CommentCard';
 import { ChecklistCard } from '@/components/canvas/ChecklistCard';
 import { Table } from '@/components/canvas/Table';
+import { Connector } from '@/components/canvas/Connector';
 
-export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image';
+export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image' | 'connector';
 
 
 export interface ChecklistItem {
@@ -58,6 +59,8 @@ export interface Shape {
   tableData?: TableCell[][];
   columnWidths?: number[];
   rowHeights?: number[];
+  fromShapeId?: string;
+  toShapeId?: string;
   // Image-specific properties
   src?: string;
   opacity?: number;
@@ -129,7 +132,6 @@ const InfiniteCanvas = () => {
     stageY, 
     setStage, 
     backgroundPattern,
-    pushToHistory,
     moveSelectedShape,
     updateShapeAndPushHistory
   } = useCanvasStore();
@@ -137,6 +139,7 @@ const InfiniteCanvas = () => {
 
   const [currentLine, setCurrentLine] = useState<Shape | null>(null);
   const [isErasing, setIsErasing] = useState(false);
+  const [drawingConnector, setDrawingConnector] = useState<{ from: string; to: { x: number; y: number } } | null>(null);
 
   const trRef = useRef<TransformerType>(null);
   const shapeRefs = useRef<(Konva.Node | null)[]>([]);
@@ -335,6 +338,17 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if (mode === 'connector') {
+      const targetShape = shapes.find(s => s.id === e.target.id());
+      if (targetShape) {
+        const fromShape = shapes.find(s => s.id === e.target.id());
+        if(fromShape) {
+            setDrawingConnector({ from: fromShape.id, to: { x: fromShape.x, y: fromShape.y } });
+        }
+      }
+      return;
+    }
+
     if (mode === 'erase') {
         setIsErasing(true);
     }
@@ -373,6 +387,17 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseMove = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if (mode === 'connector' && drawingConnector) {
+      const stage = e.target.getStage();
+      if (stage) {
+        const pos = stage.getPointerPosition();
+        if (pos) {
+          setDrawingConnector({ ...drawingConnector, to: { x: (pos.x - stage.x()) / stage.scaleX(), y: (pos.y - stage.y()) / stage.scaleY() } });
+        }
+      }
+      return;
+    }
+
     if (mode !== 'draw' || !currentLine) {
       return;
     }
@@ -396,7 +421,24 @@ const InfiniteCanvas = () => {
     });
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if (mode === 'connector' && drawingConnector) {
+        const toShape = shapes.find(s => s.id === e.target.id());
+        if (toShape && toShape.id !== drawingConnector.from) {
+            addShape({
+                id: String(Date.now()),
+                type: 'connector',
+                fromShapeId: drawingConnector.from,
+                toShapeId: toShape.id,
+                stroke: strokeColor,
+                strokeWidth: strokeWidth,
+                fill: ''
+            });
+        }
+        setDrawingConnector(null);
+        return;
+    }
+
     if (isErasing) {
         setIsErasing(false);
     }
@@ -416,19 +458,21 @@ const InfiniteCanvas = () => {
       x: shape.x,
       y: shape.y,
       rotation: shape.rotation,
-      onClick: () => {
+      onClick: (e: KonvaEventObject<MouseEvent>) => {
         if (mode === 'erase') {
             deleteShape(shape.id);
         } else {
             selectShape(shape.id);
         }
+        e.cancelBubble = true;
       },
-      onTap: () => {
+      onTap: (e: KonvaEventObject<MouseEvent>) => {
         if (mode === 'erase') {
             deleteShape(shape.id);
         } else {
             selectShape(shape.id);
         }
+        e.cancelBubble = true;
       },
       onMouseEnter: () => {
         if (mode === 'erase' && isErasing) {
@@ -476,6 +520,8 @@ const InfiniteCanvas = () => {
         return <Arrow key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
       case 'line':
         return <Line key={shape.id} {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
+      case 'connector':
+        return <Connector key={shape.id} shape={shape} />;
       case 'text':
         if (shape.subType === 'textCard') {
           return <TextCard key={shape.id} shape={shape} {...commonProps} />;
@@ -645,7 +691,8 @@ const InfiniteCanvas = () => {
           onTouchEnd={handleMouseUp}
         >
           <Layer>
-            {shapes.map(renderShape)}
+            {shapes.filter(s => s.type === 'connector').map(renderShape)}
+            {shapes.filter(s => s.type !== 'connector').map(renderShape)}
             {currentLine && (
               <Line
                 points={currentLine.points}
@@ -655,6 +702,24 @@ const InfiniteCanvas = () => {
                 lineCap="round"
                 lineJoin="round"
               />
+            )}
+            {drawingConnector && (
+                (() => {
+                    const fromShape = shapes.find(s => s.id === drawingConnector.from);
+                    if (!fromShape) return null;
+                    return (
+                        <Line
+                            points={[
+                                fromShape.x + (fromShape.width || 0) / 2,
+                                fromShape.y + (fromShape.height || 0) / 2,
+                                drawingConnector.to.x,
+                                drawingConnector.to.y,
+                            ]}
+                            stroke={strokeColor}
+                            strokeWidth={strokeWidth}
+                        />
+                    );
+                })()
             )}
             <Transformer
               ref={trRef}

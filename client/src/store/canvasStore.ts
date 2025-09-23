@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { Shape } from '../pages/infinite-canvas';
 
-export type CanvasMode = 'select' | 'draw' | 'erase';
+export type CanvasMode = 'select' | 'draw' | 'erase' | 'connector';
 export type BackgroundPattern = 'solid' | 'dotted' | 'lined';
 
 // The history will now store a tuple of [shapes, backgroundColor]

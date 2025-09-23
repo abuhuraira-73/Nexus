@@ -28,6 +28,7 @@ import {
   Shapes,
   Square,
   Star,
+  Spline,
   StickyNote,
   Table,
   Trash2,
@@ -222,6 +223,17 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
             </SidebarMenuItem>
           </Collapsible>
 
+          {/* Connector Tool */}
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              onClick={() => setMode(mode === 'connector' ? 'select' : 'connector')}
+              isActive={mode === 'connector'}
+            >
+              <Spline />
+              <span>Connector</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
           {/* Drawing Tools */}
           <Collapsible asChild className="group/collapsible">
               <SidebarMenuItem>
@@ -334,6 +346,34 @@ const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").S
       </div>
     </SidebarGroup>
   )
+}
+
+const ConnectorPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
+    const { updateShapeAndPushHistory } = useCanvasStore();
+
+    return (
+        <SidebarGroup>
+            <SidebarGroupLabel>Connector Properties</SidebarGroupLabel>
+            <div className="p-4 space-y-4">
+                <div>
+                    <Label>Stroke Color</Label>
+                    <Input
+                        type="color"
+                        value={shape.stroke}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, stroke: e.target.value })}
+                    />
+                </div>
+                <div>
+                    <Label>Stroke Width</Label>
+                    <Input
+                        type="number"
+                        value={shape.strokeWidth}
+                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, strokeWidth: parseInt(e.target.value, 10) || 1 })}
+                    />
+                </div>
+            </div>
+        </SidebarGroup>
+    )
 }
 
 const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
@@ -673,6 +713,9 @@ export function AppSidebar({
                 return <TablePropertiesPanel shape={selectedShape} />;
             }
             return <TextPropertiesPanel shape={selectedShape} />;
+        }
+        if (selectedShape.type === 'connector') {
+            return <ConnectorPropertiesPanel shape={selectedShape} />;
         }
         return <PropertiesPanel shape={selectedShape} />;
     }
