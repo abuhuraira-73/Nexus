@@ -684,7 +684,7 @@ const InfiniteCanvas = () => {
       case 'star':
         return <RegularPolygon key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
       case 'arrow':
-        return <Arrow key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} points={[0, 0, shape.width || 100, 0]} pointerLength={20} pointerWidth={20} stroke="black" strokeWidth={4} />;
+        return <Arrow key={shape.id} {...commonProps} points={[0, 0, shape.width || 100, 0]} pointerLength={10} pointerWidth={12} fill={shape.stroke} stroke={shape.stroke} strokeWidth={2} />; 
       case 'line':
         return <Line key={shape.id} {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
       case 'connector':
@@ -830,7 +830,7 @@ const InfiniteCanvas = () => {
                 newShape = { ...shapeBase, type, radius: 70 };
                 break;
                 case 'arrow':
-                newShape = { ...shapeBase, type, width: 150 };
+                newShape = { ...shapeBase, type, width: 150, fill: '#000000', stroke: '#000000' };
                 break;
                 case 'image':
                 newShape = { ...shapeBase, type, width: 200, height: 200, src: 'https://via.placeholder.com/200' }; // Placeholder src

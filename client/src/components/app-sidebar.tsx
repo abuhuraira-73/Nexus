@@ -331,13 +331,19 @@ const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").S
       </div>
       <div className="p-4 pt-0 space-y-4">
         <div className="grid gap-2">
-          <Label htmlFor="fill-color">Fill Color</Label>
+          <Label htmlFor="color">Color</Label>
           <Input
-            id="fill-color"
+            id="color"
             type="color"
             className="h-8"
-            value={shape.fill}
-            onChange={(e) => updateShapeAndPushHistory({ id: shape.id, fill: e.target.value })}
+            value={shape.type === 'arrow' ? shape.stroke : shape.fill}
+            onChange={(e) => {
+                if (shape.type === 'arrow') {
+                    updateShapeAndPushHistory({ id: shape.id, stroke: e.target.value, fill: e.target.value });
+                } else {
+                    updateShapeAndPushHistory({ id: shape.id, fill: e.target.value });
+                }
+            }}
           />
         </div>
         <div className="grid gap-2">
