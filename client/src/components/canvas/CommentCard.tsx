@@ -4,11 +4,12 @@ import { Shape } from '@/pages/infinite-canvas';
 
 interface CommentCardProps {
   shape: Shape;
+  editingShapeId: string | null;
   // Konva props will be passed through a rest operator
   [key: string]: any;
 }
 
-export const CommentCard: React.FC<CommentCardProps> = ({ shape, ...props }) => {
+export const CommentCard: React.FC<CommentCardProps> = ({ shape, editingShapeId, ...props }) => {
   const {
     text = 'Add a comment...',
     width = 250,
@@ -27,7 +28,7 @@ export const CommentCard: React.FC<CommentCardProps> = ({ shape, ...props }) => 
   const timestamp = new Date().toLocaleTimeString(); // Placeholder
 
   return (
-    <Group {...props}>
+    <Group {...props} visible={editingShapeId !== shape.id}>
       {/* Comment bubble tail */}
       <RegularPolygon
         sides={3}
@@ -78,6 +79,7 @@ export const CommentCard: React.FC<CommentCardProps> = ({ shape, ...props }) => 
       {/* Comment Text */}
       <Text
         text={text}
+        visible={editingShapeId !== shape.id}
         x={padding}
         y={padding + 24}
         width={width - padding * 2}

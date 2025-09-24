@@ -79,6 +79,7 @@ type CommonShapeProps = NodeConfig & {
     onTransformEnd: (e: KonvaEventObject<Event>) => void;
     onClick: (e: KonvaEventObject<MouseEvent>) => void;
     onTap: (e: KonvaEventObject<MouseEvent>) => void;
+    onDblClick: (e: KonvaEventObject<MouseEvent>) => void;
 };
 
 const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: Partial<CommonShapeProps> }) => {
@@ -107,6 +108,117 @@ const URLImage = ({ shape, commonProps }: { shape: Shape, commonProps: Partial<C
     );
 };
 
+const TextEditor = ({ shapeRefs }: { shapeRefs: React.RefObject<(Konva.Node | null)[]> }) => {
+  const {
+    editingShapeId,
+    setEditingShapeId,
+    updateShapeAndPushHistory,
+    stageScale,
+    stageX,
+    stageY,
+    shapes,
+  } = useCanvasStore();
+
+  const [editorState, setEditorState] = useState({ text: '', x: 0, y: 0, width: 0, height: 0, fontSize: 16, fontFamily: 'Inter', align: 'left', visible: false });
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (editingShapeId) {
+      const shape = shapes.find(s => s.id === editingShapeId);
+      const node = shapeRefs.current?.find(n => n?.id() === editingShapeId);
+
+      if (shape && node && shape.type === 'text') {
+        const textPosition = node.getAbsolutePosition();
+        const stage = node.getStage();
+        if (!stage) return;
+
+        const padding = (shape.padding || 0) * stageScale;
+
+        const areaPosition = {
+            x: stage.container().offsetLeft + textPosition.x + padding,
+            y: stage.container().offsetTop + textPosition.y + padding,
+        };
+
+        const placeholders = ["New Text Card", "Add a comment...", "Heading", "Sticky note...", "Plain Text"];
+        const isPlaceholder = placeholders.includes(shape.text || '');
+
+        setEditorState({
+          text: isPlaceholder ? '' : shape.text || '',
+          x: areaPosition.x,
+          y: areaPosition.y,
+          width: (shape.width || 200) * stageScale - (padding * 2),
+          height: (shape.height || 50) * stageScale - (padding * 2),
+          fontSize: (shape.fontSize || 16) * stageScale,
+          fontFamily: shape.fontFamily || 'Inter',
+          align: shape.align || 'left',
+          color: shape.textColor || shape.fill || 'black',
+          visible: true,
+        });
+      }
+    } else {
+      setEditorState(s => ({ ...s, visible: false }));
+    }
+  }, [editingShapeId, shapes, shapeRefs, stageScale]);
+
+  useEffect(() => {
+    if (editorState.visible && textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.select();
+    }
+  }, [editorState.visible]);
+
+  const handleBlur = () => {
+    if (editingShapeId) {
+      updateShapeAndPushHistory({ id: editingShapeId, text: textareaRef.current?.value });
+      setEditingShapeId(null);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Escape') {
+      setEditingShapeId(null);
+    }
+    if (e.key === 'Enter' && !e.shiftKey) {
+        handleBlur();
+    }
+  };
+
+  if (!editorState.visible) {
+    return null;
+  }
+
+  return (
+    <textarea
+      ref={textareaRef}
+      value={editorState.text}
+      onChange={(e) => setEditorState(s => ({ ...s, text: e.target.value }))}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      style={{
+        position: 'absolute',
+        top: `${editorState.y}px`,
+        left: `${editorState.x}px`,
+        width: `${editorState.width}px`,
+        height: `${editorState.height}px`,
+        fontSize: `${editorState.fontSize}px`,
+        fontFamily: editorState.fontFamily,
+        textAlign: editorState.align as 'left' | 'center' | 'right',
+        color: editorState.color,
+        border: '1px solid #67a3ff',
+        margin: 0,
+        padding: '0px',
+        resize: 'none',
+        overflow: 'hidden',
+        lineHeight: 1.5,
+        background: 'transparent',
+        outline: 'none',
+        zIndex: 100,
+      }}
+    />
+  );
+};
+
+
 const InfiniteCanvas = () => {
   const gridSize = 20;
   const getSnapPosition = (pos: number) => Math.round(pos / gridSize) * gridSize;
@@ -134,6 +246,8 @@ const InfiniteCanvas = () => {
     backgroundPattern,
     moveSelectedShape,
     updateShapeAndPushHistory,
+    editingShapeId,
+    setEditingShapeId,
     setStageRef
   } = useCanvasStore();
   const { setCurrentCanvasName, triggerAddComment } = useAppStore();
@@ -295,11 +409,6 @@ const InfiniteCanvas = () => {
       let moved = false;
 
       switch (event.key) {
-        case 'Delete':
-        case 'Backspace':
-          deleteShape(selectedId);
-          selectShape(null);
-          break;
         case 'ArrowUp':
           moveSelectedShape(0, -moveAmount);
           moved = true;
@@ -377,11 +486,21 @@ const InfiniteCanvas = () => {
     }
   };
 
+  const getShapeNode = (node: Konva.Node): Konva.Node | null => {
+    if (node.id() && shapes.some(s => s.id === node.id())) {
+        return node;
+    }
+    if (node.parent) {
+        return getShapeNode(node.parent);
+    }
+    return null;
+  };
+
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     if (mode === 'connector') {
-      const targetShape = shapes.find(s => s.id === e.target.id());
-      if (targetShape) {
-        const fromShape = shapes.find(s => s.id === e.target.id());
+      const shapeNode = getShapeNode(e.target);
+      if (shapeNode) {
+        const fromShape = shapes.find(s => s.id === shapeNode.id());
         if(fromShape) {
             setDrawingConnector({ from: fromShape.id, to: { x: fromShape.x, y: fromShape.y } });
         }
@@ -463,17 +582,20 @@ const InfiniteCanvas = () => {
 
   const handleMouseUp = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
     if (mode === 'connector' && drawingConnector) {
-        const toShape = shapes.find(s => s.id === e.target.id());
-        if (toShape && toShape.id !== drawingConnector.from) {
-            addShape({
-                id: String(Date.now()),
-                type: 'connector',
-                fromShapeId: drawingConnector.from,
-                toShapeId: toShape.id,
-                stroke: strokeColor,
-                strokeWidth: strokeWidth,
-                fill: ''
-            });
+        const shapeNode = getShapeNode(e.target);
+        if (shapeNode) {
+            const toShape = shapes.find(s => s.id === shapeNode.id());
+            if (toShape && toShape.id !== drawingConnector.from) {
+                addShape({
+                    id: String(Date.now()),
+                    type: 'connector',
+                    fromShapeId: drawingConnector.from,
+                    toShapeId: toShape.id,
+                    stroke: strokeColor,
+                    strokeWidth: strokeWidth,
+                    fill: ''
+                });
+            }
         }
         setDrawingConnector(null);
         return;
@@ -513,6 +635,11 @@ const InfiniteCanvas = () => {
             selectShape(shape.id);
         }
         e.cancelBubble = true;
+      },
+      onDblClick: () => {
+        if (shape.type === 'text') {
+            setEditingShapeId(shape.id);
+        }
       },
       onMouseEnter: () => {
         if (mode === 'erase' && isErasing) {
@@ -564,16 +691,16 @@ const InfiniteCanvas = () => {
         return <Connector key={shape.id} shape={shape} />;
       case 'text':
         if (shape.subType === 'textCard') {
-          return <TextCard key={shape.id} shape={shape} {...commonProps} />;
+          return <TextCard key={shape.id} shape={shape} {...commonProps} editingShapeId={editingShapeId} />;
         }
         if (shape.subType === 'comment') {
-            return <CommentCard key={shape.id} shape={shape} {...commonProps} />;
+            return <CommentCard key={shape.id} shape={shape} {...commonProps} editingShapeId={editingShapeId} />;
         }
         if (shape.subType === 'checklist') {
-            return <ChecklistCard key={shape.id} shape={shape} {...commonProps} />;
+            return <ChecklistCard key={shape.id} shape={shape} {...commonProps} editingShapeId={editingShapeId} />;
         }
         if (shape.subType === 'table') {
-            return <Table key={shape.id} shape={shape} {...commonProps} />;
+            return <Table key={shape.id} shape={shape} {...commonProps} editingShapeId={editingShapeId} />;
         }
         return (
             <Group key={shape.id} {...commonProps}>
@@ -587,6 +714,7 @@ const InfiniteCanvas = () => {
                 )}
                 <Text
                     text={shape.text}
+                    visible={shape.id !== editingShapeId}
                     fontSize={shape.fontSize}
                     fontFamily={shape.fontFamily}
                     fontStyle={shape.fontStyle}
@@ -607,6 +735,7 @@ const InfiniteCanvas = () => {
 
   return (
     <div className="absolute inset-0">
+      <TextEditor shapeRefs={shapeRefs} />
       {isLoading && (
         <div className="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           <p className="text-white text-lg">Loading Canvas...</p>
@@ -668,10 +797,10 @@ const InfiniteCanvas = () => {
                     newShape = { ...textBase, subType, text: 'Add a comment...', author: user?.name || 'User', fontSize: 14, width: 250, height: 100, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333' };
                     break;
                 case 'checklist':
-                    newShape = { ...textBase, subType, items: [{ id: String(Date.now()), text: 'To-do item', checked: false }], width: 250, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10 };
+                    newShape = { ...textBase, subType, items: [{ id: String(Date.now()), text: 'To-do item', checked: false }], width: 250, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#000000' };
                     break;
                 case 'table':
-                    newShape = { ...textBase, subType, tableData: [[{ text: 'Header 1' }, { text: 'Header 2' }],[{ text: 'Cell 1' }, { text: 'Cell 2' }]], columnWidths: [150, 150], rowHeights: [40, 40], stroke: '#000000', strokeWidth: 1 };
+                    newShape = { ...textBase, subType, tableData: [[{ text: 'Header 1' }, { text: 'Header 2' }],[{ text: 'Cell 1' }, { text: 'Cell 2' }]], columnWidths: [150, 150], rowHeights: [40, 40], stroke: '#000000', strokeWidth: 1, cornerRadius: 8, backgroundColor: '#FFFFFF' };
                     break;
                 case 'plain':
                 default:

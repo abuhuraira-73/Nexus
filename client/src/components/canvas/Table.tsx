@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Group, Rect, Text } from 'react-konva';
+import { Group, Rect, Text, Line } from 'react-konva';
 import { Shape } from '@/pages/infinite-canvas';
 import { useCanvasStore } from '@/store/canvasStore';
 import { Html } from 'react-konva-utils';
@@ -7,11 +7,12 @@ import Konva from 'konva';
 
 interface TableProps {
   shape: Shape;
+  editingShapeId: string | null;
   // Konva props will be passed through a rest operator
   [key: string]: any;
 }
 
-export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
+export const Table: React.FC<TableProps> = ({ shape, editingShapeId, ...props }) => {
   const { updateShape, updateShapeAndPushHistory } = useCanvasStore();
   const {
     tableData = [
@@ -26,6 +27,7 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
     fontSize = 16,
     fontFamily = 'Inter',
     padding = 5,
+    cornerRadius = 8,
   } = shape;
 
   const [editingCell, setEditingCell] = useState<{ row: number; col: number } | null>(null);
@@ -34,6 +36,7 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
     const recalculateTableSize = () => {
       const newColumnWidths = [...columnWidths];
       const newRowHeights = [...rowHeights];
+      let changed = false;
 
       tableData.forEach((row, rowIndex) => {
         row.forEach((cell, colIndex) => {
@@ -48,14 +51,18 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
 
           if (textWidth > (newColumnWidths[colIndex] || 0)) {
             newColumnWidths[colIndex] = textWidth;
+            changed = true;
           }
           if (textHeight > (newRowHeights[rowIndex] || 0)) {
             newRowHeights[rowIndex] = textHeight;
+            changed = true;
           }
         });
       });
 
-      updateShape({ id: shape.id, columnWidths: newColumnWidths, rowHeights: newRowHeights });
+      if (changed) {
+        updateShape({ id: shape.id, columnWidths: newColumnWidths, rowHeights: newRowHeights });
+      }
     };
 
     recalculateTableSize();
@@ -69,40 +76,60 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
         ? r.map((c, colIndex) => (colIndex === col ? { ...c, text: e.target.value } : c))
         : r
     );
-    updateShapeAndPushHistory({ id: shape.id, tableData: newTableData });
+    updateShape({ id: shape.id, tableData: newTableData });
   };
+  
+  const stopEditing = () => {
+      if(editingCell) {
+          updateShapeAndPushHistory({ id: shape.id, tableData });
+          setEditingCell(null);
+      }
+  }
+
+  const totalWidth = columnWidths.reduce((a, b) => a + b, 0);
+  const totalHeight = rowHeights.reduce((a, b) => a + b, 0);
 
   return (
     <Group {...props}>
-      {/* Draw rows and cells */}
+      {/* 1. Background with rounded corners */}
+      <Rect
+        width={totalWidth}
+        height={totalHeight}
+        fill={backgroundColor || 'transparent'}
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        cornerRadius={cornerRadius}
+      />
+
+      {/* 2. Draw vertical lines */}
+      {columnWidths.slice(0, -1).map((_, i) => {
+        const x = columnWidths.slice(0, i + 1).reduce((a, b) => a + b, 0);
+        return <Line key={`v-${i}`} points={[x, 0, x, totalHeight]} stroke={stroke} strokeWidth={strokeWidth} />;
+      })}
+      
+      {/* 3. Draw horizontal lines */}
+      {rowHeights.slice(0, -1).map((_, i) => {
+        const y = rowHeights.slice(0, i + 1).reduce((a, b) => a + b, 0);
+        return <Line key={`h-${i}`} points={[0, y, totalWidth, y]} stroke={stroke} strokeWidth={strokeWidth} />;
+      })}
+
+      {/* 4. Draw cell text content */}
       {tableData.map((row, rowIndex) => {
-        let y = 0;
-        for (let i = 0; i < rowIndex; i++) {
-          y += rowHeights[i] || 0;
-        }
+        const y = rowHeights.slice(0, rowIndex).reduce((a, b) => a + b, 0);
         return row.map((cell, colIndex) => {
-          let x = 0;
-          for (let i = 0; i < colIndex; i++) {
-            x += columnWidths[i] || 0;
-          }
+          const x = columnWidths.slice(0, colIndex).reduce((a, b) => a + b, 0);
           const cellWidth = columnWidths[colIndex] || 150;
           const cellHeight = rowHeights[rowIndex] || 40;
 
           return (
             <Group key={`${rowIndex}-${colIndex}`} x={x} y={y} onDblClick={() => setEditingCell({ row: rowIndex, col: colIndex })}>
-              <Rect
-                width={cellWidth}
-                height={cellHeight}
-                stroke={stroke}
-                strokeWidth={strokeWidth}
-                fill={backgroundColor}
-              />
               <Text
                 text={cell.text}
                 width={cellWidth}
                 height={cellHeight}
                 padding={padding}
                 verticalAlign="middle"
+                align="center"
                 fontSize={fontSize}
                 fontFamily={fontFamily}
                 visible={!editingCell || editingCell.row !== rowIndex || editingCell.col !== colIndex}
@@ -111,6 +138,8 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
           );
         });
       })}
+
+      {/* 5. HTML Textarea for editing */}
       {editingCell && (
         <Html
           groupProps={{
@@ -122,7 +151,7 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
           <textarea
             value={tableData[editingCell.row][editingCell.col].text}
             onChange={handleTextChange}
-            onBlur={() => setEditingCell(null)}
+            onBlur={stopEditing}
             autoFocus
             style={{
               width: `${(columnWidths || [])[editingCell.col] || 150}px`,
@@ -135,6 +164,7 @@ export const Table: React.FC<TableProps> = ({ shape, ...props }) => {
               resize: 'none',
               fontSize: `${fontSize}px`,
               fontFamily: fontFamily,
+              textAlign: 'center',
             }}
           />
         </Html>

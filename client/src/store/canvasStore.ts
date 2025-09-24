@@ -21,6 +21,7 @@ interface CanvasState {
   stageX: number;
   stageY: number;
   stageRef: React.RefObject<import('konva/lib/Stage').Stage> | null;
+  editingShapeId: string | null;
 
   addShape: (newShape: Shape) => void;
   updateShape: (updatedShape: Partial<Shape> & { id: string }) => void;
@@ -32,6 +33,7 @@ interface CanvasState {
   setBackgroundColor: (color: string) => void;
   setBackgroundPattern: (pattern: BackgroundPattern) => void;
   setStage: (stage: { scale?: number; x?: number; y?: number }) => void;
+  setEditingShapeId: (id: string | null) => void;
   setStageRef: (ref: React.RefObject<import('konva/lib/Stage').Stage>) => void;
   pushToHistory: () => void;
   undo: () => void;
@@ -55,6 +57,9 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
       stageX: 0,
       stageY: 0,
       stageRef: null,
+      editingShapeId: null,
+
+      setEditingShapeId: (id) => set({ editingShapeId: id }),
 
       setStageRef: (ref) => set({ stageRef: ref }),
 

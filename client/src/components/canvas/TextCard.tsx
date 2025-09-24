@@ -5,6 +5,7 @@ import type { Shape } from '@/pages/infinite-canvas'; // Assuming Shape is expor
 
 interface TextCardProps {
   shape: Shape;
+  editingShapeId: string | null;
   // Event handlers and other props from Konva
   id: string;
   draggable: boolean;
@@ -13,6 +14,7 @@ interface TextCardProps {
   onTap: (e: KonvaEventObject<MouseEvent>) => void;
   onDragEnd: (e: KonvaEventObject<DragEvent>) => void;
   onTransformEnd: (e: KonvaEventObject<Event>) => void;
+  onDblClick: (e: KonvaEventObject<MouseEvent>) => void;
 }
 
 const defaultStyles = {
@@ -39,7 +41,7 @@ import { useCanvasStore } from '@/store/canvasStore';
 import { useEffect, useRef } from 'react';
 import type { Text as TextType } from 'konva/lib/shapes/Text';
 
-export const TextCard: React.FC<TextCardProps> = ({ shape, ...commonProps }) => {
+export const TextCard: React.FC<TextCardProps> = ({ shape, editingShapeId, ...commonProps }) => {
   const { updateShape } = useCanvasStore();
   const textRef = useRef<TextType>(null);
 
@@ -63,6 +65,7 @@ export const TextCard: React.FC<TextCardProps> = ({ shape, ...commonProps }) => 
       x={shape.x}
       y={shape.y}
       opacity={shape.opacity ?? defaultStyles.opacity}
+      visible={editingShapeId !== shape.id}
       {...commonProps}
     >
       <Rect

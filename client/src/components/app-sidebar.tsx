@@ -70,6 +70,7 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { ImageUploadModal } from './image-upload-modal';
 import { initialData } from "@/lib/data";
 import {
@@ -307,12 +308,28 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
 };
 
 const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
-  const { updateShapeAndPushHistory } = useCanvasStore();
+  const { updateShapeAndPushHistory, deleteShape, selectShape } = useCanvasStore();
+
+  const handleDelete = () => {
+    deleteShape(shape.id);
+    selectShape(null);
+  };
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Properties</SidebarGroupLabel>
-      <div className="p-4 space-y-4">
+      <div className="flex items-center justify-between px-4 pt-1 mb-2">
+        <SidebarGroupLabel>Properties</SidebarGroupLabel>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <Button variant="ghost" size="icon" onClick={handleDelete}>
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only">Delete</span>
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent><p>Delete Shape</p></TooltipContent>
+        </Tooltip>
+      </div>
+      <div className="p-4 pt-0 space-y-4">
         <div className="grid gap-2">
           <Label htmlFor="fill-color">Fill Color</Label>
           <Input
@@ -348,12 +365,28 @@ const PropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").S
 }
 
 const ConnectorPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
-    const { updateShapeAndPushHistory } = useCanvasStore();
+    const { updateShapeAndPushHistory, deleteShape, selectShape } = useCanvasStore();
+
+    const handleDelete = () => {
+        deleteShape(shape.id);
+        selectShape(null);
+    };
 
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Connector Properties</SidebarGroupLabel>
-            <div className="p-4 space-y-4">
+            <div className="flex items-center justify-between px-4 pt-1 mb-2">
+                <SidebarGroupLabel>Connector Properties</SidebarGroupLabel>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" onClick={handleDelete}>
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent><p>Delete Connector</p></TooltipContent>
+                </Tooltip>
+            </div>
+            <div className="p-4 pt-0 space-y-4">
                 <div>
                     <Label>Stroke Color</Label>
                     <Input
@@ -376,7 +409,12 @@ const ConnectorPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-c
 }
 
 const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
-    const { updateShapeAndPushHistory } = useCanvasStore();
+    const { updateShapeAndPushHistory, deleteShape, selectShape } = useCanvasStore();
+
+    const handleDelete = () => {
+        deleteShape(shape.id);
+        selectShape(null);
+    };
 
     const addRow = () => {
         const newRow = new Array(shape.tableData[0].length).fill({ text: '' });
@@ -411,8 +449,19 @@ const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canva
 
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Table Properties</SidebarGroupLabel>
-            <div className="p-4 space-y-4">
+            <div className="flex items-center justify-between px-4 pt-1 mb-2">
+                <SidebarGroupLabel>Table Properties</SidebarGroupLabel>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" onClick={handleDelete}>
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent><p>Delete Table</p></TooltipContent>
+                </Tooltip>
+            </div>
+            <div className="p-4 pt-0 space-y-4">
                 <div className="grid grid-cols-2 gap-2">
                     <Button onClick={addRow}>Add Row</Button>
                     <Button onClick={removeRow} disabled={shape.tableData.length <= 1}>Remove Row</Button>
@@ -439,6 +488,10 @@ const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canva
                     />
                 </div>
                 <Separator />
+                <div className="grid gap-2">
+                    <Label htmlFor="corner-radius">Corner Radius</Label>
+                    <Input id="corner-radius" type="number" value={shape.cornerRadius || 0} onChange={(e) => updateShapeAndPushHistory({ id: shape.id, cornerRadius: parseInt(e.target.value, 10) || 0 })} />
+                </div>
                 <div>
                     <Label>Background Color</Label>
                     <Input
@@ -453,7 +506,12 @@ const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canva
 }
 
 const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas").Shape }) => {
-    const { updateShapeAndPushHistory } = useCanvasStore();
+    const { updateShapeAndPushHistory, deleteShape, selectShape } = useCanvasStore();
+
+    const handleDelete = () => {
+        deleteShape(shape.id);
+        selectShape(null);
+    };
 
     const handleFontStyleChange = (value: string[]) => {
         const isBold = value.includes('bold');
@@ -474,16 +532,19 @@ const TextPropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canvas
 
     return (
         <SidebarGroup>
-            <SidebarGroupLabel>Text Properties</SidebarGroupLabel>
-            <div className="p-4 space-y-4">
-                <div className="grid gap-2">
-                    <Label htmlFor="text-content">Content</Label>
-                    <Textarea
-                        id="text-content"
-                        value={shape.text}
-                        onChange={(e) => updateShapeAndPushHistory({ id: shape.id, text: e.target.value })}
-                    />
-                </div>
+            <div className="flex items-center justify-between px-4 pt-1 mb-2">
+                <SidebarGroupLabel>Text Properties</SidebarGroupLabel>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <Button variant="ghost" size="icon" onClick={handleDelete}>
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Delete</span>
+                        </Button>
+                    </TooltipTrigger>
+                    <TooltipContent><p>Delete Item</p></TooltipContent>
+                </Tooltip>
+            </div>
+            <div className="p-4 pt-0 space-y-4">
                 <div className="grid gap-2">
                     <Label htmlFor="font-family">Font</Label>
                     <select
