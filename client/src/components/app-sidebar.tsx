@@ -8,6 +8,9 @@ import {
   AlignRight,
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  CornerDownRight,
   Bold,
   ChevronRight,
   Circle,
@@ -101,7 +104,14 @@ const shapeTools = [
   { name: "Circle", icon: Circle, type: 'circle' },
   { name: "Triangle", icon: Triangle, type: 'triangle' },
   { name: "Star", icon: Star, type: 'star' },
-  { name: "Arrow", icon: ArrowRight, type: 'arrow' },
+];
+
+const arrowTools = [
+  { name: "Arrow Right", icon: ArrowRight, subType: 'right' },
+  { name: "Arrow Left", icon: ArrowLeft, subType: 'left' },
+  { name: "Arrow Up", icon: ArrowUp, subType: 'up' },
+  { name: "Arrow Down", icon: ArrowDown, subType: 'down' },
+  { name: "Corner Down Right", icon: CornerDownRight, subType: 'bent-down-right' },
 ];
 
 const drawingTools = [
@@ -210,6 +220,39 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                         draggable={true}
                         onDragStart={(e) => {
                           e.dataTransfer.setData("application/reactflow", tool.type);
+                          e.dataTransfer.effectAllowed = "move";
+                        }}
+                      >
+                        <tool.icon className="text-muted-foreground" />
+                        <span>{tool.name}</span>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
+            </SidebarMenuItem>
+          </Collapsible>
+
+          {/* Arrow Tools */}
+          <Collapsible asChild className="group/collapsible">
+            <SidebarMenuItem>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuButton>
+                  <ArrowRight />
+                  <span>Arrows</span>
+                  <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuButton>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {arrowTools.map((tool) => (
+                    <SidebarMenuSubItem key={tool.name}>
+                      <SidebarMenuSubButton
+                        className="text-sidebar-foreground/70"
+                        draggable={true}
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData("application/reactflow", "arrow");
+                          e.dataTransfer.setData("application/subtype", tool.subType);
                           e.dataTransfer.effectAllowed = "move";
                         }}
                       >

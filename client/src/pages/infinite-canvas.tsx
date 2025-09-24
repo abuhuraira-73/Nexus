@@ -683,8 +683,30 @@ const InfiniteCanvas = () => {
         return <RegularPolygon key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={3} radius={shape.radius || 60} />;
       case 'star':
         return <RegularPolygon key={shape.id} {...commonProps} fill={shape.fill} shadowBlur={shape.shadowBlur} sides={5} radius={shape.radius || 70} innerRadius={(shape.radius || 70) / 2} outerRadius={shape.radius || 70} />;
-      case 'arrow':
-        return <Arrow key={shape.id} {...commonProps} points={[0, 0, shape.width || 100, 0]} pointerLength={10} pointerWidth={12} fill={shape.stroke} stroke={shape.stroke} strokeWidth={2} />; 
+      case 'arrow': {
+        const w = shape.width || 100;
+        const h = shape.height || 100;
+        let points: number[] = [];
+        switch (shape.subType) {
+            case 'left':
+                points = [w, h / 2, 0, h / 2];
+                break;
+            case 'up':
+                points = [w / 2, h, w / 2, 0];
+                break;
+            case 'down':
+                points = [w / 2, 0, w / 2, h];
+                break;
+            case 'bent-down-right':
+                points = [0, h/2, w/2, h/2, w/2, h];
+                break;
+            case 'right':
+            default:
+                points = [0, h / 2, w, h / 2];
+                break;
+        }
+        return <Arrow key={shape.id} {...commonProps} points={points} pointerLength={10} pointerWidth={12} fill={shape.stroke} stroke={shape.stroke} strokeWidth={2} />;
+      }
       case 'line':
         return <Line key={shape.id} {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
       case 'connector':
@@ -830,7 +852,7 @@ const InfiniteCanvas = () => {
                 newShape = { ...shapeBase, type, radius: 70 };
                 break;
                 case 'arrow':
-                newShape = { ...shapeBase, type, width: 150, fill: '#000000', stroke: '#000000' };
+                newShape = { ...shapeBase, type, subType, width: 100, height: 100, fill: '#000000', stroke: '#000000' };
                 break;
                 case 'image':
                 newShape = { ...shapeBase, type, width: 200, height: 200, src: 'https://via.placeholder.com/200' }; // Placeholder src
