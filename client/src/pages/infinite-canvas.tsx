@@ -133,16 +133,56 @@ const InfiniteCanvas = () => {
     setStage, 
     backgroundPattern,
     moveSelectedShape,
-    updateShapeAndPushHistory
+    updateShapeAndPushHistory,
+    setStageRef
   } = useCanvasStore();
-  const { setCurrentCanvasName } = useAppStore();
+  const { setCurrentCanvasName, triggerAddComment } = useAppStore();
+  const { user } = useAuthStore();
+
+  // Effect to add a comment when triggered from the header
+  useEffect(() => {
+    if (triggerAddComment > 0) { // Check to prevent running on initial render
+      const newPos = {
+        x: (dimensions.width / 2 - stageX) / stageScale,
+        y: (dimensions.height / 2 - stageY) / stageScale,
+      };
+
+      const newShape: Shape = {
+        id: String(Date.now()),
+        type: 'text',
+        subType: 'comment',
+        x: newPos.x - 125, // Offset to center the card
+        y: newPos.y - 50,
+        width: 250,
+        height: 100,
+        text: 'Add a comment...',
+        author: user?.name || 'User',
+        fontSize: 14,
+        backgroundColor: '#ffffff',
+        stroke: '#E0E0E0',
+        cornerRadius: 8,
+        padding: 16,
+        shadowBlur: 10,
+        textColor: '#333333',
+        fill: '#333333', // fill is required but managed by textColor for this component
+      };
+      addShape(newShape);
+    }
+  }, [triggerAddComment, addShape, dimensions, stageX, stageY, stageScale, user]); // Dependency array ensures this runs only when the trigger changes
+
 
   const [currentLine, setCurrentLine] = useState<Shape | null>(null);
   const [isErasing, setIsErasing] = useState(false);
   const [drawingConnector, setDrawingConnector] = useState<{ from: string; to: { x: number; y: number } } | null>(null);
 
   const trRef = useRef<TransformerType>(null);
+  const stageRef = useRef<Konva.Stage>(null);
   const shapeRefs = useRef<(Konva.Node | null)[]>([]);
+
+  // Set the stage ref in the global store
+  useEffect(() => {
+    setStageRef(stageRef);
+  }, [setStageRef]);
 
   // Fetch and load canvas data
   useEffect(() => {
@@ -674,6 +714,7 @@ const InfiniteCanvas = () => {
         }}
       >
         <Stage
+          ref={stageRef}
           width={dimensions.width}
           height={dimensions.height}
           onWheel={handleWheel}

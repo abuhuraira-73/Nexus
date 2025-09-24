@@ -133,12 +133,13 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ## Progress Log
 
-*   **Next Task:** Implement Canvas Usability Features.
-    *   **Feature 1: Zoom Control & Display:** Add a UI element to show the current zoom percentage and allow users to set a specific zoom level. This involves moving the stage state to the global store.
-    *   **Feature 2: Snap to Grid:** Implement logic so that objects snap to an invisible grid when being moved, making alignment easier.
-    *   **Feature 3: Canvas Background Patterns:** Add UI controls and rendering logic to allow the canvas background to be set to patterns like dots or lines.
-    *   **Implementation Order:** 1. Zoom Control, 2. Snap to Grid, 3. Background Patterns.
+*   **Next Task:** [To be decided]
 
+### September 23, 2025
+*   **Canvas Usability Features - Implemented:**
+    *   **Zoom Control & Display:** Added a UI element to show the current zoom percentage and allow users to set a specific zoom level.
+    *   **Snap to Grid:** Implemented logic so that objects snap to an invisible grid when being moved, making alignment easier.
+    *   **Canvas Background Patterns:** Added UI controls and rendering logic to allow the canvas background to be set to patterns like dots or lines.
 
 ### September 21, 2025
 *   **Canvas Content Persistence - Implemented & Verified:**

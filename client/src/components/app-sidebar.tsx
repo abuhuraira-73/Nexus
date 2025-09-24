@@ -113,7 +113,6 @@ const textTools = [
     { name: "Text", icon: Type, subType: 'plain' },
     { name: "Text Card", icon: FileText, subType: 'textCard' },
     { name: "Sticky Note", icon: StickyNote, subType: 'stickyNote' },
-    { name: "Comment", icon: MessageSquare, subType: 'comment' },
     { name: "Checklist", icon: ListTodo, subType: 'checklist' },
     { name: "Table", icon: Table, subType: 'table' },
 ]

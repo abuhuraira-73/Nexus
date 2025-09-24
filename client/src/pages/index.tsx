@@ -35,7 +35,7 @@ import {
 } from "@/components/ui/tooltip"
 import { CanvasColorPicker } from "@/components/ui/canvas-color-picker";
 import { ZoomControl } from "@/components/ui/zoom-control";
-import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2, Grid3x3 } from "lucide-react"
+import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2, Grid3x3, FileImage, FileText } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { api, updateCanvasStatus } from '@/lib/api';
@@ -53,9 +53,51 @@ function AppLayoutContent() {
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const { currentCanvasName, isSaving, lastSaved } = useAppStore();
-  const { setBackgroundPattern } = useCanvasStore();
+  const { currentCanvasName, isSaving, lastSaved, fireAddComment } = useAppStore();
+  const { setBackgroundPattern, stageRef } = useCanvasStore();
   const { state: sidebarState } = useSidebar();
+
+  const handleImageExport = (format: 'png' | 'jpeg') => {
+    if (!stageRef?.current) {
+      toast.error("Cannot export: Stage not available.");
+      return;
+    }
+
+    const mimeType = `image/${format}`;
+    // Use a higher pixel ratio for better quality export
+    const dataURL = stageRef.current.toDataURL({ mimeType, pixelRatio: 2 });
+
+    const link = document.createElement('a');
+    link.download = `${currentCanvasName || 'canvas'}.${format}`;
+    link.href = dataURL;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success(`Canvas exported as ${format.toUpperCase()}`);
+  };
+
+  const handlePdfExport = () => {
+    if (!stageRef?.current) {
+      toast.error("Cannot export: Stage not available.");
+      return;
+    }
+
+    const stage = stageRef.current;
+    const dataURL = stage.toDataURL({ pixelRatio: 2 });
+
+    import('jspdf').then(jsPDF => {
+      const pdf = new jsPDF.default({
+        orientation: stage.width() > stage.height() ? 'landscape' : 'portrait',
+        unit: 'px',
+        format: [stage.width(), stage.height()]
+      });
+
+      pdf.addImage(dataURL, 'PNG', 0, 0, stage.width(), stage.height());
+      pdf.save(`${currentCanvasName || 'canvas'}.pdf`);
+      toast.success('Canvas exported as PDF');
+    });
+  };
 
   const [showSavedIndicator, setShowSavedIndicator] = useState(false);
 
@@ -317,14 +359,23 @@ function AppLayoutContent() {
                   </TooltipContent>
                 </Tooltip>
                 <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
-                  <DropdownMenuItem>Export as PNG</DropdownMenuItem>
-                  <DropdownMenuItem>Export as PDF</DropdownMenuItem>
-                  <DropdownMenuItem>Export as SVG</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => handleImageExport('png')}>
+                    <FileImage className="mr-2 h-4 w-4" />
+                    <span>as PNG</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => handleImageExport('jpeg')}>
+                    <FileImage className="mr-2 h-4 w-4" />
+                    <span>as JPG</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={handlePdfExport}>
+                    <FileText className="mr-2 h-4 w-4" />
+                    <span>as PDF</span>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" onClick={fireAddComment}>
                     <MessageSquare className="h-4 w-4" />
                     <span className="sr-only">Comments</span>
                   </Button>
