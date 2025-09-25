@@ -54,8 +54,14 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### ✅ Core Features (Implemented)
 
+*   **✏️ In-Place Editing & Advanced Tools:**
+    *   **Direct Text Editing:** Double-click Text Cards, Comments, and other text objects to edit them directly on the canvas.
+    *   **Enhanced Connectors:** Connectors can now link *any* two items on the canvas, not just basic shapes.
+    *   **Expanded Arrow Library:** A new sidebar category for arrows, including left, right, up, down, and bent L-shaped arrows.
+*   **📥 Export Canvas:** Export your canvas creations to high-quality PNG, JPG, or PDF formats directly from the header menu.
 *   **💾 Canvas Content Persistence:** The contents of each canvas (shapes, text, images, etc.) are now saved to the database with a debounced auto-save feature for a seamless user experience.
 *   **🗑️ Trash & Restore:** Canvases can be moved to a trash can instead of being deleted immediately. From the trash, they can either be restored or permanently deleted.
+*   **✨ Safe Deletion:** Replaced risky keyboard-based deletion with a clear and explicit "Delete" button in the properties panel for any selected item.
 *   **✨ Save Status Indicator:** The UI now provides real-time feedback in the header, showing when a canvas is being saved and confirming when all changes are saved.
 *   **☁️ Cloud Canvas Lifecycle:** Full end-to-end feature for creating canvases, which are saved to the database. Canvases are now fetched and listed in the sidebar, and can be opened to view their content.
 *   **🔐 User Authentication:** Secure login and registration with email/password and Google.
@@ -67,7 +73,6 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **✨ UI/Codebase Refinements:** Various bug fixes, linting corrections, and type safety improvements.
 *   **無限 Infinite Canvas:** A pannable, zoomable, and interactive canvas.
 *   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
-*   **✏️ Rich Content & Drawing Tools:** Includes Text Cards, Image Cards, freehand drawing, and an eraser.
 *   **💾 Local Persistence:** Work is saved automatically to local storage.
 *   **↩️ Undo/Redo:** Robust history management.
 *   **⭐ Favorites System:** Pin your most important canvases for quick access.
@@ -82,7 +87,6 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 *   **User Profile Management:** Allow users to view/edit their profile information.
 *   **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
-*   **Connectors & Arrows:** Adding advanced drawing tools for diagramming.
 
 ## 🛠️ Technology Stack
 

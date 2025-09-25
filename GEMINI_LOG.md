@@ -135,6 +135,32 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 *   **Next Task:** [To be decided]
 
+### September 25, 2025
+
+*   **Research: React Bits Components:**
+    *   Investigated the `reactbits.dev` library for potential UI enhancements.
+    *   Compiled and categorized a list of desired components for future use.
+
+### September 24, 2025
+*   **Feature: Canvas Export:**
+    *   Implemented functionality to export the entire canvas as a PNG, JPG, or PDF file.
+    *   Added an "Export" dropdown to the main canvas header with format options.
+*   **Feature: In-Place Text Editing:**
+    *   Implemented on-canvas text editing. Users can now double-click text-based items (`TextCard`, `CommentCard`, plain text) to edit them directly.
+    *   Created a central `TextEditor` component to handle the overlay and styling.
+    *   Removed the redundant "Content" textarea from the properties panel.
+*   **UX & Bug Fixes:**
+    *   **Connectors:** Fixed a major limitation where connectors could only link basic shapes. They can now connect to any item on the canvas (images, text cards, etc.).
+    *   **Deletion:** Reworked the delete functionality. Removed the destructive `Backspace`/`Delete` key behavior. Added a safe, explicit "Delete" icon button to the header of the properties panel for any selected item.
+    *   **Checklist Card:** Completely refactored the component to fix numerous bugs. It is now a pure Konva component, which resolves a critical layering issue where text would appear on top of other shapes. The background now resizes dynamically to fit the content, and new items are correctly auto-focused.
+    *   **Text Editing:** Fixed multiple bugs with the new in-place editor, including a "duplicate text" visual glitch and incorrect positioning and color of the editor textarea.
+    *   **Table:** Improved the table component by adding a default white background and rounded corners. Added a "Corner Radius" control to the properties panel. Fixed a crash caused by incorrect rendering logic.
+    *   **Arrows:** Improved the default arrow to be slimmer and single-colored (black). Added a new "Arrows" category to the sidebar with multiple new arrow types (left, up, down, bent).
+*   **Refactoring:**
+    *   Moved the "Add Comment" functionality from the sidebar to the "Comments" button in the main header, using the global store to communicate between components.
+
+*   **Next Task:** [To be decided]
+
 ### September 23, 2025
 *   **Canvas Usability Features - Implemented:**
     *   **Zoom Control & Display:** Added a UI element to show the current zoom percentage and allow users to set a specific zoom level.
@@ -305,3 +331,28 @@ Once the core feature of saving canvas content is complete, the following major 
     *   **Real-time Collaboration:** The largest upcoming feature, allowing multiple users to edit a canvas simultaneously.
     *   **Advanced Drawing Tools:** Add tools like connectors and arrows for diagramming.
     *   **Exporting:** Allow users to export their canvases to various formats (PNG, PDF, etc.).
+
+---
+
+## React Bits Component Research (September 25, 2025)
+
+A list of interesting components from `reactbits.dev` to be potentially used in the project.
+
+### Text Effects
+*   **Blur Text:** Animates text by blurring it in word by word or letter by letter.
+*   **Shiny Text:** Adds a shimmering light glare effect that pans across text.
+*   **Scroll Velocity:** Creates a dynamic text effect that responds to the speed of scrolling.
+
+### Animations
+*   **Glare Hover:** An animation effect that adds a glare to elements on hover.
+*   **Fade Content:** A component to fade elements in or out.
+
+### Overlays / Effects
+*   **Gradual Blur:** Creates a blur overlay on top of other content.
+
+---
+
+### Other Findings
+*   **Gradient Text:** This appears to be a **tutorial** on the site that teaches you how to create gradient text with CSS, rather than a pre-built component.
+*   **Star Border:** Could **not find** a component with this name.
+*   **Galaxy:** Could **not find** a component with this name.
