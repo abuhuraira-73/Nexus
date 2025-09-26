@@ -356,3 +356,13 @@ A list of interesting components from `reactbits.dev` to be potentially used in 
 *   **Gradient Text:** This appears to be a **tutorial** on the site that teaches you how to create gradient text with CSS, rather than a pre-built component.
 *   **Star Border:** Could **not find** a component with this name.
 *   **Galaxy:** Could **not find** a component with this name.
+
+---
+
+## Gemini CLI Update Command
+
+The following command can be used to update the Gemini CLI to the latest version:
+
+```bash
+sudo npm install -g @google/gemini-cli@latest
+```
