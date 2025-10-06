@@ -6,6 +6,9 @@ interface AppState {
   isProfileModalOpen: boolean;
   openProfileModal: () => void;
   closeProfileModal: () => void;
+  isDeleteModalOpen: boolean;
+  openDeleteModal: () => void;
+  closeDeleteModal: () => void;
   currentCanvasName: string | null;
   setCurrentCanvasName: (name: string | null) => void;
   isSaving: boolean;
@@ -22,6 +25,9 @@ export const useAppStore = create<AppState>((set) => ({
   isProfileModalOpen: false,
   openProfileModal: () => set({ isProfileModalOpen: true }),
   closeProfileModal: () => set({ isProfileModalOpen: false }),
+  isDeleteModalOpen: false,
+  openDeleteModal: () => set({ isDeleteModalOpen: true }),
+  closeDeleteModal: () => set({ isDeleteModalOpen: false }),
   currentCanvasName: null,
   isSaving: false,
   lastSaved: null,

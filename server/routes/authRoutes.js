@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {registerUser, loginUser, getMe} = require('../controllers/authController');
+const {registerUser, loginUser, getMe, changePassword} = require('../controllers/authController');
 const auth = require('../middleware/authMiddleware');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
@@ -14,6 +14,11 @@ router.post('/register', registerUser);
 // @desc    Login user and get token
 // @access  Public
 router.post('/login', loginUser);
+
+// @route   PUT /api/auth/change-password
+// @desc    Change user password
+// @access  Private
+router.put('/change-password', auth, changePassword);
 
 // @route   GET /api/auth/google
 // @desc    Auth with Google

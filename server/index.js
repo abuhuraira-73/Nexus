@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path'); // Import path module
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
 const authRoutes = require('./routes/authRoutes');
 const canvasRoutes = require('./routes/canvasRoutes');
 const contactRoutes = require('./routes/contactRoutes');
+const userRoutes = require('./routes/userRoutes');
+const subscriptionRoutes = require('./routes/subscriptionRoutes');
 const passport = require('passport');
 
 // Passport config
@@ -29,6 +32,9 @@ app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
 // Passport middleware
 app.use(passport.initialize());
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
 
 const connectDB = async () => {
   try {
@@ -46,6 +52,8 @@ connectDB();
 app.use('/api/auth', authRoutes);
 app.use('/api/canvases', canvasRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/subscription', subscriptionRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');

@@ -99,4 +99,41 @@ const getMe = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getMe };
+const changePassword = async (req, res) => {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    if (!currentPassword || !newPassword) {
+        return res.status(400).json({ msg: 'Please provide both current and new passwords.' });
+    }
+
+    try {
+        const user = await User.findById(userId).select('+password');
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found.' });
+        }
+
+        // If user signed up with Google, they don't have a password
+        if (user.provider !== 'local') {
+            return res.status(400).json({ msg: 'Cannot change password for accounts created with Google.' });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+        if (!isMatch) {
+            return res.status(401).json({ msg: 'Incorrect current password.' });
+        }
+
+        user.password = newPassword; // The pre-save hook in User.js will hash it
+        await user.save();
+
+        res.json({ msg: 'Password updated successfully.' });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
+module.exports = { registerUser, loginUser, getMe, changePassword };

@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import { AppSidebar, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
 import { UserProfileModal } from "@/components/user-profile-modal";
+import { DeleteAccountModal } from "@/components/DeleteAccountModal";
 import { useAppStore } from "@/store/appStore";
+import { useAuthStore } from "@/store/authStore";
 import { useCanvasStore, type BackgroundPattern } from "@/store/canvasStore";
 import {
   Breadcrumb,
@@ -54,9 +56,15 @@ function AppLayoutContent() {
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const { currentCanvasName, isSaving, lastSaved, fireAddComment, isProfileModalOpen, closeProfileModal } = useAppStore();
+  const { 
+    currentCanvasName, isSaving, lastSaved, fireAddComment, 
+    isProfileModalOpen, closeProfileModal, 
+    isDeleteModalOpen, closeDeleteModal 
+  } = useAppStore();
+  const { logout } = useAuthStore();
   const { setBackgroundPattern, stageRef } = useCanvasStore();
   const { state: sidebarState } = useSidebar();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleImageExport = (format: 'png' | 'jpeg') => {
     if (!stageRef?.current) {
@@ -241,6 +249,27 @@ function AppLayoutContent() {
     });
   };
 
+  const handleDeleteAccount = (password: string) => {
+    setIsDeleting(true);
+    const promise = api('/api/users/me', {
+        method: 'DELETE',
+        body: JSON.stringify({ password }),
+    });
+
+    toast.promise(promise, {
+        loading: 'Deleting account...',
+        success: (data) => {
+            logout();
+            navigate('/');
+            return data.msg || 'Account deleted successfully.';
+        },
+        error: (err) => {
+            setIsDeleting(false);
+            return err.message || 'Failed to delete account.';
+        },
+    });
+  }
+
   return (
     <>
       <CreateCanvasModal 
@@ -251,6 +280,12 @@ function AppLayoutContent() {
       <UserProfileModal 
         isOpen={isProfileModalOpen}
         onClose={closeProfileModal}
+      />
+      <DeleteAccountModal 
+        isOpen={isDeleteModalOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDeleteAccount}
+        isDeleting={isDeleting}
       />
       <AppSidebar 
         className="z-20"
