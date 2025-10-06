@@ -52,10 +52,19 @@ export const SubscriptionPane = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">
                     {plan === 'free' 
-                        ? 'Upgrade to Premium to unlock unlimited canvases and real-time collaboration.'
+                        ? 'Upgrade to Premium to unlock all features, including:'
                         : 'You have access to all Premium features. Thank you for your support!'
                     }
                 </p>
+                {plan === 'free' && (
+                    <ul className="list-disc list-inside space-y-2 text-sm text-muted-foreground">
+                        <li>Unlimited Items per Board</li>
+                        <li>Unlimited Boards</li>
+                        <li>Real-time Collaboration</li>
+                        <li>High-Quality Exports</li>
+                        <li>Priority Email Support</li>
+                    </ul>
+                )}
                 {plan === 'free' && (
                     <Button onClick={handleUpgrade} className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold">
                         <Crown className="mr-2 h-4 w-4" /> Upgrade to Premium
