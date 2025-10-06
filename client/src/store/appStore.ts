@@ -1,8 +1,11 @@
 import { create } from 'zustand';
 
-interface AppStore {
+interface AppState {
   isCreateModalOpen: boolean;
   setCreateModalOpen: (isOpen: boolean) => void;
+  isProfileModalOpen: boolean;
+  openProfileModal: () => void;
+  closeProfileModal: () => void;
   currentCanvasName: string | null;
   setCurrentCanvasName: (name: string | null) => void;
   isSaving: boolean;
@@ -14,6 +17,11 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppState>((set) => ({
+  isCreateModalOpen: false,
+  setCreateModalOpen: (isOpen) => set({ isCreateModalOpen: isOpen }),
+  isProfileModalOpen: false,
+  openProfileModal: () => set({ isProfileModalOpen: true }),
+  closeProfileModal: () => set({ isProfileModalOpen: false }),
   currentCanvasName: null,
   isSaving: false,
   lastSaved: null,

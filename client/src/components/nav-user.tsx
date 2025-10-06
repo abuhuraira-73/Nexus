@@ -5,9 +5,11 @@ import {
   CreditCard,
   LogOut,
   Sparkles,
+  Settings,
 } from "lucide-react"
-import { useNavigate } from "react-router-dom"; // New import
-import { useAuthStore } from "@/store/authStore"; // New import
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/store/authStore";
+import { useAppStore } from "@/store/appStore";
 import { toast } from "sonner";
 
 import {
@@ -33,13 +35,14 @@ import {
 
 export function NavUser() {
   const { isMobile } = useSidebar()
-  const navigate = useNavigate(); // Initialize hook
-  const { user, logout } = useAuthStore(); // Get user and logout from store
+  const navigate = useNavigate();
+  const { user, logout } = useAuthStore();
+  const { openProfileModal } = useAppStore();
 
   const handleLogout = () => {
-    logout(); // Clear auth state
-    toast.success('Logout successful!'); // Show success notification
-    navigate('/'); // Redirect to landing page
+    logout();
+    toast.success('Logout successful!');
+    navigate('/');
   };
 
   if (!user) {
@@ -99,9 +102,9 @@ export function NavUser() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem onClick={openProfileModal}>
+                <Settings />
+                Settings
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />

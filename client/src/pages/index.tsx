@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { AppSidebar, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
+import { UserProfileModal } from "@/components/user-profile-modal";
 import { useAppStore } from "@/store/appStore";
 import { useCanvasStore, type BackgroundPattern } from "@/store/canvasStore";
 import {
@@ -53,7 +54,7 @@ function AppLayoutContent() {
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const { currentCanvasName, isSaving, lastSaved, fireAddComment } = useAppStore();
+  const { currentCanvasName, isSaving, lastSaved, fireAddComment, isProfileModalOpen, closeProfileModal } = useAppStore();
   const { setBackgroundPattern, stageRef } = useCanvasStore();
   const { state: sidebarState } = useSidebar();
 
@@ -246,6 +247,10 @@ function AppLayoutContent() {
         isOpen={isCreateModalOpen}
         onClose={() => setCreateModalOpen(false)}
         onCreate={handleCreateCanvas}
+      />
+      <UserProfileModal 
+        isOpen={isProfileModalOpen}
+        onClose={closeProfileModal}
       />
       <AppSidebar 
         className="z-20"
