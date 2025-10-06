@@ -54,6 +54,10 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### ✅ Core Features (Implemented)
 
+*   **👤 User Profile Management:** A comprehensive account management modal where users can:
+    *   Update their name.
+    *   Upload, change, or remove their profile picture.
+    *   Set personal preferences like default canvas color and pattern.
 *   **✏️ In-Place Editing & Advanced Tools:**
     *   **Direct Text Editing:** Double-click Text Cards, Comments, and other text objects to edit them directly on the canvas.
     *   **Enhanced Connectors:** Connectors can now link *any* two items on the canvas, not just basic shapes.
@@ -89,13 +93,9 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
     *   **Backend:** Implementing a `Socket.IO` server to manage live connections and broadcast canvas changes.
     *   **Frontend:** Integrating the `Socket.IO` client to handle real-time updates and display user presence indicators.
 
-*   **Proper Image & File Uploads:** The current image implementation is a frontend placeholder. The full feature requires:
+*   **Proper Image & File Uploads (for Canvas):** The current image implementation for the canvas is a frontend placeholder. The full feature requires:
     *   **Backend:** Building an API endpoint to handle file uploads, process them with middleware like `multer`, and save them to a persistent storage solution (cloud or local).
     *   **Frontend:** Connecting the `ImageUploadModal` to the new endpoint to upload files and use the returned URL.
-
-*   **User Profile Management:** 
-    *   A dedicated page for users to view and edit their profile information (name, password).
-    *   The corresponding secure backend APIs to handle these updates.
 
 *   **Complete Deletion Lifecycle:**
     *   Implement the final **permanent deletion** of canvases from the trash, including the backend API and the UI trigger.

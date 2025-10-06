@@ -131,13 +131,28 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ---
 
+### October 6, 2025
+
+*   **Feature: Complete User Account Management:** Implemented the comprehensive user account management modal, allowing users to view and edit their profile information. This includes:
+    *   **Profile Details:** Users can now successfully update their name.
+    *   **Profile Picture:** Implemented full lifecycle for profile pictures, including uploading a new picture, removing an existing picture, and displaying an initials-based fallback avatar.
+    *   **Dynamic UI Updates:** Ensured that avatar changes are reflected instantly in both the profile pane and the main application sidebar.
+*   **Feature: User Preferences:** Added a new section to the account modal allowing users to set their preferences, starting with:
+    *   Default canvas background color.
+    *   Default canvas background pattern (Solid, Dotted, or Lined).
+*   **UI/Content Sync:** Updated the "Subscription" tab within the account modal to ensure the feature list for the Premium plan is consistent with the main pricing page.
+*   **Bug Fixes & Stability:**
+    *   Resolved a critical "Not Found" error for profile update APIs by correcting server restart procedures and fixing file permissions.
+    *   Fixed a frontend bug (`setUser is not a function`) by implementing a `setUser` action in the global `authStore`.
+    *   Corrected a server-side syntax error that was causing the application to crash.
+    *   Standardized the user object data by ensuring the backend consistently returns `id` instead of `_id`.
+
 ### Next Steps & Outstanding Tasks
 
 *   **Major Features:**
     *   **Real-time Collaboration:** This is the largest upcoming feature. It involves setting up `Socket.IO` on the backend and integrating the client to enable multi-user editing and presence indicators.
-    *   **User Profile Management:** A dedicated page for users to view and edit their account details (name, password), including the necessary backend APIs.
 *   **Core Functionality:**
-    *   **Proper Image Uploads:** The current implementation adds images as base64 strings. This needs to be replaced with a proper backend solution involving a file upload API (using `multer`) and a storage system (cloud or local).
+    *   **Proper Image Uploads (Canvas):** The current implementation for adding images to the *canvas* adds them as base64 strings. This needs to be replaced with a proper backend solution involving a file upload API (using `multer`) and a storage system (cloud or local).
     *   **General File Uploads:** Extend the image upload system to support other file types like PDFs.
     *   **Complete Deletion Lifecycle:** Implement the final "permanent deletion" step for canvases in the trash, including the backend endpoint and the UI trigger.
 
