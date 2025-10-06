@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { updateUserProfile, deleteUser, updateProfilePicture } = require('../controllers/userController');
+const { updateUserProfile, deleteUser, updateProfilePicture, removeProfilePicture } = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
 
@@ -13,6 +13,11 @@ router.put('/profile', authMiddleware, updateUserProfile);
 // @desc    Update user profile picture
 // @access  Private
 router.post('/profile/picture', authMiddleware, upload.single('profilePicture'), updateProfilePicture);
+
+// @route   DELETE /api/users/profile/picture
+// @desc    Remove user profile picture
+// @access  Private
+router.delete('/profile/picture', authMiddleware, removeProfilePicture);
 
 // @route   DELETE /api/users/me
 // @desc    Delete user profile

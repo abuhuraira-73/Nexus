@@ -3,15 +3,16 @@ import { create } from 'zustand';
 // Define the structure of our authentication state
 interface AuthState {
   token: string | null;
-  user: { id: string; name: string; email: string } | null;
+  user: { id: string; name: string; email: string; avatarUrl?: string } | null;
   isAuthenticated: boolean;
   isLoading: boolean; // Optional: to indicate if the store is currently loading from storage
 }
 
 // Define the actions that can modify our authentication state
 interface AuthActions {
-  login: (token: string, user: { id: string; name: string; email: string }) => void;
+  login: (token: string, user: { id: string; name: string; email: string; avatarUrl?: string }) => void;
   logout: () => void;
+  setUser: (user: { id: string; name: string; email: string; avatarUrl?: string }) => void;
   // Optional: an action to set loading state if needed
   setLoading: (loading: boolean) => void;
 }
@@ -69,6 +70,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
       localStorage.removeItem('user');
     }
     set({ token: null, user: null, isAuthenticated: false });
+  },
+  setUser: (user) => {
+    if (typeof window !== 'undefined') {
+        const oldUser = JSON.parse(localStorage.getItem('user') || 'null');
+        const newUser = { ...oldUser, ...user };
+        localStorage.setItem('user', JSON.stringify(newUser));
+    }
+    set((state) => ({ user: { ...state.user, ...user } as AuthState['user'] }));
   },
   setLoading: (loading: boolean) => set({ isLoading: loading }),
 }));

@@ -58,6 +58,23 @@ export const ProfilePane = () => {
         });
     };
 
+    const handleRemovePhoto = async () => {
+        const promise = api('/api/users/profile/picture', {
+            method: 'DELETE',
+        });
+
+        toast.promise(promise, {
+            loading: 'Removing picture...',
+            success: (updatedUser) => {
+                setUser(updatedUser);
+                return 'Profile picture removed!';
+            },
+            error: (err) => {
+                return err.message || 'Failed to remove picture.';
+            },
+        });
+    };
+
     const handleSave = async () => {
         if (!hasChanged) return;
 
@@ -94,6 +111,7 @@ export const ProfilePane = () => {
                     </Avatar>
                     <div className="space-y-1">
                         <Button onClick={handleAvatarClick} variant="outline">Change Picture</Button>
+                        <Button onClick={handleRemovePhoto} variant="destructive" className="ml-2">Remove Photo</Button>
                         <p className="text-xs text-muted-foreground">JPG, GIF or PNG. 5MB max.</p>
                         <input 
                             type="file"

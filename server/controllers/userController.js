@@ -27,7 +27,7 @@ const updateUserProfile = async (req, res) => {
 
         // Return user data without the password
         res.json({
-            _id: user._id,
+            id: user._id, // Changed from _id
             name: user.name,
             email: user.email,
             provider: user.provider,
@@ -57,13 +57,12 @@ const updateProfilePicture = async (req, res) => {
             return res.status(400).json({ msg: 'No file uploaded.' });
         }
 
-        // We construct a URL path instead of saving the full filesystem path
         user.avatarUrl = `/uploads/${req.file.filename}`;
 
         await user.save();
 
         res.json({
-            _id: user._id,
+            id: user._id,
             name: user.name,
             email: user.email,
             provider: user.provider,
@@ -77,6 +76,47 @@ const updateProfilePicture = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
+// @route   DELETE /api/users/profile/picture
+// @desc    Remove user profile picture
+// @access  Private
+const removeProfilePicture = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Optional: Delete the old file from the filesystem
+        if (user.avatarUrl) {
+            const fs = require('fs');
+            const path = require('path');
+            const oldPath = path.join(__dirname, '..', 'public', user.avatarUrl);
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);
+            }
+        }
+
+        user.avatarUrl = null;
+        await user.save();
+
+        res.json({
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            provider: user.provider,
+            avatarUrl: user.avatarUrl,
+            preferences: user.preferences,
+            plan: user.plan,
+        });
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+};
+
 
 // @route   DELETE /api/users/me
 // @desc    Delete user, their canvases, & profile
@@ -117,4 +157,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-module.exports = { updateUserProfile, updateProfilePicture, deleteUser };
+module.exports = { updateUserProfile, updateProfilePicture, deleteUser, removeProfilePicture };
