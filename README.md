@@ -85,8 +85,20 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 
 ### 🚀 Upcoming Features & Pages
 
-*   **User Profile Management:** Allow users to view/edit their profile information.
-*   **Real-time Collaboration:** Begin setting up Socket.IO for multi-user editing.
+*   **Real-time Collaboration:** The highest priority major feature. This involves:
+    *   **Backend:** Implementing a `Socket.IO` server to manage live connections and broadcast canvas changes.
+    *   **Frontend:** Integrating the `Socket.IO` client to handle real-time updates and display user presence indicators.
+
+*   **Proper Image & File Uploads:** The current image implementation is a frontend placeholder. The full feature requires:
+    *   **Backend:** Building an API endpoint to handle file uploads, process them with middleware like `multer`, and save them to a persistent storage solution (cloud or local).
+    *   **Frontend:** Connecting the `ImageUploadModal` to the new endpoint to upload files and use the returned URL.
+
+*   **User Profile Management:** 
+    *   A dedicated page for users to view and edit their profile information (name, password).
+    *   The corresponding secure backend APIs to handle these updates.
+
+*   **Complete Deletion Lifecycle:**
+    *   Implement the final **permanent deletion** of canvases from the trash, including the backend API and the UI trigger.
 
 ## 🛠️ Technology Stack
 

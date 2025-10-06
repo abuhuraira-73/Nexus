@@ -131,9 +131,15 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ---
 
-## Progress Log
+### Next Steps & Outstanding Tasks
 
-*   **Next Task:** [To be decided]
+*   **Major Features:**
+    *   **Real-time Collaboration:** This is the largest upcoming feature. It involves setting up `Socket.IO` on the backend and integrating the client to enable multi-user editing and presence indicators.
+    *   **User Profile Management:** A dedicated page for users to view and edit their account details (name, password), including the necessary backend APIs.
+*   **Core Functionality:**
+    *   **Proper Image Uploads:** The current implementation adds images as base64 strings. This needs to be replaced with a proper backend solution involving a file upload API (using `multer`) and a storage system (cloud or local).
+    *   **General File Uploads:** Extend the image upload system to support other file types like PDFs.
+    *   **Complete Deletion Lifecycle:** Implement the final "permanent deletion" step for canvases in the trash, including the backend endpoint and the UI trigger.
 
 ### September 25, 2025
 
