@@ -130,9 +130,9 @@ export const ChecklistCard: React.FC<ChecklistCardProps> = ({ shape, editingShap
           {/* Checkmark */}
           {item.checked && (
             <Path
-              data="M5 10 l3 3 l6 -6"
-              x={padding + 2}
-              y={7}
+              data="M4 7 l3 4 l5 -7"
+              x={padding}
+              y={5}
               stroke={textColor}
               strokeWidth={2}
               listening={false} // Pass clicks through to the box
