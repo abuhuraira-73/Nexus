@@ -33,6 +33,9 @@
   <a href="https://github.com/your-username/Nexus/issues">
     <img src="https://img.shields.io/github/issues-pr/your-username/Nexus" alt="Pull Requests">
   </a>
+  <a href="GEMINI_LOG.md">
+    <img src="https://img.shields.io/badge/Gemini-Log-blueviolet" alt="Gemini Log">
+  </a>
   <!-- Add more badges here, e.g., build status, code coverage -->
 </p>
 
