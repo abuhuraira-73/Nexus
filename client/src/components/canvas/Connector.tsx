@@ -41,10 +41,18 @@ export const Connector: React.FC<ConnectorProps> = ({ shape, isSelected, selectS
 
   return (
     <>
+      {/* Visible Line */}
       <Line
         points={points}
         stroke={stroke}
         strokeWidth={strokeWidth}
+        tension={0.5}
+      />
+      {/* Invisible Hit Area */}
+      <Line
+        points={points}
+        stroke="transparent"
+        strokeWidth={20} // Wider hit area
         tension={0.5}
         onClick={() => selectShape(shape.id)}
         onTap={() => selectShape(shape.id)}
