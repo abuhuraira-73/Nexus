@@ -63,7 +63,7 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
     *   Set personal preferences like default canvas color and pattern.
 *   **✏️ In-Place Editing & Advanced Tools:**
     *   **Direct Text Editing:** Double-click Text Cards, Comments, and other text objects to edit them directly on the canvas.
-    *   **Enhanced Connectors:** Connectors can now link *any* two items on the canvas, not just basic shapes.
+    *   **Enhanced Connectors:** Connectors can now link *any* two items on the canvas. They are now also **bendable**—a central handle appears on selection, allowing you to create smooth curves. The selection is made easy with a wider, invisible hit area.
     *   **Expanded Arrow Library:** A new sidebar category for arrows, including left, right, up, down, and bent L-shaped arrows.
 *   **📥 Export Canvas:** Export your canvas creations to high-quality PNG, JPG, or PDF formats directly from the header menu.
 *   **💾 Canvas Content Persistence:** The contents of each canvas (shapes, text, images, etc.) are now saved to the database with a debounced auto-save feature for a seamless user experience.
@@ -77,7 +77,7 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **🔒 Protected Routes:** Restrict access to authenticated users for specific application sections.
 *   **🚪 Logout Functionality:** Clear user sessions and redirect to public pages.
 *   **🔔 Enhanced Notifications:** Replaced native alerts with consistent, styled toast notifications.
-*   **✨ UI/Codebase Refinements:** Various bug fixes, linting corrections, and type safety improvements.
+*   **✨ UI/Codebase Refinements:** Various bug fixes, linting corrections, type safety improvements, and connector tool deactivation after use.
 *   **無限 Infinite Canvas:** A pannable, zoomable, and interactive canvas.
 *   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
 *   **💾 Local Persistence:** Work is saved automatically to local storage.

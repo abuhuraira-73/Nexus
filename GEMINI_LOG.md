@@ -139,6 +139,7 @@ To build a highly flexible, collaborative digital whiteboard application similar
     *   The curve is rendered as a smooth spline that passes directly through the control point for an intuitive user experience.
     *   The control handle is only visible when the connector is selected, reducing visual clutter.
     *   The handle is styled as a small, black circle for a clean aesthetic.
+    *   Selection is made easier with a wider, invisible hit area around the connector line.
 *   **UX Improvement: Connector Tool Deactivation:** The connector tool now automatically deactivates and switches to the 'select' mode after a single connection is made, preventing the accidental creation of multiple connectors.
 *   **Bug Fixes & Stability:**
     *   Resolved a series of TypeScript and ESLint errors in the `infinite-canvas.tsx` component and its related files.
