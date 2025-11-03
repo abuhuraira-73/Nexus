@@ -132,6 +132,7 @@ export const Table: React.FC<TableProps> = ({ shape, editingShapeId, ...props })
                 align="center"
                 fontSize={fontSize}
                 fontFamily={fontFamily}
+                fill="#000000"
                 visible={!editingCell || editingCell.row !== rowIndex || editingCell.col !== colIndex}
               />
             </Group>
@@ -165,6 +166,7 @@ export const Table: React.FC<TableProps> = ({ shape, editingShapeId, ...props })
               fontSize: `${fontSize}px`,
               fontFamily: fontFamily,
               textAlign: 'center',
+              color: '#000000',
             }}
           />
         </Html>

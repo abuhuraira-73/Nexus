@@ -248,7 +248,8 @@ const InfiniteCanvas = () => {
     updateShapeAndPushHistory,
     editingShapeId,
     setEditingShapeId,
-    setStageRef
+    setStageRef,
+    setMode
   } = useCanvasStore();
   const { setCurrentCanvasName, triggerAddComment } = useAppStore();
   const { user } = useAuthStore();
@@ -598,6 +599,7 @@ const InfiniteCanvas = () => {
             }
         }
         setDrawingConnector(null);
+        setMode('select');
         return;
     }
 

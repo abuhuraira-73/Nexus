@@ -512,12 +512,12 @@ const TablePropertiesPanel = ({ shape }: { shape: import("@/pages/infinite-canva
             </div>
             <div className="p-4 pt-0 space-y-4">
                 <div className="grid grid-cols-2 gap-2">
-                    <Button onClick={addRow}>Add Row</Button>
-                    <Button onClick={removeRow} disabled={shape.tableData.length <= 1}>Remove Row</Button>
+                    <Button onClick={addRow}><Plus className="h-4 w-4 mr-2" /> Row</Button>
+                    <Button onClick={removeRow} disabled={shape.tableData.length <= 1}><Trash2 className="h-4 w-4 mr-2" /> Row</Button>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
-                    <Button onClick={addColumn}>Add Column</Button>
-                    <Button onClick={removeColumn} disabled={shape.tableData[0].length <= 1}>Remove Column</Button>
+                    <Button onClick={addColumn}><Plus className="h-4 w-4 mr-2" /> Column</Button>
+                    <Button onClick={removeColumn} disabled={shape.tableData[0].length <= 1}><Trash2 className="h-4 w-4 mr-2" /> Column</Button>
                 </div>
                 <Separator />
                 <div>
