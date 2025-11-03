@@ -34,7 +34,7 @@ interface CanvasState {
   setBackgroundPattern: (pattern: BackgroundPattern) => void;
   setStage: (stage: { scale?: number; x?: number; y?: number }) => void;
   setEditingShapeId: (id: string | null) => void;
-  setStageRef: (ref: React.RefObject<import('konva/lib/Stage').Stage>) => void;
+  setStageRef: (ref: React.RefObject<import('konva/lib/Stage').Stage | null>) => void;
   pushToHistory: () => void;
   undo: () => void;
   redo: () => void;

@@ -31,7 +31,7 @@ export interface TableCell {
 export interface Shape {
   id: string;
   type: ShapeType;
-  subType?: 'plain' | 'heading' | 'stickyNote' | 'comment' | 'textCard' | 'checklist' | 'table';
+  subType?: 'plain' | 'heading' | 'stickyNote' | 'comment' | 'textCard' | 'checklist' | 'table' | 'left' | 'up' | 'down' | 'bent-down-right' | 'right';
   x: number;
   y: number;
   width?: number;
@@ -61,6 +61,8 @@ export interface Shape {
   rowHeights?: number[];
   fromShapeId?: string;
   toShapeId?: string;
+  controlX?: number;
+  controlY?: number;
   // Image-specific properties
   src?: string;
   opacity?: number;
@@ -114,12 +116,10 @@ const TextEditor = ({ shapeRefs }: { shapeRefs: React.RefObject<(Konva.Node | nu
     setEditingShapeId,
     updateShapeAndPushHistory,
     stageScale,
-    stageX,
-    stageY,
     shapes,
   } = useCanvasStore();
 
-  const [editorState, setEditorState] = useState({ text: '', x: 0, y: 0, width: 0, height: 0, fontSize: 16, fontFamily: 'Inter', align: 'left', visible: false });
+  const [editorState, setEditorState] = useState({ text: '', x: 0, y: 0, width: 0, height: 0, fontSize: 16, fontFamily: 'Inter', align: 'left', visible: false, color: 'black' });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -230,7 +230,6 @@ const InfiniteCanvas = () => {
   const { 
     shapes, 
     addShape, 
-    updateShape, 
     deleteShape, 
     selectedId, 
     selectShape, 
@@ -241,7 +240,7 @@ const InfiniteCanvas = () => {
     backgroundColor, 
     stageScale, 
     stageX, 
-    stageY, 
+    stageY,
     setStage, 
     backgroundPattern,
     moveSelectedShape,
@@ -331,7 +330,7 @@ const InfiniteCanvas = () => {
     // Reset stage position and zoom when canvas changes
     setStage({ scale: 1, x: 0, y: 0 });
 
-  }, [canvasId, setCanvas, setCurrentCanvasName]);
+  }, [canvasId, setCanvas, setCurrentCanvasName, setStage]);
 
   // Auto-save canvas content with debounce
   useEffect(() => {
@@ -587,6 +586,14 @@ const InfiniteCanvas = () => {
         if (shapeNode) {
             const toShape = shapes.find(s => s.id === shapeNode.id());
             if (toShape && toShape.id !== drawingConnector.from) {
+                const fromShape = shapes.find(s => s.id === drawingConnector.from);
+                if (!fromShape) return;
+
+                const startX = fromShape.x + (fromShape.width || 0) / 2;
+                const startY = fromShape.y + (fromShape.height || 0) / 2;
+                const endX = toShape.x + (toShape.width || 0) / 2;
+                const endY = toShape.y + (toShape.height || 0) / 2;
+
                 addShape({
                     id: String(Date.now()),
                     type: 'connector',
@@ -594,7 +601,12 @@ const InfiniteCanvas = () => {
                     toShapeId: toShape.id,
                     stroke: strokeColor,
                     strokeWidth: strokeWidth,
-                    fill: ''
+                    fill: '',
+                    x: 0,
+                    y: 0,
+                    shadowBlur: 0,
+                    controlX: (startX + endX) / 2,
+                    controlY: (startY + endY) / 2,
                 });
             }
         }
@@ -712,7 +724,7 @@ const InfiniteCanvas = () => {
       case 'line':
         return <Line key={shape.id} {...commonProps} points={shape.points} stroke={shape.stroke} strokeWidth={shape.strokeWidth} tension={0.5} lineCap="round" lineJoin="round" />;
       case 'connector':
-        return <Connector key={shape.id} shape={shape} />;
+        return <Connector key={shape.id} shape={shape} isSelected={shape.id === selectedId} selectShape={selectShape} />;
       case 'text':
         if (shape.subType === 'textCard') {
           return <TextCard key={shape.id} shape={shape} {...commonProps} editingShapeId={editingShapeId} />;
@@ -816,10 +828,11 @@ const InfiniteCanvas = () => {
                 case 'textCard':
                     newShape = { ...textBase, subType, text: 'New Text Card', fontSize: 14, width: 250, height: 58, backgroundColor: '#F9F9F9', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333', opacity: 1 };
                     break;
-                case 'comment':
+                case 'comment': {
                     const user = useAuthStore.getState().user;
                     newShape = { ...textBase, subType, text: 'Add a comment...', author: user?.name || 'User', fontSize: 14, width: 250, height: 100, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333' };
                     break;
+                }
                 case 'checklist':
                     newShape = { ...textBase, subType, items: [{ id: String(Date.now()), text: 'To-do item', checked: false }], width: 250, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#000000' };
                     break;

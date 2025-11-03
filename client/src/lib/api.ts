@@ -58,7 +58,7 @@ export const api = async <T>(endpoint: string, options: RequestInit = {}): Promi
  * @param canvasData The data to update (e.g., name, content).
  * @returns A promise that resolves to the updated canvas data.
  */
-export const updateCanvas = async (canvasId: string, canvasData: { name?: string; data?: unknown; backgroundColor?: string }) => {
+export const updateCanvas = async (canvasId: string, canvasData: { name?: string; data?: unknown; backgroundColor?: string, backgroundPattern?: string }) => {
   return api(`/api/canvases/${canvasId}`, {
     method: 'PUT',
     body: JSON.stringify(canvasData),
