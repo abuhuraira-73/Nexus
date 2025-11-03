@@ -131,6 +131,19 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ---
 
+### November 3, 2025
+
+*   **Feature: Bendable Connectors:** Implemented a new feature allowing users to bend and curve connector lines.
+    *   A draggable control point appears in the middle of a connector when it is selected.
+    *   Dragging the handle adjusts the curve of the connector.
+    *   The curve is rendered as a smooth spline that passes directly through the control point for an intuitive user experience.
+    *   The control handle is only visible when the connector is selected, reducing visual clutter.
+    *   The handle is styled as a small, black circle for a clean aesthetic.
+*   **UX Improvement: Connector Tool Deactivation:** The connector tool now automatically deactivates and switches to the 'select' mode after a single connection is made, preventing the accidental creation of multiple connectors.
+*   **Bug Fixes & Stability:**
+    *   Resolved a series of TypeScript and ESLint errors in the `infinite-canvas.tsx` component and its related files.
+    *   Corrected issues related to unused variables (`stageX`, `stageY`), missing hook dependencies, and improper type definitions for shapes and API calls.
+
 ### October 6, 2025
 
 *   **Feature: Complete User Account Management:** Implemented the comprehensive user account management modal, allowing users to view and edit their profile information. This includes:
