@@ -131,6 +131,17 @@ To build a highly flexible, collaborative digital whiteboard application similar
 
 ---
 
+### November 5, 2025
+
+*   **Project Planning: Real-Time Collaboration & Sharing**
+    *   Finalized the blueprint for the next major feature update, which includes a comprehensive real-time collaboration suite built on a new ownership and permissions model.
+    *   The plan is divided into four main feature sets, which will be implemented sequentially:
+        1.  **Ownership & Permissions:** Canvases will now have a single `Owner` and can be shared with `Collaborators`. This involves database model changes, API security updates, and a new UI for sharing. The sidebar will be reorganized into "My Canvases" and "Shared With Me" sections.
+        2.  **Core Real-Time Editing:** The foundational `Socket.IO` engine for synchronizing all canvas element changes (create, update, delete) between active users in real-time.
+        3.  **Presence Indicators:** A new UI component to display the avatars of all users currently active on a canvas.
+        4.  **Live Cursors:** A new UI feature to render the cursors and names of other users on the canvas as they move their mice in real-time.
+    *   The `README.md` file has been updated to reflect this new plan. Implementation will now begin.
+
 ### November 3, 2025
 
 *   **Feature: Bendable Connectors:** Implemented a new feature allowing users to bend and curve connector lines.

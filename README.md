@@ -90,11 +90,28 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
     *   **Legal Pages:** Terms of Service & Privacy Policy pages.
 *   **🔄 Reusable Public Header:** Centralized navigation component for public pages.
 
-### 🚀 Upcoming Features & Pages
+### 🚧 Currently Working On: Real-Time Collaboration & Sharing
 
-*   **Real-time Collaboration:** The highest priority major feature. This involves:
-    *   **Backend:** Implementing a `Socket.IO` server to manage live connections and broadcast canvas changes.
-    *   **Frontend:** Integrating the `Socket.IO` client to handle real-time updates and display user presence indicators.
+This is the next major feature update, which will transform Nexus into a truly collaborative platform, built on a secure foundation of ownership and permissions.
+
+#### **Feature Blueprint (The "What")**
+
+1.  **Ownership & Permissions:** Canvases will now have a single `Owner` and can be shared with `Collaborators`. This involves database model changes, API security updates, and a new UI for sharing. The sidebar will be reorganized into **"My Canvases"** and **"Shared With Me"** sections.
+2.  **Core Real-Time Editing:** The foundational engine for synchronizing all canvas element changes (create, update, delete) between active users in real-time.
+3.  **Presence Indicators:** A new UI component to display the avatars of all users currently active on a canvas.
+4.  **Live Cursors:** A new UI feature to render the cursors and names of other users on the canvas as they move their mice in real-time.
+
+#### **Implementation Sequence (The "How")**
+
+1.  **Backend - Ownership Foundation:** Update the `Canvas` model, secure API endpoints, and update the canvas fetch logic.
+2.  **Frontend - Sidebar & Sharing UI:** Implement the new sidebar design and the "Share" button/modal UI.
+3.  **Backend - Sharing Logic:** Create the API endpoint for inviting collaborators.
+4.  **Backend - Core Real-Time Engine:** Install and configure `socket.io` to manage rooms and broadcast updates.
+5.  **Frontend - Core Real-Time Engine:** Connect the canvas to the socket, manage state, and emit/listen for changes.
+6.  **Full Stack - Presence Indicators:** Implement the backend tracking and frontend UI for displaying active user avatars.
+7.  **Full Stack - Live Cursors:** Implement the backend broadcasting and frontend rendering of real-time cursor positions.
+
+### 🚀 Upcoming Features & Pages
 
 *   **Proper Image & File Uploads (for Canvas):** The current image implementation for the canvas is a frontend placeholder. The full feature requires:
     *   **Backend:** Building an API endpoint to handle file uploads, process them with middleware like `multer`, and save them to a persistent storage solution (cloud or local).
