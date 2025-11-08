@@ -76,6 +76,9 @@ import { ToggleGroup, ToggleGroupItem } from "./ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 import { ImageUploadModal } from './image-upload-modal';
 import { initialData } from "@/lib/data";
+import { RenameCanvasModal } from './rename-canvas-modal';
+import { updateCanvas } from '@/lib/api';
+import { toast } from 'sonner';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -776,6 +779,7 @@ export function AppSidebar({
   trashedProjects,
   onRestoreCanvas,
   onPermanentDelete,
+  onRenameCanvas,
   ...props 
 }: React.ComponentProps<typeof Sidebar> & { 
   setCreateModalOpen: (isOpen: boolean) => void;
@@ -786,12 +790,15 @@ export function AppSidebar({
   trashedProjects: Project[];
   onRestoreCanvas: (projectId: string) => void;
   onPermanentDelete: (projectId: string) => void;
+  onRenameCanvas: (projectId: string, newName: string) => void;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
   const isCanvasOpen = location.pathname.startsWith('/app/canvas');
 
   const [isImageModalOpen, setIsImageModalOpen] = React.useState(false);
+  const [isRenameModalOpen, setIsRenameModalOpen] = React.useState(false);
+  const [renamingCanvas, setRenamingCanvas] = React.useState<{ id: string; name: string } | null>(null);
 
   const { selectedId, shapes, mode, addShape } = useCanvasStore();
   const selectedShape = shapes.find((shape) => shape.id === selectedId);
@@ -810,6 +817,29 @@ export function AppSidebar({
         shadowBlur: 0,
     });
   }
+
+  const handleRenameClick = (projectId: string) => {
+    const canvasToRename = [...favoriteProjects, ...otherProjects].find(p => p.id === projectId);
+    if (canvasToRename) {
+      setRenamingCanvas({ id: canvasToRename.id, name: canvasToRename.name });
+      setIsRenameModalOpen(true);
+    }
+  };
+
+  const handleRename = async (newName: string) => {
+    if (!renamingCanvas) return;
+
+    try {
+      await updateCanvas(renamingCanvas.id, { name: newName });
+      onRenameCanvas(renamingCanvas.id, newName);
+      toast.success('Canvas renamed successfully!');
+    } catch (error) {
+      toast.error('Failed to rename canvas.');
+    } finally {
+      setIsRenameModalOpen(false);
+      setRenamingCanvas(null);
+    }
+  };
 
   const renderCanvasSidebar = () => {
     if (mode === 'draw') {
@@ -854,6 +884,14 @@ export function AppSidebar({
             onClose={() => setIsImageModalOpen(false)} 
             onImageAdd={handleAddImage} 
         />
+        {renamingCanvas && (
+          <RenameCanvasModal
+            isOpen={isRenameModalOpen}
+            onClose={() => setIsRenameModalOpen(false)}
+            onRename={handleRename}
+            currentName={renamingCanvas.name}
+          />
+        )}
 
 
       <SidebarHeader>
@@ -874,8 +912,8 @@ export function AppSidebar({
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarGroup>
-            <NavProjects projects={favoriteProjects} label="Favorites" onToggleFavorite={toggleFavorite} onTrash={onTrashCanvas} />
-            <NavProjects projects={otherProjects} label="All Canvases" onToggleFavorite={toggleFavorite} onTrash={onTrashCanvas} />
+            <NavProjects projects={favoriteProjects} label="Favorites" onToggleFavorite={toggleFavorite} onTrash={onTrashCanvas} onRename={handleRenameClick} />
+            <NavProjects projects={otherProjects} label="All Canvases" onToggleFavorite={toggleFavorite} onTrash={onTrashCanvas} onRename={handleRenameClick} />
             <SidebarGroup>
                 <SidebarMenu>
                     <SidebarMenuItem>

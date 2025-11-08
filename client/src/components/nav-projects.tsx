@@ -38,9 +38,10 @@ interface NavProjectsProps {
   label: string
   onToggleFavorite?: (projectId: string) => void
   onTrash?: (projectId: string) => void
+  onRename?: (projectId: string) => void
 }
 
-export function NavProjects({ projects, label, onToggleFavorite, onTrash }: NavProjectsProps) {
+export function NavProjects({ projects, label, onToggleFavorite, onTrash, onRename }: NavProjectsProps) {
   const { isMobile } = useSidebar()
 
   if (!projects?.length) return null
@@ -73,7 +74,7 @@ export function NavProjects({ projects, label, onToggleFavorite, onTrash }: NavP
                   <Star className="mr-2 h-4 w-4" />
                   <span>{item.isFavorite ? "Unfavorite" : "Favorite"}</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => onRename?.(item.id)}>
                   <Edit className="mr-2 h-4 w-4" />
                   <span>Rename</span>
                 </DropdownMenuItem>

@@ -249,6 +249,10 @@ function AppLayoutContent() {
     });
   };
 
+  const handleRenameCanvas = (canvasId: string, newName: string) => {
+    setProjects(projects.map(p => p.id === canvasId ? { ...p, name: newName } : p));
+  };
+
   const handleDeleteAccount = (password: string) => {
     setIsDeleting(true);
     const promise = api('/api/users/me', {
@@ -297,6 +301,7 @@ function AppLayoutContent() {
         trashedProjects={trashedProjects}
         onRestoreCanvas={handleRestoreCanvas}
         onPermanentDelete={handlePermanentDelete}
+        onRenameCanvas={handleRenameCanvas}
       />
       {isCanvasOpen ? (
         <>
