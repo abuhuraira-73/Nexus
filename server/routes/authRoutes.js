@@ -55,7 +55,7 @@ router.get(
       );
 
       // ONLY ONE SOURCE OF FRONTEND URL
-      const frontendUrl = process.env.FRONTEND_URL;  // required in .env
+      const frontendUrl = process.env.CLIENT_URL;  // required in .env
 
       // Redirect to frontend success page
       const redirectUrl = `${frontendUrl}/login/success/${req.user._id}?token=${token}`;
