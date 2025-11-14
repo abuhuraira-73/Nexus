@@ -43,7 +43,7 @@ router.get(
       if (!req.user || !req.user._id) {
         console.error("OAuth Error: User missing in callback.");
         return res.redirect(
-          `${process.env.FRONTEND_URL}/login?error=NoUser`
+          `${process.env.CLIENT_URL}/login?error=NoUser`
         );
       }
 
@@ -67,7 +67,7 @@ router.get(
       console.error("Google OAuth Error:", err.message);
 
       return res.redirect(
-        `${process.env.FRONTEND_URL}/login?error=OAuthFailed`
+        `${process.env.CLIENT_URL}/login?error=OAuthFailed`
       );
     }
   }
