@@ -30,7 +30,7 @@ router.get(
 );
 
 //
-// GOOGLE CALLBACK — FIXED 100%
+// GOOGLE CALLBACK — defensive fixed version
 //
 router.get(
   "/google/callback",
@@ -42,9 +42,9 @@ router.get(
     try {
       if (!req.user || !req.user._id) {
         console.error("OAuth Error: User missing in callback.");
-        return res.redirect(
-          `${process.env.CLIENT_URL}/login?error=NoUser`
-        );
+        // If CLIENT_URL missing, use root path so redirect is safe
+        const safeFrontend = process.env.CLIENT_URL || "/";
+        return res.redirect(`${safeFrontend}login?error=NoUser`);
       }
 
       // Create token
@@ -54,11 +54,22 @@ router.get(
         { expiresIn: "5d" }
       );
 
-      // ONLY ONE SOURCE OF FRONTEND URL
-      const frontendUrl = process.env.CLIENT_URL;  // required in .env
+      // FRONTEND URL: support common env names and fallback, but log if missing
+      const frontendUrl =
+        process.env.CLIENT_URL || process.env.FRONTEND_URL || process.env.VITE_CLIENT_URL || null;
 
-      // Redirect to frontend success page
-      const redirectUrl = `${frontendUrl}/login/success/${req.user._id}?token=${token}`;
+      if (!frontendUrl) {
+        console.error(
+          "FATAL: CLIENT_URL not defined in environment. Set CLIENT_URL to your frontend URL (e.g. https://your-frontend.vercel.app)."
+        );
+        // Fallback to absolute safe path on same host (avoids creating 'undefined' path)
+        const fallback = `/login/success/${req.user._id}?token=${encodeURIComponent(token)}`;
+        console.warn("Using fallback redirect:", fallback);
+        return res.redirect(fallback);
+      }
+
+      // Redirect to frontend success page (encode token)
+      const redirectUrl = `${frontendUrl.replace(/\/$/, "")}/login/success/${req.user._id}?token=${encodeURIComponent(token)}`;
 
       console.log("OAuth Redirect →", redirectUrl);
 
@@ -66,9 +77,8 @@ router.get(
     } catch (err) {
       console.error("Google OAuth Error:", err.message);
 
-      return res.redirect(
-        `${process.env.CLIENT_URL}/login?error=OAuthFailed`
-      );
+      const safeFrontend = process.env.CLIENT_URL || "/";
+      return res.redirect(`${safeFrontend}login?error=OAuthFailed`);
     }
   }
 );
