@@ -13,6 +13,7 @@ import ForgotPasswordPage from './pages/forgot-password';
 import ContactPage from './pages/contact';
 import TermsOfServicePage from './pages/terms-of-service';
 import PrivacyPolicyPage from './pages/privacy-policy';
+import ComingSoonPage from './pages/coming-soon';
 import LoginSuccess from './pages/LoginSuccess'; // New import
 import Loader from './components/ui/loader';
 import { AnimatePresence } from 'framer-motion';
@@ -64,6 +65,7 @@ function App() {
             <Route path="/features" element={<PageTransition><FeaturesPage /></PageTransition>} />
             <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
             <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+            <Route path="/coming-soon" element={<PageTransition><ComingSoonPage /></PageTransition>} />
             <Route path="/terms" element={<PageTransition><TermsOfServicePage /></PageTransition>} />
             <Route path="/privacy" element={<PageTransition><PrivacyPolicyPage /></PageTransition>} />
             <Route path="/login" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><LoginPage /></PageTransition>} />
@@ -77,9 +79,6 @@ function App() {
               <Route index element={<HeroSection />} />
               <Route path="canvas/:id" element={<InfiniteCanvasPage />} />
             </Route>
-
-            {/* Catch-all route to redirect */}
-            <Route path="*" element={<Navigate to={isAuthenticated ? "/app" : "/"} replace />} />
           </Routes>
         </AnimatePresence>
         <BackToTopButton />

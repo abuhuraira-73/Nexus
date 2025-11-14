@@ -9,7 +9,7 @@ export default function PublicHeader() {
         <img src="/Nexus-N-png.png" alt="Nexus Logo" className="h-8 w-8" />
         <span className="ml-2 font-semibold text-lg">Nexus</span>
       </a>
-      <nav className="ml-auto flex items-center gap-4 sm:gap-6">
+      <nav className="ml-auto flex items-center gap-6 sm:gap-8">
         <NavLink
           to="/"
           className={({ isActive }) =>
@@ -53,6 +53,17 @@ export default function PublicHeader() {
           }
         >
           Contact
+        </NavLink>
+        <NavLink
+          to="/coming-soon"
+          className={({ isActive }) =>
+            cn(
+              "text-sm font-medium hover:underline underline-offset-4",
+              isActive && "underline"
+            )
+          }
+        >
+          Coming Soon
         </NavLink>
         <NavLink
           to="/login"
