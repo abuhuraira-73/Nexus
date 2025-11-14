@@ -6,6 +6,13 @@ const path = require('path'); // Import path module
 
 dotenv.config();
 
+// --- Google OAuth Environment Variable Logging ---
+console.log("--- Loading Google OAuth Environment Variables ---");
+console.log("GOOGLE_CLIENT_ID:", process.env.GOOGLE_CLIENT_ID ? "Loaded" : "MISSING");
+console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET ? "Loaded" : "MISSING");
+console.log("GOOGLE_CALLBACK_URL:", process.env.GOOGLE_CALLBACK_URL || "MISSING");
+console.log("-------------------------------------------------");
+
 // Validate Environment Variables
 if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
   console.error('FATAL ERROR: MONGO_URI and JWT_SECRET must be defined in .env file');

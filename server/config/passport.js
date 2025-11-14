@@ -12,19 +12,28 @@ module.exports = function (passport) {
           callbackURL: process.env.GOOGLE_CALLBACK_URL,
         },
         async (accessToken, refreshToken, profile, done) => {
+          console.log("GOOGLE CALLBACK HIT");
+          console.log("Profile:", profile);
+
+          const email = profile.emails?.[0]?.value || null;
+
+          if (!email) {
+            return done(new Error("Google account has no primary email."), null);
+          }
+
           const newUser = {
             googleId: profile.id,
             name: profile.displayName,
-            email: profile.emails[0].value,
+            email: email,
           };
- 
+
           try {
             let user = await User.findOne({ googleId: profile.id });
 
             if (user) {
               done(null, user);
             } else {
-              user = await User.findOne({ email: profile.emails[0].value });
+              user = await User.findOne({ email: email });
               if (user) {
                 // User exists with email, but not with googleId. Link account.
                 user.googleId = profile.id;
