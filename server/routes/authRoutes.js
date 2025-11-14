@@ -10,32 +10,28 @@ const auth = require("../middleware/authMiddleware");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 
-// @route   POST /api/auth/register
-// @desc    Register a new user
-// @access  Public
+//
+// AUTH ROUTES
+//
+
+// Register
 router.post("/register", registerUser);
 
-// @route   POST /api/auth/login
-// @desc    Login user and get token
-// @access  Public
+// Login
 router.post("/login", loginUser);
 
-// @route   PUT /api/auth/change-password
-// @desc    Change user password
-// @access  Private
+// Change password
 router.put("/change-password", auth, changePassword);
 
-// @route   GET /api/auth/google
-// @desc    Start Google OAuth
-// @access  Public
+// Google OAuth start
 router.get(
   "/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-// @route   GET /api/auth/google/callback
-// @desc    Google OAuth callback
-// @access  Public
+//
+// GOOGLE CALLBACK — FIXED 100%
+//
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -44,46 +40,40 @@ router.get(
   }),
   async (req, res) => {
     try {
-      const user = req.user;
-
-      if (!user || !user._id) {
-        console.error("Google OAuth: Missing user in callback.");
+      if (!req.user || !req.user._id) {
+        console.error("OAuth Error: User missing in callback.");
         return res.redirect(
-          `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=NoUser`
+          `${process.env.FRONTEND_URL}/login?error=NoUser`
         );
       }
 
-      // Create JWT
+      // Create token
       const token = jwt.sign(
-        { user: { id: user._id } },
+        { user: { id: req.user._id } },
         process.env.JWT_SECRET,
         { expiresIn: "5d" }
       );
 
-      // Determine FRONTEND URL (supports local & production)
-      const frontendUrl =
-        process.env.FRONTEND_URL ||
-        process.env.CLIENT_URL ||
-        "http://localhost:5173";
+      // ONLY ONE SOURCE OF FRONTEND URL
+      const frontendUrl = process.env.FRONTEND_URL;  // required in .env
 
-      // Redirect with userId + token to LoginSuccess route
-      const redirectUrl = `${frontendUrl}/login/success/${user._id}?token=${token}`;
+      // Redirect to frontend success page
+      const redirectUrl = `${frontendUrl}/login/success/${req.user._id}?token=${token}`;
 
-      console.log("Google OAuth redirect:", redirectUrl);
+      console.log("OAuth Redirect →", redirectUrl);
 
       return res.redirect(redirectUrl);
     } catch (err) {
       console.error("Google OAuth Error:", err.message);
+
       return res.redirect(
-        `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=OAuthFailed`
+        `${process.env.FRONTEND_URL}/login?error=OAuthFailed`
       );
     }
   }
 );
 
-// @route   GET /api/auth/me
-// @desc    Get current logged-in user
-// @access  Private
+// Get user info
 router.get("/me", auth, getMe);
 
 module.exports = router;
