@@ -43,7 +43,7 @@ const registerUser = async (req, res) => {
                             } );
                     } catch (err) {
                         console.error(err);
-                        res.status(500).send('Server error');
+                        res.status(500).json({ msg: 'Server error' });
                     }};
 
 const loginUser = async (req, res) => {
@@ -85,7 +85,7 @@ const loginUser = async (req, res) => {
             } );
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server error');
+        res.status(500).json({ msg: 'Server error' });
     }
 };
 
@@ -95,7 +95,7 @@ const getMe = async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ msg: 'Server Error' });
   }
 };
 
@@ -132,7 +132,7 @@ const changePassword = async (req, res) => {
 
     } catch (err) {
         console.error(err.message);
-        res.status(500).send('Server Error');
+        res.status(500).json({ msg: 'Server Error' });
     }
 };
 
