@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import React, { Suspense, useEffect, useState } from 'react'; // Import Suspense and React
 import './App.css';
 import { Toaster } from 'sonner';
 import LoginPage from './pages/login';
@@ -6,14 +7,14 @@ import RegisterPage from './pages/register';
 import AppLayout from './pages';
 import HeroSection from './pages/home';
 import InfiniteCanvasPage from './pages/infinite-canvas';
-import LandingPage from './pages/landing';
-import FeaturesPage from './pages/features';
-import PricingPage from './pages/pricing';
+// import LandingPage from './pages/landing'; // Removed direct import
+// import FeaturesPage from './pages/features'; // Removed direct import
+// import PricingPage from './pages/pricing'; // Removed direct import
 import ForgotPasswordPage from './pages/forgot-password';
-import ContactPage from './pages/contact';
+// import ContactPage from './pages/contact'; // Removed direct import
 import TermsOfServicePage from './pages/terms-of-service';
 import PrivacyPolicyPage from './pages/privacy-policy';
-import ComingSoonPage from './pages/coming-soon';
+// import ComingSoonPage from './pages/coming-soon'; // Removed direct import
 import LoginSuccess from './pages/LoginSuccess'; // New import
 import Loader from './components/ui/loader';
 import { AnimatePresence } from 'framer-motion';
@@ -22,7 +23,13 @@ import PageTransition from './components/page-transition';
 import { BackToTopButton } from './components/back-to-top-button';
 import ProtectedRoute from './components/protected-route'; // New import
 import { useAuthStore } from './store/authStore'; // New import
-import { useEffect, useState } from 'react';
+
+// Lazily load public-facing pages
+const LandingPage = React.lazy(() => import('./pages/landing'));
+const FeaturesPage = React.lazy(() => import('./pages/features'));
+const PricingPage = React.lazy(() => import('./pages/pricing'));
+const ContactPage = React.lazy(() => import('./pages/contact'));
+const ComingSoonPage = React.lazy(() => import('./pages/coming-soon'));
 
 function App() {
   const { isAuthenticated, isLoading } = useAuthStore(); // Get real auth state
@@ -61,11 +68,11 @@ function App() {
           <Routes location={location} key={location.pathname}>
             {/* Public Facing Routes */}
             {/* If authenticated, redirect away from login/register/landing */}
-            <Route path="/" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><LandingPage /></PageTransition>} />
-            <Route path="/features" element={<PageTransition><FeaturesPage /></PageTransition>} />
-            <Route path="/pricing" element={<PageTransition><PricingPage /></PageTransition>} />
-            <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
-            <Route path="/coming-soon" element={<PageTransition><ComingSoonPage /></PageTransition>} />
+            <Route path="/" element={<Suspense fallback={null}>{isAuthenticated ? <Navigate to="/app" /> : <PageTransition><LandingPage /></PageTransition>}</Suspense>} />
+            <Route path="/features" element={<Suspense fallback={null}><PageTransition><FeaturesPage /></PageTransition></Suspense>} />
+            <Route path="/pricing" element={<Suspense fallback={null}><PageTransition><PricingPage /></PageTransition></Suspense>} />
+            <Route path="/contact" element={<Suspense fallback={null}><PageTransition><ContactPage /></PageTransition></Suspense>} />
+            <Route path="/coming-soon" element={<Suspense fallback={null}><PageTransition><ComingSoonPage /></PageTransition></Suspense>} />
             <Route path="/terms" element={<PageTransition><TermsOfServicePage /></PageTransition>} />
             <Route path="/privacy" element={<PageTransition><PrivacyPolicyPage /></PageTransition>} />
             <Route path="/login" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><LoginPage /></PageTransition>} />
