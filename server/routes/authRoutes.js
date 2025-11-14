@@ -26,7 +26,7 @@ router.post("/login", loginUser);
 router.put("/change-password", auth, changePassword);
 
 // @route   GET /api/auth/google
-// @desc    Auth with Google
+// @desc    Start Google OAuth
 // @access  Public
 router.get(
   "/google",
@@ -34,7 +34,7 @@ router.get(
 );
 
 // @route   GET /api/auth/google/callback
-// @desc    Google auth callback
+// @desc    Google OAuth callback
 // @access  Public
 router.get(
   "/google/callback",
@@ -46,6 +46,13 @@ router.get(
     try {
       const user = req.user;
 
+      if (!user || !user._id) {
+        console.error("Google OAuth: Missing user in callback.");
+        return res.redirect(
+          `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=NoUser`
+        );
+      }
+
       // Create JWT
       const token = jwt.sign(
         { user: { id: user._id } },
@@ -53,27 +60,29 @@ router.get(
         { expiresIn: "5d" }
       );
 
-      // FRONTEND URL (updated)
+      // Determine FRONTEND URL (supports local & production)
       const frontendUrl =
         process.env.FRONTEND_URL ||
         process.env.CLIENT_URL ||
         "http://localhost:5173";
 
-      // Redirect including userId + token
+      // Redirect with userId + token to LoginSuccess route
       const redirectUrl = `${frontendUrl}/login/success/${user._id}?token=${token}`;
+
+      console.log("Google OAuth redirect:", redirectUrl);
 
       return res.redirect(redirectUrl);
     } catch (err) {
-      console.error("Google OAuth Error:", err);
+      console.error("Google OAuth Error:", err.message);
       return res.redirect(
-        `${process.env.FRONTEND_URL}/login?error=OAuthFailed`
+        `${process.env.FRONTEND_URL || "http://localhost:5173"}/login?error=OAuthFailed`
       );
     }
   }
 );
 
 // @route   GET /api/auth/me
-// @desc    Get user data
+// @desc    Get current logged-in user
 // @access  Private
 router.get("/me", auth, getMe);
 
