@@ -9,6 +9,8 @@ dotenv.config();
 // Validate Environment Variables
 if (!process.env.MONGO_URI || !process.env.JWT_SECRET) {
   console.error('FATAL ERROR: MONGO_URI and JWT_SECRET must be defined in .env file');
+  console.log('DEBUG: MONGO_URI:', process.env.MONGO_URI ? 'DEFINED' : 'UNDEFINED');
+  console.log('DEBUG: JWT_SECRET:', process.env.JWT_SECRET ? 'DEFINED' : 'UNDEFINED');
   process.exit(1);
 }
 
