@@ -69,7 +69,7 @@ router.get(
       }
 
       // Redirect to frontend success page (encode token)
-      const redirectUrl = `${frontendUrl.replace(/\/$/, "")}/login/success/${req.user._id}?token=${encodeURIComponent(token)}`;
+      const redirectUrl = `${frontendUrl.replace(/\/$/, "")}/google-auth-success?token=${encodeURIComponent(token)}`;
 
       console.log("OAuth Redirect →", redirectUrl);
 

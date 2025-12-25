@@ -78,7 +78,7 @@ function App() {
             <Route path="/login" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><LoginPage /></PageTransition>} />
             <Route path="/register" element={isAuthenticated ? <Navigate to="/app" /> : <PageTransition><RegisterPage /></PageTransition>} />
             <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
-            <Route path="/login/success/:userId" element={<PageTransition><LoginSuccess /></PageTransition>} />
+            <Route path="/google-auth-success" element={<PageTransition><LoginSuccess /></PageTransition>} />
 
             {/* Protected Application Routes */}
             {/* All routes here are wrapped by ProtectedRoute */}

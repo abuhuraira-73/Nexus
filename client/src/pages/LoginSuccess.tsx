@@ -1,23 +1,16 @@
 import { useEffect } from 'react';
-import { useNavigate, useSearchParams, useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuthStore } from '@/store/authStore';
 import { toast } from 'sonner';
 import Loader from '@/components/ui/loader';
 
 export default function LoginSuccess() {
-  const { userId } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
 
   useEffect(() => {
     const token = searchParams.get('token');
-
-    if (!userId) {
-      toast.error('Missing user ID.');
-      navigate('/login');
-      return;
-    }
 
     if (!token) {
       toast.error('Authentication failed. No token provided.');
@@ -55,7 +48,7 @@ export default function LoginSuccess() {
     };
 
     fetchUser();
-  }, [searchParams, navigate, login, userId]);
+  }, [searchParams, navigate, login]);
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center">
