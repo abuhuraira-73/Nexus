@@ -19,6 +19,10 @@
         *   **The fix was to move `vercel.json` from the project root into the `client` directory.** This aligned the configuration file with the application root that Vercel was deploying, allowing the rewrite rules to be found and applied correctly.
     *   **Outcome:** After moving `vercel.json` and deploying the change, all Google OAuth login errors were resolved. The feature is now fully functional in production.
 
+*   **Next Priority: Full Responsiveness Overhaul**
+    *   With the application now deployed and core authentication stable, the next major priority is to conduct a full responsiveness pass on the entire frontend.
+    *   The goal is to ensure the application layout is presentable, professional, and fully functional on all screen sizes, with a particular focus on mobile devices. This involves adapting all pages, components, and the main canvas interface for smaller viewports.
+
 ---
 
 # Project: Nexus — “Infinite Canvas, Simplified.”
