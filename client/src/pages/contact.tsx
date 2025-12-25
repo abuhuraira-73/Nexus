@@ -35,13 +35,14 @@ export default function ContactPage() {
       <PublicHeader />
 
       <main className="flex-1">
-        {/* Black Hero Section */}
-        <section className="text-center py-20 lg:py-28 bg-black">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter font-heading">Get in Touch</h1>
-            <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
-              Have a question, a sales inquiry, or some feedback? We'd love to hear from you.
-            </p>
-        </section>
+        <div className="px-8 sm:px-12 lg:px-16">
+          <section className="text-center py-20 lg:py-28 bg-black">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter font-heading">Get in Touch</h1>
+              <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
+                Have a question, a sales inquiry, or some feedback? We'd love to hear from you.
+              </p>
+          </section>
+        </div>
 
         {/* Main Content Section: Form & Info (Gradient BG, Full Width) */}
         <div className="px-8 sm:px-12 lg:px-16">
@@ -76,8 +77,8 @@ export default function ContactPage() {
         </div>
 
         {/* FAQ Section (Below, Full Width) */}
-        <div className="mt-16">
-          <h2 className="text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Frequently Asked Questions</h2>
+        <div className="py-20 lg:py-28 mt-16">
+          <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="w-full container mx-auto px-4">
             {faqs.map((faq, i) => (
               <AccordionItem key={i} value={`item-${i}`}>

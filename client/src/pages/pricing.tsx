@@ -126,15 +126,16 @@ export default function PricingPage() {
       <PublicHeader />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="text-center py-20 lg:py-28">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter font-heading">
-              Find the Plan That's Right for You
-            </h1>
-            <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
-              Start for free, then upgrade when you need more power and collaboration.
-            </p>
-        </section>
+        <div className="px-8 sm:px-12 lg:px-16">
+          <section className="text-center py-20 lg:py-28">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter font-heading">
+                Find the Plan That's Right for You
+              </h1>
+              <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
+                Start for free, then upgrade when you need more power and collaboration.
+              </p>
+          </section>
+        </div>
 
         {/* Inset Gradient Section */}
         <div className="px-8 sm:px-12 lg:px-16">
@@ -194,25 +195,27 @@ export default function PricingPage() {
                 {/* Comparison Table Section */}
                 <section className="py-20 lg:py-28">
                     <div className="container mx-auto px-4">
-                        <h2 className="text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Compare All Features</h2>
-                        <div className="bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 overflow-hidden">
-                            {/* Table Header */}
-                            <div className="grid grid-cols-4 p-4 border-b border-gray-700 font-bold">
-                                <div className="col-span-1">Features</div>
-                                <div className="col-span-1 text-center">Free</div>
-                                <div className="col-span-1 text-center">Premium</div>
-                                <div className="col-span-1 text-center">Enterprise</div>
-                            </div>
-                            {/* Table Body */}
-                            <div className="divide-y divide-gray-800">
-                                {comparisonFeatures.map((item, index) => (
-                                    <div key={index} className="grid grid-cols-4 p-4 items-center">
-                                        <div className="col-span-1 font-medium">{item.feature}</div>
-                                        <div className="col-span-1 flex justify-center"><Checkmark available={item.free} /></div>
-                                        <div className="col-span-1 flex justify-center"><Checkmark available={item.premium} /></div>
-                                        <div className="col-span-1 flex justify-center"><Checkmark available={item.enterprise} /></div>
-                                    </div>
-                                ))}
+                        <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Compare All Features</h2>
+                        <div className="overflow-x-auto">
+                            <div className="bg-gray-900/50 backdrop-blur-sm rounded-lg border border-gray-800 overflow-hidden min-w-[600px]">
+                                {/* Table Header */}
+                                <div className="grid grid-cols-4 p-4 border-b border-gray-700 font-bold">
+                                    <div className="col-span-1">Features</div>
+                                    <div className="col-span-1 text-center">Free</div>
+                                    <div className="col-span-1 text-center">Premium</div>
+                                    <div className="col-span-1 text-center">Enterprise</div>
+                                </div>
+                                {/* Table Body */}
+                                <div className="divide-y divide-gray-800">
+                                    {comparisonFeatures.map((item, index) => (
+                                        <div key={index} className="grid grid-cols-4 p-4 items-center">
+                                            <div className="col-span-1 font-medium">{item.feature}</div>
+                                            <div className="col-span-1 flex justify-center"><Checkmark available={item.free} /></div>
+                                            <div className="col-span-1 flex justify-center"><Checkmark available={item.premium} /></div>
+                                            <div className="col-span-1 flex justify-center"><Checkmark available={item.enterprise} /></div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -220,7 +223,7 @@ export default function PricingPage() {
 
                 {/* CTA Buttons */}
                 <section className="pb-20 lg:pb-28 text-center">
-                    <div className="container mx-auto px-4 flex justify-center gap-8">
+                    <div className="container mx-auto px-4 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8">
                         <Button size="lg" variant="outline">Get Started with Free</Button>
                         <Button size="lg">Upgrade to Premium</Button>
                         <Button size="lg" variant="outline">Contact Sales</Button>

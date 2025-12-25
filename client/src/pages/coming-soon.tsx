@@ -56,13 +56,14 @@ export default function ComingSoonPage() {
       <PublicHeader />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="text-center py-20 lg:py-28 bg-black">
-            <h1 className="text-5xl lg:text-7xl font-bold tracking-tighter font-heading">Coming Soon</h1>
-            <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
-              We're constantly working to make Nexus even better. Here's a look at the exciting features we have planned and in progress.
-            </p>
-        </section>
+        <div className="px-8 sm:px-12 lg:px-16">
+          <section className="text-center py-20 lg:py-28 bg-black">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter font-heading">Coming Soon</h1>
+              <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
+                We're constantly working to make Nexus even better. Here's a look at the exciting features we have planned and in progress.
+              </p>
+          </section>
+        </div>
 
         {/* Main Content Section: Features List (Gradient BG, Full Width) */}
         <div className="px-8 sm:px-12 lg:px-16"> {/* Outer padding for the gradient section */}

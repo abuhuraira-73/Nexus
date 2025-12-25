@@ -5,13 +5,13 @@ import PublicFooter from "@/components/public-footer";
 
 // Helper component for feature sections to avoid repetition
 const FeatureSection = ({ title, description, icon, reverse = false }) => (
-  <div className={`container mx-auto px-4 py-16 grid lg:grid-cols-2 gap-12 items-center`}>
+  <div className={`container mx-auto px-4 py-20 lg:py-28 grid lg:grid-cols-2 gap-12 items-center`}>
     <div className={`lg:order-${reverse ? '2' : '1'}`}>
       <h2 className="text-3xl font-bold mb-4">{title}</h2>
       <p className="text-gray-400 text-lg">{description}</p>
       <Button variant="link" className="p-0 mt-4 text-lg text-white">Learn more &rarr;</Button>
     </div>
-    <div className={`lg:order-${reverse ? '1' : '2'} bg-gray-900/50 rounded-xl p-8 flex items-center justify-center h-80`}>
+    <div className={`lg:order-${reverse ? '1' : '2'} bg-gray-900/50 rounded-xl p-8 flex items-center justify-center h-64 lg:h-80`}>
       {icon}
     </div>
   </div>
@@ -24,12 +24,13 @@ export default function FeaturesPage() {
       <PublicHeader />
 
       <main className="flex-1">
-        {/* Hero Section - Headline */}
-        <section className="text-center py-20 lg:py-28 bg-black">
-            <h1 className="text-6xl lg:text-7xl font-bold tracking-tighter font-heading">
-              All The Tools You Need To Think Visually.
-            </h1>
-        </section>
+        <div className="px-8 sm:px-12 lg:px-16">
+          <section className="text-center py-20 lg:py-28 bg-black">
+              <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter font-heading">
+                All The Tools You Need To Think Visually.
+              </h1>
+          </section>
+        </div>
         {/* Hero Section - Sub-headline with Bezel Effect */}
         <div className="px-8 sm:px-12 lg:px-16">
             <section className="text-center py-20 lg:py-28 bg-gradient-custom bg-cover bg-center rounded-2xl">
@@ -77,7 +78,7 @@ export default function FeaturesPage() {
         <div className="px-8 sm:px-12 lg:px-16">
             <section className="py-20 lg:py-32 bg-gradient-custom bg-cover bg-center rounded-2xl">
                 <div className="container mx-auto px-4 text-center">
-                    <h2 className="text-6xl lg:text-7xl font-bold tracking-tighter font-heading">Ready to build your next big idea?</h2>
+                    <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter font-heading">Ready to build your next big idea?</h2>
                     <br/>
                     <p className="text-gray-300 text-lg mb-8">Get started with Nexus for free. No credit card required.</p>
                     <a href="/register">
