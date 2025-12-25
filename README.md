@@ -71,7 +71,7 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **✨ Safe Deletion:** Replaced risky keyboard-based deletion with a clear and explicit "Delete" button in the properties panel for any selected item.
 *   **✨ Save Status Indicator:** The UI now provides real-time feedback in the header, showing when a canvas is being saved and confirming when all changes are saved.
 *   **☁️ Cloud Canvas Lifecycle:** Full end-to-end feature for creating canvases, which are saved to the database. Canvases are now fetched and listed in the sidebar, and can be opened to view their content.
-*   **🔐 User Authentication:** Secure login and registration with email/password and Google.
+*   **🔐 User Authentication:** Secure login and registration with email/password and Google. **Verified in Production.**
 *   **👤 User Information Display:** The logged-in user's name and email are now displayed in the user navigation menu.
 *   **📞 Authenticated API Calls:** Implemented a reusable utility for making authenticated API calls from the frontend.
 *   **🔒 Protected Routes:** Restrict access to authenticated users for specific application sections.
@@ -196,6 +196,26 @@ To get Nexus up and running on your local machine, follow these steps:
         cd client
         npm run dev
         ```
+
+## 🌐 Deployment
+
+*   **Frontend:** Hosted on **Vercel**.
+*   **Backend:** Hosted on **Render**.
+*   **Database:** Hosted on **MongoDB Atlas**.
+
+**Vercel Monorepo Configuration Note:** For Single-Page Application (SPA) routing and OAuth callbacks to function correctly, Vercel's **Root Directory** setting must point to the `client` folder. Crucially, the `vercel.json` file containing the rewrite rules must be located **inside the `client` directory**, not at the project root.
+
+```json
+// client/vercel.json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
 
 ## 🤝 Contributing
 

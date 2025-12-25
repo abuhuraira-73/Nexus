@@ -3,13 +3,21 @@
 ---
 ### December 25, 2025
 
-*   **Deployment Issue: Google OAuth Failure**
-    *   Identified a critical issue with the Google login functionality that emerged only after the project was deployed to its hosting environments (Vercel for frontend, Render for backend). The feature was working correctly during local development.
-    *   **Symptoms:** When a user attempts to log in with a Google account, the process fails after they select an account from the Google consent screen. The failure manifests in two distinct ways:
-        1.  **`404: NOT_FOUND` Error:** One of the test accounts consistently receives a 404 error page served by Vercel. This suggests a potential misconfiguration in the frontend routing or the authorized redirect URIs in the Google Cloud Console.
-        2.  **`Internal Server Error`:** The other three test accounts receive a generic "Internal Server Error" message. This indicates that the request is successfully reaching the backend server on Render, but it is crashing during the authentication process, likely due to missing environment variables or other configuration discrepancies between the local and production environments.
-    *   Standard email/password authentication remains fully functional, confirming that the core backend and database are operational.
-    *   **Next Steps:** The immediate priority is to investigate the production environment configurations for both the frontend and backend, focusing on environment variables and OAuth redirect URIs.
+*   **FIXED: Production Google OAuth Failure**
+    *   A critical bug was identified and resolved where the Google OAuth login flow, which worked in local development, was failing in the production environment. The debugging process involved several steps to isolate the root cause.
+    *   **Initial Symptoms:** After deployment, users attempting to log in with Google would encounter one of two errors: a backend `Internal Server Error` on most accounts, or a frontend `404: NOT_FOUND` error on one account.
+    *   **Debugging Step 1: Fixing the Backend Crash:**
+        *   Analysis of the backend logs on Render revealed a `User validation failed: password: Path 'password' is required.` error.
+        *   The root cause was that when creating a new user via Google, the `provider` field was not being set. This caused it to default to `'local'`, which incorrectly triggered the password requirement in the Mongoose schema.
+        *   **Solution:** The `server/config/passport.js` file was modified to explicitly add `provider: 'google'` to the `newUser` object. This fixed the `Internal Server Error`.
+    *   **Debugging Step 2: Diagnosing the Frontend 404 Error:**
+        *   After fixing the backend, all users now consistently received a `404: NOT_FOUND` error page from Vercel after being redirected from the backend.
+        *   Investigation showed that the frontend `App.tsx` router and the `LoginSuccess.tsx` page were correctly configured, as were the Vercel project's "Root Directory" settings. The issue persisted even after changing the redirect URL to a simpler path (`/google-auth-success`) as a diagnostic test.
+    *   **Final Solution: `vercel.json` Location:**
+        *   The final root cause was identified as a Vercel platform issue related to monorepo configurations. The `vercel.json` file, which contained the critical SPA rewrite rules, was located in the project's root directory.
+        *   Even with Vercel's "Root Directory" setting pointing to the `/client` folder, it was not correctly applying the rewrite rules from the parent directory for the OAuth redirect path.
+        *   **The fix was to move `vercel.json` from the project root into the `client` directory.** This aligned the configuration file with the application root that Vercel was deploying, allowing the rewrite rules to be found and applied correctly.
+    *   **Outcome:** After moving `vercel.json` and deploying the change, all Google OAuth login errors were resolved. The feature is now fully functional in production.
 
 ---
 
