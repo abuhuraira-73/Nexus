@@ -25,6 +25,7 @@ module.exports = function (passport) {
             googleId: profile.id,
             name: profile.displayName,
             email: email,
+            provider: 'google',
           };
 
           try {

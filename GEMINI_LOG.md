@@ -1,6 +1,18 @@
 # Project: Nexus — “Infinite Canvas, Simplified.”
 
 ---
+### December 25, 2025
+
+*   **Deployment Issue: Google OAuth Failure**
+    *   Identified a critical issue with the Google login functionality that emerged only after the project was deployed to its hosting environments (Vercel for frontend, Render for backend). The feature was working correctly during local development.
+    *   **Symptoms:** When a user attempts to log in with a Google account, the process fails after they select an account from the Google consent screen. The failure manifests in two distinct ways:
+        1.  **`404: NOT_FOUND` Error:** One of the test accounts consistently receives a 404 error page served by Vercel. This suggests a potential misconfiguration in the frontend routing or the authorized redirect URIs in the Google Cloud Console.
+        2.  **`Internal Server Error`:** The other three test accounts receive a generic "Internal Server Error" message. This indicates that the request is successfully reaching the backend server on Render, but it is crashing during the authentication process, likely due to missing environment variables or other configuration discrepancies between the local and production environments.
+    *   Standard email/password authentication remains fully functional, confirming that the core backend and database are operational.
+    *   **Next Steps:** The immediate priority is to investigate the production environment configurations for both the frontend and backend, focusing on environment variables and OAuth redirect URIs.
+
+---
+
 # Project: Nexus — “Infinite Canvas, Simplified.”
 
 ---
