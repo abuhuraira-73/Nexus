@@ -6,6 +6,8 @@ import { CheckCircle, Zap, Shield, Heart, Star, Users, BrainCircuit } from "luci
 import PublicHeader from "@/components/public-header"; // Import PublicHeader
 import PublicFooter from "@/components/public-footer";
 import { PricingToggle } from "@/components/pricing-toggle";
+import { useIsMobile } from "@/hooks/use-mobile";
+import TestimonialCarousel from "@/components/ui/testimonial-carousel";
 import { motion, AnimatePresence } from "framer-motion";
 
 const features = [
@@ -71,6 +73,7 @@ const testimonials = [
 
 export default function LandingPage() {
   const [isYearly, setIsYearly] = useState(false);
+  const isMobile = useIsMobile();
 
   return (
     <div className="flex flex-col min-h-screen text-white bg-black">
@@ -173,37 +176,40 @@ export default function LandingPage() {
                 <section className="py-20 lg:py-28">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Loved by Teams Everywhere</h2>
-                        <div 
-                          className="relative w-full overflow-hidden"
-                          style={{ maskImage: "linear-gradient(to right, transparent, black 4%, black 90%, transparent)" }}
-                        >
-                                              <br/>
-                    <br/>
-
-                            <div className="flex w-max animate-scroll">
-                                {[...testimonials, ...testimonials].map((testimonial, i) => (
-                                    <Card key={i} className="bg-gray-900/50 backdrop-blur-sm flex flex-col w-[380px] mx-4 flex-shrink-0">
-                                        <CardContent className="pt-6 flex-grow">
-                                            <div className="flex gap-1 mb-4">
-                                                {[...Array(testimonial.rating)].map((_, j) => (
-                                                    <Star key={j} className="h-5 w-5 text-yellow-400 fill-yellow-400" />
-                                                ))}
+                        <div className="mt-8">
+                          {isMobile ? (
+                            <TestimonialCarousel testimonials={testimonials} options={{ loop: true }} />
+                          ) : (
+                            <div
+                              className="relative w-full overflow-hidden"
+                              style={{ maskImage: "linear-gradient(to right, transparent, black 4%, black 90%, transparent)" }}
+                            >
+                                <div className="flex w-max animate-scroll">
+                                    {[...testimonials, ...testimonials].map((testimonial, i) => (
+                                        <Card key={i} className="bg-gray-900/50 backdrop-blur-sm flex flex-col w-[380px] mx-4 flex-shrink-0">
+                                            <CardContent className="pt-6 flex-grow">
+                                                <div className="flex gap-1 mb-4">
+                                                    {[...Array(testimonial.rating)].map((_, j) => (
+                                                        <Star key={j} className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                                                    ))}
+                                                </div>
+                                                <p className="italic text-gray-300">"{testimonial.quote}"</p>
+                                            </CardContent>
+                                            <div className="p-6 pt-0 flex items-center gap-4">
+                                                <Avatar>
+                                                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                                                    <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
+                                                </Avatar>
+                                                <div>
+                                                    <p className="font-semibold">{testimonial.name}</p>
+                                                    <p className="text-sm text-gray-400">{testimonial.title}</p>
+                                                </div>
                                             </div>
-                                            <p className="italic text-gray-300">"{testimonial.quote}"</p>
-                                        </CardContent>
-                                        <div className="p-6 pt-0 flex items-center gap-4">
-                                            <Avatar>
-                                                <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                                                <AvatarFallback>{testimonial.name.charAt(0)}</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <p className="font-semibold">{testimonial.name}</p>
-                                                <p className="text-sm text-gray-400">{testimonial.title}</p>
-                                            </div>
-                                        </div>
-                                    </Card>
-                                ))}
+                                        </Card>
+                                    ))}
+                                </div>
                             </div>
+                          )}
                         </div>
                     </div>
                 </section>
