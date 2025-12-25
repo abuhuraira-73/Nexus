@@ -80,9 +80,10 @@ export default function LandingPage() {
       <main className="flex-1">
         {/* --- BLACK HERO SECTION --- */}
         <div className="bg-black">
+            <div className="px-8 sm:px-12 lg:px-16">
             {/* Hero Section */}
             <section className="flex flex-col items-center justify-center text-center py-24 lg:py-40">
-                <h1 className="text-6xl lg:text-7xl font-bold tracking-tighter font-heading">
+                <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tighter font-heading">
                   All Your Ideas, in One Simple Space.
                 </h1>
                 <br/>
@@ -98,6 +99,7 @@ export default function LandingPage() {
                   </Button>
                 </div>
             </section>
+            </div>
         </div>
 
         {/* --- GRADIENT FEATURES SECTION --- */}
@@ -106,7 +108,7 @@ export default function LandingPage() {
                 {/* Features Section */}
                 <section id="features" className="py-20 lg:py-28">
                     <div className="container mx-auto px-4">
-                      <h2 className="text-7xl font-bold text-center mb-12 font-heading">Everything You Need to Collaborate</h2>
+                      <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Everything You Need to Collaborate</h2>
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {features.map((feature, i) => (
                           <Card key={i} className="group bg-gray-900/50 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-2xl border-none">
@@ -127,9 +129,10 @@ export default function LandingPage() {
 
         {/* --- BLACK SECTION --- */}
         <div className="bg-black">
+            <div className="px-8 sm:px-12 lg:px-16">
             <section className="py-20 lg:py-28">
                 <div className="container mx-auto px-4">
-                    <h2 className="text-7xl font-bold text-center mb-12 font-heading">Get Started in Seconds</h2>
+                    <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Get Started in Seconds</h2>
                     <br/>
                     <br/>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
@@ -157,6 +160,7 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
+            </div>
         </div>
                             <br/>
                     <br/>
@@ -168,7 +172,7 @@ export default function LandingPage() {
                 {/* Testimonials Section */}
                 <section className="py-20 lg:py-28">
                     <div className="container mx-auto px-4">
-                        <h2 className="text-7xl font-bold text-center mb-12 font-heading">Loved by Teams Everywhere</h2>
+                        <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Loved by Teams Everywhere</h2>
                         <div 
                           className="relative w-full overflow-hidden"
                           style={{ maskImage: "linear-gradient(to right, transparent, black 4%, black 90%, transparent)" }}
@@ -207,7 +211,7 @@ export default function LandingPage() {
                 {/* Pricing Section */}
                 <section id="pricing" className="py-20 lg:py-28">
                   <div className="container mx-auto px-4">
-                    <h2 className="text-7xl font-bold text-center mb-12 font-heading">Choose Your Plan</h2>
+                    <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Choose Your Plan</h2>
                     <div className="flex justify-center items-center gap-4 mb-8">
                         <PricingToggle isYearly={isYearly} onToggle={setIsYearly} />
                     </div>
