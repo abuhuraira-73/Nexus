@@ -384,7 +384,7 @@ const InfiniteCanvas = () => {
         y: dimensions.height / 2,
       });
     }
-  }, [shapes, isLoading, dimensions, isMobile, setStage]);
+  }, [isLoading, dimensions, isMobile, setStage]);
 
   // Auto-save canvas content with debounce
   useEffect(() => {
