@@ -154,11 +154,11 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
         <SidebarGroupLabel>Actions</SidebarGroupLabel>
         <SidebarMenu>
           <SidebarMenuItem className="grid grid-cols-2 gap-2">
-            <SidebarMenuButton onClick={undo} className="justify-center">
+            <SidebarMenuButton onClick={undo} className="justify-center" size="sm">
               <Undo2 />
               <span className="sr-only">Undo</span>
             </SidebarMenuButton>
-            <SidebarMenuButton onClick={redo} className="justify-center">
+            <SidebarMenuButton onClick={redo} className="justify-center" size="sm">
               <Redo2 />
               <span className="sr-only">Redo</span>
             </SidebarMenuButton>
@@ -175,7 +175,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
           <Collapsible asChild className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton size="sm">
                   <Type />
                   <span>Text</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -208,7 +208,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
           <Collapsible asChild className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton size="sm">
                   <Shapes />
                   <span>Shapes</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -240,7 +240,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
           <Collapsible asChild className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton size="sm">
                   <ArrowRight />
                   <span>Arrows</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -274,6 +274,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
             <SidebarMenuButton
               onClick={() => setMode(mode === 'connector' ? 'select' : 'connector')}
               isActive={mode === 'connector'}
+              size="sm"
             >
               <Spline />
               <span>Connector</span>
@@ -284,7 +285,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
           <Collapsible asChild className="group/collapsible">
               <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                      <SidebarMenuButton>
+                      <SidebarMenuButton size="sm">
                           <Pencil />
                           <span>Draw</span>
                           <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -313,7 +314,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
           <Collapsible asChild className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton>
+                <SidebarMenuButton size="sm">
                   <Film />
                   <span>Media</span>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -342,6 +343,7 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
               <SidebarMenuButton
                   onClick={toggleEraserMode}
                   isActive={mode === 'erase'}
+                  size="sm"
               >
                   <Eraser />
                   <span>Eraser</span>
@@ -864,7 +866,7 @@ export function AppSidebar({
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton onClick={() => navigate('/app')}>
+              <SidebarMenuButton onClick={() => navigate('/app')} size="sm">
                 <ArrowLeft />
                 <span>Back to Home</span>
               </SidebarMenuButton>
@@ -905,7 +907,7 @@ export function AppSidebar({
             <SidebarGroup>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton onClick={() => setCreateModalOpen(true)}>
+                        <SidebarMenuButton onClick={() => setCreateModalOpen(true)} size="sm">
                             <Plus/>
                             <span>New Canvas</span>
                         </SidebarMenuButton>
@@ -919,7 +921,7 @@ export function AppSidebar({
                     <SidebarMenuItem>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton>
+                                <SidebarMenuButton size="sm">
                                     <Trash2/>
                                     <span>Trash</span>
                                 </SidebarMenuButton>
