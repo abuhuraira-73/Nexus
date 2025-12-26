@@ -300,43 +300,91 @@ const InfiniteCanvas = () => {
     setStageRef(stageRef);
   }, [setStageRef]);
 
-  // Fetch and load canvas data
+  // Fetch canvas data
   useEffect(() => {
+    let isMounted = true;
     setIsLoading(true);
     if (canvasId) {
       const fetchCanvasData = async () => {
         try {
           const canvasData = await api<CanvasData>(`/api/canvases/${canvasId}`);
-          if (canvasData) {
-            setCanvas(canvasData.data?.shapes || [], canvasData.backgroundColor);
-            setCurrentCanvasName(canvasData.name);
-          } else {
-            setCanvas([]);
-            setCurrentCanvasName(null);
+          if (isMounted) {
+            if (canvasData) {
+              setCanvas(canvasData.data?.shapes || [], canvasData.backgroundColor);
+              setCurrentCanvasName(canvasData.name);
+            } else {
+              setCanvas([]);
+              setCurrentCanvasName(null);
+            }
           }
         } catch (error) {
           console.error("Failed to load canvas:", error);
-          toast.error(`Failed to load canvas: ${error instanceof Error ? error.message : String(error)}`);
-          setCurrentCanvasName(null);
+          if (isMounted) {
+            toast.error(`Failed to load canvas: ${error instanceof Error ? error.message : String(error)}`);
+            setCurrentCanvasName(null);
+          }
         } finally {
-          setIsLoading(false);
+          if (isMounted) {
+            setIsLoading(false);
+          }
         }
       };
       fetchCanvasData();
     } else {
-        setCanvas([]);
-        setCurrentCanvasName(null);
-        setIsLoading(false);
+      setCanvas([]);
+      setCurrentCanvasName(null);
+      setIsLoading(false);
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [canvasId, setCanvas, setCurrentCanvasName]);
+
+  // Center canvas content on load
+  useEffect(() => {
+    if (isLoading || dimensions.width === 0) {
+      return; // Don't run if loading or dimensions are not set
     }
 
-    // Center the viewport on the origin (0,0) when canvas changes
-    setStage({ 
-      scale: isMobile ? 0.6 : 1, 
-      x: dimensions.width / 2, 
-      y: dimensions.height / 2 
-    });
+    const scale = isMobile ? 0.6 : 1;
 
-  }, [canvasId, setCanvas, setCurrentCanvasName, setStage, isMobile, dimensions]);
+    if (shapes.length > 0) {
+      let minX = Infinity;
+      let minY = Infinity;
+      let maxX = -Infinity;
+      let maxY = -Infinity;
+
+      shapes.forEach(shape => {
+        const x = shape.x;
+        const y = shape.y;
+        const width = shape.width || (shape.radius ? shape.radius * 2 : 0);
+        const height = shape.height || (shape.radius ? shape.radius * 2 : 0);
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x + width);
+        maxY = Math.max(maxY, y + height);
+      });
+      
+      const contentWidth = maxX - minX;
+      const contentHeight = maxY - minY;
+      const contentCenterX = minX + contentWidth / 2;
+      const contentCenterY = minY + contentHeight / 2;
+
+      setStage({
+        scale,
+        x: dimensions.width / 2 - contentCenterX * scale,
+        y: dimensions.height / 2 - contentCenterY * scale,
+      });
+
+    } else {
+      // If there are no shapes, center on the origin (0,0)
+      setStage({
+        scale,
+        x: dimensions.width / 2,
+        y: dimensions.height / 2,
+      });
+    }
+  }, [shapes, isLoading, dimensions, isMobile, setStage]);
 
   // Auto-save canvas content with debounce
   useEffect(() => {
