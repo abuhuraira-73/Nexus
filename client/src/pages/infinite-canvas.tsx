@@ -14,6 +14,7 @@ import { CommentCard } from '@/components/canvas/CommentCard';
 import { ChecklistCard } from '@/components/canvas/ChecklistCard';
 import { Table } from '@/components/canvas/Table';
 import { Connector } from '@/components/canvas/Connector'; 
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export type ShapeType = 'rectangle' | 'square' | 'circle' | 'triangle' | 'star' | 'arrow' | 'line' | 'text' | 'image' | 'connector';
 
@@ -252,6 +253,7 @@ const InfiniteCanvas = () => {
   } = useCanvasStore();
   const { setCurrentCanvasName, triggerAddComment } = useAppStore();
   const { user } = useAuthStore();
+  const isMobile = useIsMobile();
 
   // Effect to add a comment when triggered from the header
   useEffect(() => {
@@ -327,10 +329,14 @@ const InfiniteCanvas = () => {
         setIsLoading(false);
     }
 
-    // Reset stage position and zoom when canvas changes
-    setStage({ scale: 1, x: 0, y: 0 });
+    // Center the viewport on the origin (0,0) when canvas changes
+    setStage({ 
+      scale: isMobile ? 0.6 : 1, 
+      x: dimensions.width / 2, 
+      y: dimensions.height / 2 
+    });
 
-  }, [canvasId, setCanvas, setCurrentCanvasName, setStage]);
+  }, [canvasId, setCanvas, setCurrentCanvasName, setStage, isMobile, dimensions]);
 
   // Auto-save canvas content with debounce
   useEffect(() => {
