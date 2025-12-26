@@ -52,13 +52,13 @@ export const ZoomControl = () => {
         <div className="flex items-center">
           <Input
             type="text"
-            className="w-12 h-8 text-center bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0"
+            className="w-13 h-8 text-center bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0"
             value={displayValue}
             onChange={handleInputChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
           />
-          <span className="text-sm font-medium text-neutral-400 pr-2">%</span>
+          <span className="text-sm font-medium text-neutral-40 pr-2">ㅤ%</span>
         </div>
       </div>
     </TooltipProvider>

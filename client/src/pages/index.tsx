@@ -21,7 +21,11 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuPortal,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
@@ -38,7 +42,7 @@ import {
 } from "@/components/ui/tooltip"
 import { CanvasColorPicker } from "@/components/ui/canvas-color-picker";
 import { ZoomControl } from "@/components/ui/zoom-control";
-import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2, Grid3x3, FileImage, FileText } from "lucide-react"
+import { Download, MessageSquare, Presentation, Share2, Frame, Loader2, CheckCircle2, Grid3x3, FileImage, FileText, MoreVertical } from "lucide-react"
 import { Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { api, updateCanvasStatus } from '@/lib/api';
@@ -63,7 +67,7 @@ function AppLayoutContent() {
   } = useAppStore();
   const { logout } = useAuthStore();
   const { setBackgroundPattern, stageRef } = useCanvasStore();
-  const { state: sidebarState } = useSidebar();
+  const { state: sidebarState, isMobile } = useSidebar();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleImageExport = (format: 'png' | 'jpeg') => {
@@ -308,15 +312,10 @@ function AppLayoutContent() {
           <header 
             className="absolute top-4 right-4 z-30 flex h-16 shrink-0 items-center gap-2 rounded-lg bg-black/50 backdrop-blur-sm transition-all ease-linear px-4"
           >
+            {isMobile && <SidebarTrigger className="size-10" />}
             <div className="flex items-center gap-2">
               <Breadcrumb>
                 <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink asChild>
-                      <Link to="/app">Nexus</Link>
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                  <BreadcrumbSeparator className="hidden md:block" />
                   <BreadcrumbItem>
                     <BreadcrumbPage>{currentCanvasName || 'Canvas'}</BreadcrumbPage>
                   </BreadcrumbItem>
@@ -330,7 +329,7 @@ function AppLayoutContent() {
             </div>
 
             {/* Save Status Indicator */}
-            <div className="flex justify-center items-center px-4">
+            <div className="flex-1 flex justify-end items-center px-4">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground transition-opacity duration-300 ease-in-out">
                     {isSaving ? (
                         <>
@@ -346,101 +345,157 @@ function AppLayoutContent() {
                 </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <CanvasColorPicker />
-              <DropdownMenu>
+            {/* Desktop Actions */}
+            {!isMobile && (
+              <div className="flex items-center gap-2">
+                <CanvasColorPicker />
+                <DropdownMenu>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Grid3x3 className="h-4 w-4" />
+                          <span className="sr-only">Change Background</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Change Background</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                    <DropdownMenuItem onSelect={() => setBackgroundPattern('solid')}>Solid</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setBackgroundPattern('dotted')}>Dotted</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setBackgroundPattern('lined')}>Lined</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Share2 className="h-4 w-4" />
+                          <span className="sr-only">Share</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Share</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                    <DropdownMenuItem>Copy Link</DropdownMenuItem>
+                    <DropdownMenuItem>Invite by Email</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Embed</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                          <Download className="h-4 w-4" />
+                          <span className="sr-only">Export</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Export</p>
+                    </TooltipContent>
+                  </Tooltip>
+                  <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                    <DropdownMenuItem onSelect={() => handleImageExport('png')}>
+                      <FileImage className="mr-2 h-4 w-4" />
+                      <span>as PNG</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => handleImageExport('jpeg')}>
+                      <FileImage className="mr-2 h-4 w-4" />
+                      <span>as JPG</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={handlePdfExport}>
+                      <FileText className="mr-2 h-4 w-4" />
+                      <span>as PDF</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Grid3x3 className="h-4 w-4" />
-                        <span className="sr-only">Change Background</span>
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <Button variant="ghost" size="icon" onClick={fireAddComment}>
+                      <MessageSquare className="h-4 w-4" />
+                      <span className="sr-only">Comments</span>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Change Background</p>
+                    <p>Comments</p>
                   </TooltipContent>
                 </Tooltip>
-                <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
-                  <DropdownMenuItem onSelect={() => setBackgroundPattern('solid')}>Solid</DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => setBackgroundPattern('dotted')}>Dotted</DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => setBackgroundPattern('lined')}>Lined</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <DropdownMenu>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Share2 className="h-4 w-4" />
-                        <span className="sr-only">Share</span>
-                      </Button>
-                    </DropdownMenuTrigger>
+                    <Button variant="ghost" size="icon">
+                      <Presentation className="h-4 w-4" />
+                      <span className="sr-only">Present</span>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>Share</p>
+                    <p>Present</p>
                   </TooltipContent>
                 </Tooltip>
-                <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
-                  <DropdownMenuItem>Copy Link</DropdownMenuItem>
-                  <DropdownMenuItem>Invite by Email</DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>Embed</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              </div>
+            )}
+
+            {/* Mobile Actions */}
+            {isMobile && (
               <DropdownMenu>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
-                        <Download className="h-4 w-4" />
-                        <span className="sr-only">Export</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Export</p>
-                  </TooltipContent>
-                </Tooltip>
-                <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
-                  <DropdownMenuItem onSelect={() => handleImageExport('png')}>
-                    <FileImage className="mr-2 h-4 w-4" />
-                    <span>as PNG</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => handleImageExport('jpeg')}>
-                    <FileImage className="mr-2 h-4 w-4" />
-                    <span>as JPG</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={handlePdfExport}>
-                    <FileText className="mr-2 h-4 w-4" />
-                    <span>as PDF</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button variant="ghost" size="icon" onClick={fireAddComment}>
-                    <MessageSquare className="h-4 w-4" />
-                    <span className="sr-only">Comments</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Comments</p>
-                </TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
+                <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
-                    <Presentation className="h-4 w-4" />
-                    <span className="sr-only">Present</span>
+                    <MoreVertical className="h-4 w-4" />
                   </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Present</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
+                    {isCanvasOpen && <ZoomControl />}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Canvas Color</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none p-0">
+                        <CanvasColorPicker />
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Background</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                        <DropdownMenuItem onSelect={() => setBackgroundPattern('solid')}>Solid</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setBackgroundPattern('dotted')}>Dotted</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => setBackgroundPattern('lined')}>Lined</DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem>Share</DropdownMenuItem>
+                  <DropdownMenuItem>Present</DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>Export</DropdownMenuSubTrigger>
+                    <DropdownMenuPortal>
+                      <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                        <DropdownMenuItem onSelect={() => handleImageExport('png')}>as PNG</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => handleImageExport('jpeg')}>as JPG</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={handlePdfExport}>as PDF</DropdownMenuItem>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuPortal>
+                  </DropdownMenuSub>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            )}
           </header>
           <main className="absolute inset-0 z-10">
             <Outlet context={{ setCreateModalOpen, projects, isLoadingCanvases }} />
@@ -448,6 +503,9 @@ function AppLayoutContent() {
         </>
       ) : (
         <SidebarInset>
+          <div className="p-4 md:hidden">
+            {isMobile && <SidebarTrigger className="size-10 absolute top-4 right-4" />}
+          </div>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
             <Outlet context={{ setCreateModalOpen, projects, isLoadingCanvases }} />
           </div>
