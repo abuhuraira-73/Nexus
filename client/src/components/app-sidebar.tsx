@@ -46,6 +46,8 @@ import { useCanvasStore } from "@/store/canvasStore";
 import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuthStore } from "@/store/authStore";
 import {
   Collapsible,
   CollapsibleContent,
@@ -138,7 +140,8 @@ const mediaTools = [
 ]
 
 const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
-  const { mode, setMode, undo, redo } = useCanvasStore();
+  const { mode, setMode, undo, redo, addShape, stageRef } = useCanvasStore();
+  const isMobile = useIsMobile();
 
   const toggleDrawMode = () => {
     setMode(mode === 'draw' ? 'select' : 'draw');
@@ -147,6 +150,93 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
   const toggleEraserMode = () => {
     setMode(mode === 'erase' ? 'select' : 'erase');
   }
+
+  const handleTapToAdd = (type: string, subType?: string) => {
+    const stage = stageRef?.current;
+    if (!stage) return;
+
+    // Calculate the center of the current viewport on the stage
+    const newPos = {
+      x: -stage.x() / stage.scaleX() + stage.width() / 2 / stage.scaleX(),
+      y: -stage.y() / stage.scaleY() + stage.height() / 2 / stage.scaleY(),
+    };
+
+    let newShape: import('@/pages/infinite-canvas').Shape;
+    const baseShape = {
+      id: String(Date.now()),
+      x: newPos.x,
+      y: newPos.y,
+      shadowBlur: 0,
+      rotation: 0,
+    };
+
+    if (type === 'text') {
+      const textBase = {
+          ...baseShape,
+          type: 'text' as const,
+          fill: '#000000',
+          fontFamily: 'Inter',
+      }
+      switch (subType) {
+          case 'heading':
+              newShape = { ...textBase, subType, text: 'Heading', fontSize: 32, fontStyle: 'bold', width: 200 };
+              break;
+          case 'stickyNote':
+              newShape = { ...textBase, subType, text: 'Sticky note...', fontSize: 18, width: 200, height: 200, backgroundColor: '#FFFFA5', padding: 20, fontFamily: 'Caveat' };
+              break;
+          case 'textCard':
+              newShape = { ...textBase, subType, text: 'New Text Card', fontSize: 14, width: 250, height: 58, backgroundColor: '#F9F9F9', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333', opacity: 1 };
+              break;
+          case 'comment': {
+              const user = useAuthStore.getState().user;
+              newShape = { ...textBase, subType, text: 'Add a comment...', author: user?.name || 'User', fontSize: 14, width: 250, height: 100, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#333333' };
+              break;
+          }
+          case 'checklist':
+              newShape = { ...textBase, subType, items: [{ id: String(Date.now()), text: 'To-do item', checked: false }], width: 250, backgroundColor: '#ffffff', stroke: '#E0E0E0', cornerRadius: 8, padding: 16, shadowBlur: 10, textColor: '#000000' };
+              break;
+          case 'table':
+              newShape = { ...textBase, subType, tableData: [[{ text: 'Header 1' }, { text: 'Header 2' }],[{ text: 'Cell 1' }, { text: 'Cell 2' }]], columnWidths: [150, 150], rowHeights: [40, 40], stroke: '#000000', strokeWidth: 1, cornerRadius: 8, backgroundColor: '#FFFFFF' };
+              break;
+          case 'plain':
+          default:
+              newShape = { ...textBase, subType: 'plain', text: 'Plain Text', fontSize: 16, width: 150 };
+              break;
+      }
+    } else {
+      const shapeBase = {
+          ...baseShape,
+          fill: 'green',
+          shadowBlur: 5,
+      }
+      switch (type) {
+          case 'rectangle':
+          newShape = { ...shapeBase, type, width: 120, height: 80 };
+          break;
+          case 'square':
+          newShape = { ...shapeBase, type, width: 100, height: 100 };
+          break;
+          case 'circle':
+          newShape = { ...shapeBase, type, radius: 50 };
+          break;
+          case 'triangle':
+          newShape = { ...shapeBase, type, radius: 60 };
+          break;
+          case 'star':
+          newShape = { ...shapeBase, type, radius: 70 };
+          break;
+          case 'arrow':
+          newShape = { ...shapeBase, type, subType, width: 100, height: 100, fill: '#000000', stroke: '#000000' };
+          break;
+          case 'image':
+            onImageToolClick();
+            return;
+          default:
+          return;
+      }
+    }
+    addShape(newShape);
+  };
 
   return (
     <>
@@ -187,8 +277,10 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                     <SidebarMenuSubItem key={tool.name}>
                       <SidebarMenuSubButton
                         className="text-sidebar-foreground/70"
-                        draggable={true}
+                        draggable={!isMobile}
+                        onClick={() => { if (isMobile) handleTapToAdd('text', tool.subType); }}
                         onDragStart={(e) => {
+                          if (isMobile) return;
                           e.dataTransfer.setData("application/reactflow", "text");
                           e.dataTransfer.setData("application/subtype", tool.subType);
                           e.dataTransfer.effectAllowed = "move";
@@ -220,8 +312,10 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                     <SidebarMenuSubItem key={tool.name}>
                       <SidebarMenuSubButton
                         className="text-sidebar-foreground/70"
-                        draggable={true}
+                        draggable={!isMobile}
+                        onClick={() => { if (isMobile) handleTapToAdd(tool.type); }}
                         onDragStart={(e) => {
+                          if (isMobile) return;
                           e.dataTransfer.setData("application/reactflow", tool.type);
                           e.dataTransfer.effectAllowed = "move";
                         }}
@@ -252,8 +346,10 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                     <SidebarMenuSubItem key={tool.name}>
                       <SidebarMenuSubButton
                         className="text-sidebar-foreground/70"
-                        draggable={true}
+                        draggable={!isMobile}
+                        onClick={() => { if (isMobile) handleTapToAdd('arrow', tool.subType); }}
                         onDragStart={(e) => {
+                          if (isMobile) return;
                           e.dataTransfer.setData("application/reactflow", "arrow");
                           e.dataTransfer.setData("application/subtype", tool.subType);
                           e.dataTransfer.effectAllowed = "move";
@@ -326,7 +422,18 @@ const NavTools = ({ onImageToolClick }: { onImageToolClick: () => void }) => {
                     <SidebarMenuSubItem key={tool.name}>
                       <SidebarMenuSubButton
                         className="text-sidebar-foreground/70"
-                        onClick={onImageToolClick}
+                        onClick={() => {
+                          if (tool.type === 'image') {
+                            onImageToolClick();
+                          } else if (isMobile) {
+                            handleTapToAdd(tool.type);
+                          }
+                        }}
+                        draggable={!isMobile}
+                        onDragStart={(e) => {
+                            if (isMobile || tool.type !== 'image') return; // Prevent drag for non-image tools on mobile
+                            // For desktop, handle image drag if necessary, or just rely on click
+                        }}
                       >
                         <tool.icon className="text-muted-foreground" />
                         <span>{tool.name}</span>
