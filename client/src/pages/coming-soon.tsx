@@ -76,7 +76,7 @@ export default function ComingSoonPage() {
                       <CardHeader>
                         <div className="flex justify-between items-center">
                           <CardTitle className="text-xl">{feature.title}</CardTitle>
-                          <span className={`ml-4 px-3 py-1 text-sm font-medium rounded-full ${
+                          <span className={`ml-4 whitespace-nowrap px-3 py-1 text-sm font-medium rounded-full ${
                             feature.status === 'In Progress'
                               ? 'bg-blue-900/50 text-blue-300 border border-blue-500/30'
                               : 'bg-gray-700/50 text-gray-300 border border-gray-500/30'

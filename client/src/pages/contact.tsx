@@ -77,7 +77,7 @@ export default function ContactPage() {
         </div>
 
         {/* FAQ Section (Below, Full Width) */}
-        <div className="py-20 lg:py-28 mt-16">
+        <div className="py-20 lg:py-28 mt-16 px-8 sm:px-12 lg:px-16">
           <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-center mb-12 font-heading">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="w-full container mx-auto px-4">
             {faqs.map((faq, i) => (

@@ -43,18 +43,19 @@ export default function FeaturesPage() {
         </div>
 
         {/* --- Thematic Feature Sections --- */}
-        <div className="bg-black">
+        <div className="px-8 sm:px-12 lg:px-16">
             <FeatureSection
                 title="Your Infinite Creative Space"
                 description="Break free from the constraints of physical whiteboards. Nexus provides a limitless canvas where you can pan, zoom, and organize your thoughts without ever running out of room. It's your world to create."
-                icon={<Palette className="h-32 w-32 text-purple-400" />}
             />
         </div>
         {/* NEW SEPARATOR LINE */}
-        <div className="container mx-auto px-4">
-            <div className="border-t border-gray-700 my-16 max-w-4xl mx-auto"></div>
+        <div className="px-8 sm:px-12 lg:px-16">
+            <div className="container mx-auto px-4">
+                <div className="border-t border-gray-700 my-16 max-w-4xl mx-auto"></div>
+            </div>
         </div>
-        <div className="bg-black">
+        <div className="px-8 sm:px-12 lg:px-16">
             <FeatureSection
                 title="Built for Seamless Collaboration"
                 description="Work together in real-time, from anywhere in the world. See your team's cursors, get instant feedback with comments, and share your boards with a single click. Collaboration has never been this easy."
@@ -63,10 +64,12 @@ export default function FeaturesPage() {
             />
         </div>
         {/* NEW SEPARATOR LINE */}
-        <div className="container mx-auto px-4">
-            <div className="border-t border-gray-700 my-16 max-w-4xl mx-auto"></div>
+        <div className="px-8 sm:px-12 lg:px-16">
+            <div className="container mx-auto px-4">
+                <div className="border-t border-gray-700 my-16 max-w-4xl mx-auto"></div>
+            </div>
         </div>
-        <div className="bg-black">
+        <div className="px-8 sm:px-12 lg:px-16">
             <FeatureSection
                 title="Powerful Tools, Simple Interface"
                 description="Nexus is packed with features to boost your productivity. Use smart drawing tools, embed rich content, organize with favorites, and rely on local persistence to keep your work safe. All in a clean, intuitive interface."
