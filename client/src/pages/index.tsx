@@ -329,18 +329,12 @@ function AppLayoutContent() {
             </div>
 
             {/* Save Status Indicator */}
-            <div className="flex-1 flex justify-end items-center px-4">
+            <div className="flex-1 flex justify-end items-center px-2">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground transition-opacity duration-300 ease-in-out">
                     {isSaving ? (
-                        <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                            <span>Saving...</span>
-                        </>
+                        <Loader2 className="h-4 w-4 animate-spin" />
                     ) : showSavedIndicator ? (
-                        <>
-                            <CheckCircle2 className="h-4 w-4 text-green-500" />
-                            <span>All changes saved</span>
-                        </>
+                        <CheckCircle2 className="h-4 w-4 text-green-500" />
                     ) : null}
                 </div>
             </div>
