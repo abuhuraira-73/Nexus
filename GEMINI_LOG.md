@@ -1,6 +1,17 @@
 # Project: Nexus — “Infinite Canvas, Simplified.”
 
 ---
+### December 28, 2025
+
+*   **Mobile Responsiveness: Top Bar & Dropdowns**
+    *   **Canvas Name Truncation:** Fixed a layout overflow issue on the mobile top bar by truncating long canvas names (over 6 characters) and appending an ellipsis (`...`).
+    *   **Dropdown/Sub-Menu Positioning:** Resolved a major UX issue where mobile dropdown sub-menus (for Color, Background, Export) would overlap the main menu. They are now correctly positioned to open to the left. The main dropdown menu's position was also fixed to prevent it from overlapping the top bar, appearing neatly below its trigger.
+    *   **UI/UX & Design Consistency:**
+        *   **Color Picker Rework:** Simplified the mobile "Canvas Color" picker by removing a nested dropdown, allowing users to see the color palette directly. Also added the "Custom" color input to match desktop functionality.
+        *   **Dropdown Styling:** Ensured all dropdown menus (both mobile and desktop) share the same semi-transparent black background (`bg-black/50`) as the main top bar for a consistent design.
+        *   **Layout Fixes:** Adjusted the mobile color picker's grid layout to prevent it from overflowing the screen. Removed a redundant "Zoom" control from the mobile menu.
+
+---
 ### December 27, 2025
 
 *   **Responsiveness Overhaul: Authenticated App Layout**
