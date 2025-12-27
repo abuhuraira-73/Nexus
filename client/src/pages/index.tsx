@@ -459,7 +459,7 @@ function AppLayoutContent() {
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
+                <DropdownMenuContent align="end" sideOffset={20} className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
 
 
                   <DropdownMenuSub>
