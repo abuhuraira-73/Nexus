@@ -25,7 +25,7 @@ export function CanvasColorPicker() {
           <span className="sr-only">Change canvas color</span>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-4 rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+      <PopoverContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none p-4">
         <div className="flex flex-col gap-4">
           <p className="text-sm font-medium text-white">Change canvas color</p>
           <div className="grid grid-cols-6 gap-2">

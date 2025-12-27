@@ -66,7 +66,15 @@ function AppLayoutContent() {
     isDeleteModalOpen, closeDeleteModal 
   } = useAppStore();
   const { logout } = useAuthStore();
-  const { setBackgroundPattern, stageRef } = useCanvasStore();
+  const { backgroundColor, setBackgroundPattern, stageRef, setBackgroundColor } = useCanvasStore();
+  const PRESET_COLORS = [
+    '#FFFFFF', // White
+    '#F8F8F8', // Light Gray (Default)
+    '#FFF9C4', // Light Yellow
+    '#E3F2FD', // Light Blue
+    '#E8F5E9', // Light Green
+    '#212121', // Dark Gray
+  ];
   const { state: sidebarState, isMobile } = useSidebar();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -362,7 +370,7 @@ function AppLayoutContent() {
                       <p>Change Background</p>
                     </TooltipContent>
                   </Tooltip>
-                  <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                  <DropdownMenuContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
                     <DropdownMenuItem onSelect={() => setBackgroundPattern('solid')}>Solid</DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => setBackgroundPattern('dotted')}>Dotted</DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => setBackgroundPattern('lined')}>Lined</DropdownMenuItem>
@@ -382,7 +390,7 @@ function AppLayoutContent() {
                       <p>Share</p>
                     </TooltipContent>
                   </Tooltip>
-                  <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                  <DropdownMenuContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
                     <DropdownMenuItem>Copy Link</DropdownMenuItem>
                     <DropdownMenuItem>Invite by Email</DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -403,7 +411,7 @@ function AppLayoutContent() {
                       <p>Export</p>
                     </TooltipContent>
                   </Tooltip>
-                  <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                  <DropdownMenuContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
                     <DropdownMenuItem onSelect={() => handleImageExport('png')}>
                       <FileImage className="mr-2 h-4 w-4" />
                       <span>as PNG</span>
@@ -451,17 +459,36 @@ function AppLayoutContent() {
                     <MoreVertical className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
-                  <DropdownMenuItem onSelect={(e) => e.preventDefault()} >
-                    {isCanvasOpen && <ZoomControl />}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
+                <DropdownMenuContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
+
 
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Canvas Color</DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
-                      <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none p-0">
-                        <CanvasColorPicker />
+                      <DropdownMenuSubContent side="left" sideOffset={8} className="rounded-lg bg-black/50 backdrop-blur-sm border-none p-4">
+                        <div className="flex flex-col gap-4">
+                          <div className="grid grid-cols-4 gap-2">
+                            {PRESET_COLORS.map((color) => (
+                              <Button
+                                key={color}
+                                variant="outline"
+                                className={`h-8 w-8 rounded-full p-0 border-2 ${backgroundColor === color ? 'border-blue-500' : 'border-transparent'}`}
+                                style={{ backgroundColor: color }}
+                                onClick={() => setBackgroundColor(color)}
+                              />
+                            ))}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <label htmlFor="custom-color-picker-mobile" className="text-sm text-white">Custom</label>
+                            <input
+                              id="custom-color-picker-mobile"
+                              type="color"
+                              value={backgroundColor}
+                              onChange={(e) => setBackgroundColor(e.target.value)}
+                              className="h-8 w-23 rounded border-none bg-transparent cursor-pointer"
+                            />
+                          </div>
+                        </div>
                       </DropdownMenuSubContent>
                     </DropdownMenuPortal>
                   </DropdownMenuSub>
@@ -469,7 +496,7 @@ function AppLayoutContent() {
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Background</DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
-                      <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                      <DropdownMenuSubContent side="left" sideOffset={8} className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
                         <DropdownMenuItem onSelect={() => setBackgroundPattern('solid')}>Solid</DropdownMenuItem>
                         <DropdownMenuItem onSelect={() => setBackgroundPattern('dotted')}>Dotted</DropdownMenuItem>
                         <DropdownMenuItem onSelect={() => setBackgroundPattern('lined')}>Lined</DropdownMenuItem>
@@ -485,7 +512,7 @@ function AppLayoutContent() {
                   <DropdownMenuSub>
                     <DropdownMenuSubTrigger>Export</DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
-                      <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                      <DropdownMenuSubContent side="left" sideOffset={8} className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
                         <DropdownMenuItem onSelect={() => handleImageExport('png')}>as PNG</DropdownMenuItem>
                         <DropdownMenuItem onSelect={() => handleImageExport('jpeg')}>as JPG</DropdownMenuItem>
                         <DropdownMenuItem onSelect={handlePdfExport}>as PDF</DropdownMenuItem>
