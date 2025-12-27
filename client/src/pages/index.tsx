@@ -70,6 +70,11 @@ function AppLayoutContent() {
   const { state: sidebarState, isMobile } = useSidebar();
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const truncatedName =
+    isMobile && currentCanvasName && currentCanvasName.length > 6
+      ? `${currentCanvasName.substring(0, 3)}...`
+      : currentCanvasName;
+
   const handleImageExport = (format: 'png' | 'jpeg') => {
     if (!stageRef?.current) {
       toast.error("Cannot export: Stage not available.");
@@ -317,7 +322,7 @@ function AppLayoutContent() {
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbPage>{currentCanvasName || 'Canvas'}</BreadcrumbPage>
+                    <BreadcrumbPage>{truncatedName || 'Canvas'}</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
