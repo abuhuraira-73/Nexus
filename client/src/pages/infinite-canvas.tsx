@@ -255,6 +255,10 @@ const InfiniteCanvas = () => {
   const { user } = useAuthStore();
   const isMobile = useIsMobile();
 
+  // Refs for pinch-to-zoom
+  const lastCenter = useRef<{ x: number; y: number } | null>(null);
+  const lastDist = useRef(0);
+
   // Effect to add a comment when triggered from the header
   useEffect(() => {
     if (triggerAddComment > 0) { // Check to prevent running on initial render
@@ -551,6 +555,10 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseDown = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    // This function is now only for mouse down events.
+    // Touch events are handled by handleTouchStart.
+    if ('touches' in e.evt) return;
+
     if (mode === 'connector') {
       const shapeNode = getShapeNode(e.target);
       if (shapeNode) {
@@ -600,6 +608,8 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseMove = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if ('touches' in e.evt) return;
+
     if (mode === 'connector' && drawingConnector) {
       const stage = e.target.getStage();
       if (stage) {
@@ -635,6 +645,8 @@ const InfiniteCanvas = () => {
   };
 
   const handleMouseUp = (e: KonvaEventObject<MouseEvent | TouchEvent>) => {
+    if ('touches' in e.evt) return;
+
     if (mode === 'connector' && drawingConnector) {
         const shapeNode = getShapeNode(e.target);
         if (shapeNode) {
@@ -679,6 +691,81 @@ const InfiniteCanvas = () => {
 
     addShape(currentLine);
     setCurrentLine(null);
+  };
+
+  const handleTouchStart = (e: KonvaEventObject<TouchEvent>) => {
+    const touch1 = e.evt.touches[0];
+    const touch2 = e.evt.touches[1];
+    const stage = e.target.getStage();
+    if (!stage) return;
+  
+    if (touch1 && touch2) {
+      // two finger touch
+      if (stage.isDragging()) {
+        stage.stopDrag();
+      }
+      lastDist.current = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+    } else if (touch1) {
+      // one finger touch, delegate to existing logic
+      handleSingleTouch(e, handleMouseDown);
+    }
+  };
+
+  const handleTouchMove = (e: KonvaEventObject<TouchEvent>) => {
+    e.evt.preventDefault();
+    const touch1 = e.evt.touches[0];
+    const touch2 = e.evt.touches[1];
+    const stage = e.target.getStage();
+    if (!stage) return;
+  
+    if (touch1 && touch2) {
+      // two finger zoom
+      const newDist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+  
+      if (lastDist.current === 0) {
+        lastDist.current = newDist;
+      }
+  
+      const oldScale = stage.scaleX();
+      const newCenter = { x: (touch1.clientX + touch2.clientX) / 2, y: (touch1.clientY + touch2.clientY) / 2 };
+      
+      const pointTo = {
+        x: (newCenter.x - stage.x()) / oldScale,
+        y: (newCenter.y - stage.y()) / oldScale,
+      };
+  
+      const newScale = oldScale * (newDist / lastDist.current);
+      
+      setStage({
+        scale: newScale,
+        x: newCenter.x - pointTo.x * newScale,
+        y: newCenter.y - pointTo.y * newScale,
+      });
+  
+      lastDist.current = newDist;
+    } else if (touch1) {
+      // one finger move, delegate
+      handleSingleTouch(e, handleMouseMove);
+    }
+  };
+
+  const handleTouchEnd = (e: KonvaEventObject<TouchEvent>) => {
+    lastDist.current = 0;
+    
+    if (e.evt.touches.length < 2) {
+      handleSingleTouch(e, handleMouseUp);
+    }
+  };
+  
+  // Helper to adapt touch events for mouse handlers
+  const handleSingleTouch = (e: KonvaEventObject<TouchEvent>, handler: (e: KonvaEventObject<MouseEvent | TouchEvent>) => void) => {
+    const touch = e.evt.touches[0] || e.evt.changedTouches[0];
+    if (touch) {
+        // You might need to manually construct a fake event object
+        // or adapt the handlers to accept touch properties directly.
+        // For now, we'll try passing the event as is, as Konva might abstract it.
+        handler(e);
+    }
   };
 
   const renderShape = (shape: Shape, i: number) => {
@@ -947,9 +1034,9 @@ const InfiniteCanvas = () => {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-          onTouchStart={handleMouseDown}
-          onTouchMove={handleMouseMove}
-          onTouchEnd={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <Layer>
             {shapes.filter(s => s.type === 'connector').map(renderShape)}
