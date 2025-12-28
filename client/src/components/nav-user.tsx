@@ -59,6 +59,13 @@ export function NavUser() {
     return name.substring(0, 2).toUpperCase();
   };
 
+  const truncateEmail = (email: string, maxLength: number) => {
+    if (email.length > maxLength) {
+      return email.substring(0, maxLength - 3) + "...";
+    }
+    return email;
+  };
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -74,16 +81,16 @@ export function NavUser() {
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate text-xs">{truncateEmail(user.email, 15)}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg bg-gray-900/50 backdrop-blur-sm border-none"
-            side={isMobile ? "bottom" : "right"}
+            className="min-w-44 rounded-lg bg-black/50 backdrop-blur-sm border-none"
+            side="right"
             align="end"
-            sideOffset={4}
+            sideOffset={14}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
@@ -93,7 +100,7 @@ export function NavUser() {
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate text-xs">{truncateEmail(user.email, 15)}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
