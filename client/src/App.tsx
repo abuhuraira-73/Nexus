@@ -23,6 +23,8 @@ import PageTransition from './components/page-transition';
 import { BackToTopButton } from './components/back-to-top-button';
 import ProtectedRoute from './components/protected-route'; // New import
 import { useAuthStore } from './store/authStore'; // New import
+import { SuggestionButton } from './components/suggestion-button';
+import { SuggestionFormModal } from './components/suggestion-form-modal';
 
 // Lazily load public-facing pages
 const LandingPage = React.lazy(() => import('./pages/landing'));
@@ -36,6 +38,7 @@ function App() {
   const [showLoader, setShowLoader] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const location = useLocation();
+  const [isSuggestionModalOpen, setSuggestionModalOpen] = useState(false);
 
   useEffect(() => {
     const fadeTimer = setTimeout(() => {
@@ -89,6 +92,11 @@ function App() {
           </Routes>
         </AnimatePresence>
         <BackToTopButton />
+        <SuggestionButton onClick={() => setSuggestionModalOpen(true)} />
+        <SuggestionFormModal 
+          isOpen={isSuggestionModalOpen} 
+          onClose={() => setSuggestionModalOpen(false)} 
+        />
     </div>
   );
 }
