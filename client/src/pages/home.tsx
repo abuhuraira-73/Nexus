@@ -50,8 +50,7 @@ interface OutletContextType {
 
 export default function HeroSection() {
   const { user } = useAuthStore();
-  const { setCreateModalOpen, projects, isLoadingCanvases } = useOutletContext<OutletContextType>();
-  const [isPricingOverlayOpen, setPricingOverlayOpen] = useState(false);
+  const { setCreateModalOpen, projects, isLoadingCanvases, openPricingOverlay } = useOutletContext<OutletContextType>();
 
   const handleCreateCanvas = () => {
     setCreateModalOpen(true);
@@ -144,13 +143,12 @@ export default function HeroSection() {
 
   return (
     <>
-      {isPricingOverlayOpen && <PricingOverlay onClose={() => setPricingOverlayOpen(false)} />}
       {/* --- BLACK HERO SECTION --- */}
       <div className="bg-black">
         <section className="flex flex-col items-center justify-center text-center py-24 lg:py-32">
           <div className="mb-6">
             <button 
-              onClick={() => setPricingOverlayOpen(true)} 
+              onClick={openPricingOverlay} 
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10"
             >
               <PartyPopper className="h-4 w-4 text-yellow-400" />

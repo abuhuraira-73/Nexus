@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   BadgeCheck,
   Bell,
@@ -11,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { useAppStore } from "@/store/appStore";
 import { toast } from "sonner";
+import { PricingOverlay } from "@/pages/pricing-overlay";
 
 import {
   Avatar,
@@ -39,7 +41,7 @@ export function NavUser() {
   const { isMobile } = useSidebar()
   const navigate = useNavigate();
   const { user, logout } = useAuthStore();
-  const { openProfileModal } = useAppStore();
+  const { openProfileModal, openPricingOverlay } = useAppStore();
 
   const handleLogout = () => {
     logout();
@@ -110,7 +112,7 @@ export function NavUser() {
                 <BadgeCheck />
                 Free Plan
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={openPricingOverlay}>
                 <Gem />
                 Upgrade to Pro
               </DropdownMenuItem>
@@ -121,11 +123,11 @@ export function NavUser() {
                 <Settings />
                 Settings
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <Bell />
                 Notifications
               </DropdownMenuItem>

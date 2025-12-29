@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AppSidebar, type Project } from "@/components/app-sidebar";
 import { CreateCanvasModal } from "@/components/create-canvas-modal";
 import { UserProfileModal } from "@/components/user-profile-modal";
+import { PricingOverlay } from "@/pages/pricing-overlay";
 import { DeleteAccountModal } from "@/components/DeleteAccountModal";
 import { useAppStore } from "@/store/appStore";
 import { useAuthStore } from "@/store/authStore";
@@ -63,6 +64,7 @@ function AppLayoutContent() {
   const { 
     currentCanvasName, isSaving, lastSaved, fireAddComment, 
     isProfileModalOpen, closeProfileModal, 
+    isPricingOverlayOpen, closePricingOverlay, openPricingOverlay,
     isDeleteModalOpen, closeDeleteModal 
   } = useAppStore();
   const { logout } = useAuthStore();
@@ -293,6 +295,7 @@ function AppLayoutContent() {
 
   return (
     <>
+      {isPricingOverlayOpen && <PricingOverlay onClose={closePricingOverlay} />}
       <CreateCanvasModal 
         isOpen={isCreateModalOpen}
         onClose={() => setCreateModalOpen(false)}
@@ -524,7 +527,7 @@ function AppLayoutContent() {
             )}
           </header>
           <main className="absolute inset-0 z-10">
-            <Outlet context={{ setCreateModalOpen, projects, isLoadingCanvases }} />
+            <Outlet context={{ setCreateModalOpen, projects, isLoadingCanvases, openPricingOverlay }} />
           </main>
         </>
       ) : (
@@ -533,7 +536,7 @@ function AppLayoutContent() {
             {isMobile && <SidebarTrigger className="size-10 absolute top-4 right-4" />}
           </div>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-            <Outlet context={{ setCreateModalOpen, projects, isLoadingCanvases }} />
+            <Outlet context={{ setCreateModalOpen, projects, isLoadingCanvases, openPricingOverlay }} />
           </div>
         </SidebarInset>
       )}

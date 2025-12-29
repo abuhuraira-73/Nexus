@@ -6,6 +6,9 @@ interface AppState {
   isProfileModalOpen: boolean;
   openProfileModal: () => void;
   closeProfileModal: () => void;
+  isPricingOverlayOpen: boolean;
+  openPricingOverlay: () => void;
+  closePricingOverlay: () => void;
   isDeleteModalOpen: boolean;
   openDeleteModal: () => void;
   closeDeleteModal: () => void;
@@ -25,6 +28,9 @@ export const useAppStore = create<AppState>((set) => ({
   isProfileModalOpen: false,
   openProfileModal: () => set({ isProfileModalOpen: true }),
   closeProfileModal: () => set({ isProfileModalOpen: false }),
+  isPricingOverlayOpen: false,
+  openPricingOverlay: () => set({ isPricingOverlayOpen: true }),
+  closePricingOverlay: () => set({ isPricingOverlayOpen: false }),
   isDeleteModalOpen: false,
   openDeleteModal: () => set({ isDeleteModalOpen: true }),
   closeDeleteModal: () => set({ isDeleteModalOpen: false }),
