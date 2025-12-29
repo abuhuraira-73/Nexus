@@ -27,6 +27,7 @@ const canvasRoutes = require('./routes/canvasRoutes');
 const contactRoutes = require('./routes/contactRoutes');
 const userRoutes = require('./routes/userRoutes');
 const subscriptionRoutes = require('./routes/subscriptionRoutes');
+const suggestionRoutes = require('./routes/suggestionRoutes');
 const passport = require('passport');
 
 // Passport config
@@ -64,6 +65,7 @@ app.use('/api/canvases', canvasRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/subscription', subscriptionRoutes);
+app.use('/api/suggestions', suggestionRoutes);
 
 app.get('/', (req, res) => {
   res.send('API is running...');
