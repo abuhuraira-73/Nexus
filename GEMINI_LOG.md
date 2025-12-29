@@ -1,6 +1,32 @@
 # Project: Nexus — “Infinite Canvas, Simplified.”
 
 ---
+### December 30, 2025
+*   **Suggestion Feature Backend Implementation:**
+    *   Created a new Mongoose model (`server/models/Suggestion.js`) to store user feedback, including name (optional), rating (required), and comment (required).
+    *   Developed `server/controllers/suggestionController.js` to handle the logic for submitting suggestions, including validation.
+    *   Implemented `server/routes/suggestionRoutes.js` with a POST endpoint (`/api/suggestions`) for receiving feedback.
+    *   Integrated the new suggestion routes into the main server file (`server/index.js`).
+    *   Updated `client/src/components/suggestion-form-modal.tsx` to send form data to the new backend endpoint and provide user feedback using `sonner` toasts.
+*   **User Menu Enhancements & Fixes:**
+    *   Added a "Free Plan" item with a `BadgeCheck` icon to the user account dropdown.
+    *   Changed the "Upgrade to Pro" icon from `Sparkles` to a more premium `Gem` icon.
+    *   Applied a disabled style (low opacity) to the "Billing" and "Notifications" menu items to indicate they are not yet active.
+    *   Implemented the functionality for the "Upgrade to Pro" button to open the pricing overlay.
+*   **Pricing Information Display Overhaul:**
+    *   Replaced the previous pricing modal with a full-page overlay (`client/src/pages/pricing-overlay.tsx`) to provide a better user experience and avoid layout issues.
+    *   The overlay appears on top of all other content and includes a close button.
+    *   The overlay now features the same gradient background as the public-facing pricing page.
+    *   Improved scrolling performance within the overlay by adding `overscroll-y-contain`, `will-change-scroll`, and `touch-action-manipulation` CSS properties.
+*   **Beta/Trial Messaging:**
+    *   Added a professional announcement banner to both the public pricing page (`client/src/pages/pricing.tsx`) and the authenticated pricing overlay (`client/src/pages/pricing-overlay.tsx`) to inform users about the current free trial period.
+    *   Made the icon (`Zap`) in the announcement banner responsive to be larger on mobile devices.
+*   **Global State Management & Bug Fixing:**
+    *   Refactored the pricing overlay's visibility control from local component state to a global state managed by Zustand (`client/src/store/appStore.ts`).
+    *   Updated `client/src/components/nav-user.tsx` and `client/src/pages/home.tsx` to use the new global state, ensuring the overlay can be triggered from multiple locations.
+    *   Resolved a critical bug where the pricing overlay would not open from the "Beta Access" button by correctly passing the `openPricingOverlay` function through the `Outlet` context in `client/src/pages/index.tsx`.
+    *   Fixed a `ReferenceError` for the `Zap` icon in `client/src/pages/pricing-overlay.tsx` by adding the missing import.
+
 ### December 29, 2025
 *   **User Menu Styling & Responsiveness:**
     *   **Dropdown Consistency:** Aligned the styling of the user account dropdown menu in the sidebar with the application's overall dark theme, changing its background to `bg-black/50` with backdrop blur for consistency.
