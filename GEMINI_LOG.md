@@ -2,32 +2,25 @@
 
 ---
 ### December 29, 2025
-   * User Menu Styling & Responsiveness:
-       * Dropdown Consistency: Aligned the styling of the user account dropdown menu in the sidebar with the application's overall dark theme, changing its background to bg-black/50
-         with backdrop blur for consistency.
-       * Mobile Positioning: Adjusted the dropdown's positioning on mobile devices to open upwards (side="top") from the user button, preventing it from going off-screen or
-         overlapping.
-       * Desktop Positioning: Configured the dropdown to open to the right (side="right") on desktop view.
-       * Width & Truncation: Reduced the minimum width of the dropdown menu (min-w-44) and implemented email truncation (e.g., "...") for long email addresses to ensure the menu
-         fits within smaller mobile screens without being cut off.
-       * Spacing: Increased the sideOffset to 14px for better visual separation from the sidebar.
-   * Suggestion Feature UI Implementation:
-       * Global Floating Button: Created a persistent, ball-shaped "Suggestion" button (using Lightbulb icon) that is always visible on the screen.
-           * Styled the button to be bg-black, h-12 w-12, with text-white, and positioned it at the left-5 of the screen.
-           * Implemented conditional vertical positioning: bottom-5 for mobile view and bottom-[80px] for desktop view, ensuring it clears other UI elements like the account option
-             in the sidebar.
-       * Feedback Form Modal: Developed a modal (SuggestionFormModal) that appears when the button is clicked.
-           * Form Structure: Includes fields for user name (optional), a 5-star rating component, and a comment textarea.
-           * Styling: Applied consistent dark theme (bg-black/50) to the modal. Input fields and textarea use bg-slate-800/50.
-           * Placeholder & Borders: Textarea placeholder text size reduced (text-sm) and color adjusted (placeholder-gray-500). The borders and focus rings for name input and
-             comment textarea were set to border-gray-500 and focus:ring-gray-500 to match the placeholder color.
-           * Submit Button: Styled the submit button with a bg-white background and text-black.
-   * Bug Fix: Duplicate Component Declaration:
-       * Resolved an Uncaught SyntaxError: Identifier 'SuggestionButton' has already been declared error by removing duplicate import statements for SuggestionButton and
-         SuggestionFormModal in client/src/App.tsx.
-   * Pinch-to-Zoom Bug (Ongoing):
-       * Investigated a bug where pinch-to-zoom on the canvas (infinite-canvas.tsx) did not work when two fingers were placed simultaneously on mobile. Identified potential causes
-         related to Konva event handling and incomplete gesture calculation. (Work on this was paused by the user).
+*   **User Menu Styling & Responsiveness:**
+    *   **Dropdown Consistency:** Aligned the styling of the user account dropdown menu in the sidebar with the application's overall dark theme, changing its background to `bg-black/50` with backdrop blur for consistency.
+    *   **Mobile Positioning:** Adjusted the dropdown's positioning on mobile devices to open upwards (`side="top"`) from the user button, preventing it from going off-screen or overlapping.
+    *   **Desktop Positioning:** Configured the dropdown to open to the right (`side="right"`) on desktop view.
+    *   **Width & Truncation:** Reduced the minimum width of the dropdown menu (`min-w-44`) and implemented email truncation (e.g., "...") for long email addresses to ensure the menu fits within smaller mobile screens without being cut off.
+    *   **Spacing:** Increased the `sideOffset` to `14px` for better visual separation from the sidebar.
+*   **Suggestion Feature UI Implementation:**
+    *   **Global Floating Button:** Created a persistent, ball-shaped "Suggestion" button (using `Lightbulb` icon) that is always visible on the screen.
+        *   Styled the button to be `bg-black`, `h-12 w-12`, with `text-white`, and positioned it at the `left-5` of the screen.
+        *   Implemented conditional vertical positioning: `bottom-5` for mobile view and `bottom-[80px]` for desktop view, ensuring it clears other UI elements like the account option in the sidebar.
+    *   **Feedback Form Modal:** Developed a modal (`SuggestionFormModal`) that appears when the button is clicked.
+        *   **Form Structure:** Includes fields for user name (optional), a 5-star rating component, and a comment `textarea`.
+        *   **Styling:** Applied consistent dark theme (`bg-black/50`) to the modal. Input fields and `textarea` use `bg-slate-800/50`.
+        *   **Placeholder & Borders:** `Textarea` placeholder text size reduced (`text-sm`) and color adjusted (`placeholder-gray-500`). The borders and focus rings for name input and comment `textarea` were set to `border-gray-500` and `focus:ring-gray-500` to match the placeholder color.
+        *   **Submit Button:** Styled the submit button with a `bg-white` background and `text-black`.
+*   **Bug Fix: Duplicate Component Declaration:**
+    *   Resolved an `Uncaught SyntaxError: Identifier 'SuggestionButton' has already been declared` error by removing duplicate import statements for `SuggestionButton` and `SuggestionFormModal` in `client/src/App.tsx`.
+*   **Pinch-to-Zoom Bug (Ongoing):**
+    *   Investigated a bug where pinch-to-zoom on the canvas (`infinite-canvas.tsx`) did not work when two fingers were placed simultaneously on mobile. Identified potential causes related to Konva event handling and incomplete gesture calculation. (Work on this was paused by the user).
 
 
 
