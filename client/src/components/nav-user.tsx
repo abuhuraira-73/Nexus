@@ -4,7 +4,7 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
-  Sparkles,
+  Gem,
   Settings,
 } from "lucide-react"
 import { useNavigate } from "react-router-dom";
@@ -106,8 +106,12 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
+              <DropdownMenuItem disabled>
+                <BadgeCheck />
+                Free Plan
+              </DropdownMenuItem>
               <DropdownMenuItem>
-                <Sparkles />
+                <Gem />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
