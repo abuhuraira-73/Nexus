@@ -134,6 +134,12 @@ export default function PricingPage() {
               <p className="max-w-[700px] mx-auto text-gray-400 md:text-xl mt-6">
                 Start for free, then upgrade when you need more power and collaboration.
               </p>
+              <div className="mt-8 bg-blue-900/30 border border-blue-700 text-blue-200 px-6 py-3 rounded-lg max-w-2xl mx-auto flex items-center justify-center space-x-2">
+                <Zap className="h-5 w-5" />
+                <p className="text-lg font-medium">
+                  Nexus is currently in a trial phase. All features are free for a limited time!
+                </p>
+              </div>
           </section>
         </div>
 

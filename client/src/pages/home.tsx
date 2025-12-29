@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { PlusCircle, FileText, Folder, Sparkles, BrainCircuit, Map, GitFork, Presentation, MousePointerClick, Maximize, Users } from "lucide-react";
+import { PlusCircle, FileText, Folder, PartyPopper, BrainCircuit, Map, GitFork, Presentation, MousePointerClick, Maximize, Users } from "lucide-react";
 import { Link, useOutletContext } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PricingOverlay } from "@/pages/pricing-overlay";
 
 // Define the type for the projects passed in the context
 interface Project {
@@ -49,6 +51,7 @@ interface OutletContextType {
 export default function HeroSection() {
   const { user } = useAuthStore();
   const { setCreateModalOpen, projects, isLoadingCanvases } = useOutletContext<OutletContextType>();
+  const [isPricingOverlayOpen, setPricingOverlayOpen] = useState(false);
 
   const handleCreateCanvas = () => {
     setCreateModalOpen(true);
@@ -141,9 +144,19 @@ export default function HeroSection() {
 
   return (
     <>
+      {isPricingOverlayOpen && <PricingOverlay onClose={() => setPricingOverlayOpen(false)} />}
       {/* --- BLACK HERO SECTION --- */}
       <div className="bg-black">
         <section className="flex flex-col items-center justify-center text-center py-24 lg:py-32">
+          <div className="mb-6">
+            <button 
+              onClick={() => setPricingOverlayOpen(true)} 
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 transition-colors hover:bg-white/10"
+            >
+              <PartyPopper className="h-4 w-4 text-yellow-400" />
+              <span className="font-medium">Beta Access: All features are free during our trial period!</span>
+            </button>
+          </div>
           <h1 className="text-6xl lg:text-7xl font-bold tracking-tighter font-heading">
             Infinite Canvas, Simplified.
           </h1>
