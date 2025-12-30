@@ -43,6 +43,10 @@ export const SubscriptionPane = () => {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-6">Subscription</h2>
+            <div className="bg-blue-500/20 text-blue-300 p-4 rounded-lg mb-6 max-w-md">
+                <p className="font-semibold">Trial Phase Active! 🎉</p>
+                <p className="text-sm">All features, including Premium, are currently free for a limited time period. Enjoy full access!</p>
+            </div>
             <div className="space-y-4 max-w-md p-6 rounded-lg bg-white/5">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium">Your Current Plan</h3>
@@ -52,7 +56,7 @@ export const SubscriptionPane = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">
                     {plan === 'free' 
-                        ? 'Upgrade to Premium to unlock all features, including:'
+                        ? 'You currently have access to all features (including Premium) during our trial phase.'
                         : 'You have access to all Premium features. Thank you for your support!'
                     }
                 </p>
@@ -66,8 +70,8 @@ export const SubscriptionPane = () => {
                     </ul>
                 )}
                 {plan === 'free' && (
-                    <Button onClick={handleUpgrade} className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold">
-                        <Crown className="mr-2 h-4 w-4" /> Upgrade to Premium
+                    <Button disabled className="w-full bg-gray-500/50 text-gray-300 font-bold cursor-not-allowed">
+                        <Crown className="mr-2 h-4 w-4" /> Upgrade to Premium (Currently Free!)
                     </Button>
                 )}
             </div>

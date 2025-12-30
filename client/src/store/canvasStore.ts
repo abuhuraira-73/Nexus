@@ -169,10 +169,11 @@ export const useCanvasStore = create<CanvasState>()((set) => ({
         });
       },
 
-      setCanvas: (shapes, backgroundColor) => {
+      setCanvas: (shapes, backgroundColor, backgroundPattern) => {
         set({
           shapes: shapes,
           backgroundColor: backgroundColor || '#F8F8F8', // Use provided color or default
+          backgroundPattern: backgroundPattern || 'solid', // Use provided pattern or default
           history: [],
           future: [],
           selectedId: null,

@@ -43,7 +43,7 @@ export const UserProfileModal = ({ isOpen, onClose }: UserProfileModalProps) => 
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-3xl h-[70vh] bg-gray-900/50 backdrop-blur-sm border-none p-0">
+            <DialogContent className="sm:max-w-3xl h-[70vh] bg-black/50 backdrop-blur-sm border-none p-0">
                 <div className="flex h-full">
                     {/* Step 2: Sidebar Navigation */}
                     <aside className="w-1/4 h-full border-r border-gray-700/50 p-4">

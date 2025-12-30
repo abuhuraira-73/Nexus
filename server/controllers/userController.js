@@ -20,7 +20,9 @@ const updateUserProfile = async (req, res) => {
             user.name = name;
         }
         if (preferences) {
-            user.preferences = { ...user.preferences, ...preferences };
+            // Directly update the properties of the subdocument to ensure they are marked as modified
+            user.preferences.defaultCanvasColor = preferences.defaultCanvasColor || user.preferences.defaultCanvasColor;
+            user.preferences.defaultPattern = preferences.defaultPattern || user.preferences.defaultPattern;
         }
 
         await user.save();

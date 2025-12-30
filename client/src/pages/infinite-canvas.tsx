@@ -314,7 +314,7 @@ const InfiniteCanvas = () => {
           const canvasData = await api<CanvasData>(`/api/canvases/${canvasId}`);
           if (isMounted) {
             if (canvasData) {
-              setCanvas(canvasData.data?.shapes || [], canvasData.backgroundColor);
+              setCanvas(canvasData.data?.shapes || [], canvasData.backgroundColor, canvasData.backgroundPattern);
               setCurrentCanvasName(canvasData.name);
             } else {
               setCanvas([]);

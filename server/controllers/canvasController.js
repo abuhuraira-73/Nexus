@@ -1,4 +1,5 @@
 const Canvas = require('../models/Canvas');
+const User = require('../models/User'); // Import User model
 
 // @route   GET /api/canvases
 // @desc    Get all canvases for a user
@@ -53,10 +54,21 @@ const createCanvas = async (req, res) => {
   }
 
   try {
+    // Fetch the user to get their preferences
+    const user = await User.findById(userId);
+    if (!user) {
+        return res.status(404).json({ msg: 'User not found' });
+    }
+
+    const defaultColor = user.preferences?.defaultCanvasColor || '#F8F8F8';
+    const defaultPattern = user.preferences?.defaultPattern || 'solid';
+
     const newCanvas = new Canvas({
       name,
       user: userId,
       data: {}, // Start with an empty canvas
+      backgroundColor: defaultColor, // Use user's preference
+      backgroundPattern: defaultPattern, // Use user's preference
     });
 
     const canvas = await newCanvas.save();
