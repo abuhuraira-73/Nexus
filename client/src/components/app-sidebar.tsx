@@ -1033,7 +1033,7 @@ export function AppSidebar({
                                     <span>Trash</span>
                                 </SidebarMenuButton>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                            <DropdownMenuContent className="min-w-44 rounded-lg bg-black/50 backdrop-blur-sm border-none" side="right" align="end" sideOffset={14}>
                                 <DropdownMenuLabel>Trash</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 {trashedProjects.length > 0 ? (
@@ -1044,7 +1044,7 @@ export function AppSidebar({
                                                 <span>{item.name}</span>
                                             </DropdownMenuSubTrigger>
                                             <DropdownMenuPortal>
-                                                <DropdownMenuSubContent className="rounded-lg bg-gray-900/50 backdrop-blur-sm border-none">
+                                                <DropdownMenuSubContent className="rounded-lg bg-black/50 backdrop-blur-sm border-none">
                                                     <DropdownMenuItem onSelect={() => onRestoreCanvas(item.id)}>
                                                         <Undo2 className="mr-2 h-4 w-4" />
                                                         <span>Restore</span>
