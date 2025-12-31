@@ -82,7 +82,6 @@ Nexus will operate on a freemium model, designed to provide powerful core tools 
 *   **🎨 Element Manipulation & Customization:** Full control over elements like shapes, text, and images.
 *   **💾 Local Persistence:** Work is saved automatically to local storage.
 *   **↩️ Undo/Redo:** Robust history management.
-*   **⭐ Favorites System:** Pin your most important canvases for quick access.
 *   **🌐 Public Website Pages:**
     *   **Dedicated Landing Page:** A modern, content-rich marketing page.
     *   **Dedicated Features Page:** Detailed showcase of Nexus capabilities.
@@ -131,6 +130,8 @@ This is the next major feature update, which will transform Nexus into a truly c
 
 *   **Complete Deletion Lifecycle:**
     *   Implement the final **permanent deletion** of canvases from the trash, including the backend API and the UI trigger.
+
+*   **⭐ Favorites System (Backend):** The UI for favoriting canvases is in place, but the backend functionality to save this state needs to be implemented to make it persistent.
 
 ## 🛠️ Technology Stack
 

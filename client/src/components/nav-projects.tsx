@@ -66,9 +66,10 @@ export function NavProjects({ projects, label, onToggleFavorite, onTrash, onRena
                 </SidebarMenuAction>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-48 rounded-lg bg-gray-900/50 backdrop-blur-sm border-none"
+                className="w-48 rounded-lg bg-black/50 backdrop-blur-sm border-none"
                 side={isMobile ? "bottom" : "right"}
                 align={isMobile ? "end" : "start"}
+                sideOffset={14}
               >
                 <DropdownMenuItem onSelect={() => onToggleFavorite?.(item.id)}>
                   <Star className="mr-2 h-4 w-4" />
@@ -78,7 +79,7 @@ export function NavProjects({ projects, label, onToggleFavorite, onTrash, onRena
                   <Edit className="mr-2 h-4 w-4" />
                   <span>Rename</span>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem disabled>
                   <Share2 className="mr-2 h-4 w-4" />
                   <span>Share</span>
                 </DropdownMenuItem>
