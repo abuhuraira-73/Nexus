@@ -43,10 +43,10 @@ export const UserProfileModal = ({ isOpen, onClose }: UserProfileModalProps) => 
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className="sm:max-w-3xl h-[70vh] bg-black/50 backdrop-blur-sm border-none p-0">
-                <div className="flex h-full">
+            <DialogContent className="sm:max-w-3xl h-[85vh] md:h-[70vh] bg-black/50 backdrop-blur-sm border-none p-0">
+                <div className="flex flex-col md:flex-row h-full">
                     {/* Step 2: Sidebar Navigation */}
-                    <aside className="w-1/4 h-full border-r border-gray-700/50 p-4">
+                    <aside className="w-full md:w-1/4 h-auto md:h-full border-b md:border-r md:border-b-0 border-gray-700/50 p-4">
                         <h3 className="text-lg font-semibold mb-4">Settings</h3>
                         <div className="flex flex-col space-y-1">
                             {NAV_ITEMS.map((item) => (
@@ -64,7 +64,7 @@ export const UserProfileModal = ({ isOpen, onClose }: UserProfileModalProps) => 
                     </aside>
 
                     {/* Main Content Area (for Steps 3 & 4) */}
-                    <main className="w-3/4 h-full p-6 overflow-y-auto">
+                    <main className="w-full md:w-3/4 h-full p-6 overflow-y-auto">
                         {renderContent()}
                     </main>
                 </div>

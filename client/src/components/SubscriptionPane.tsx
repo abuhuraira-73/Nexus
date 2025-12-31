@@ -43,11 +43,11 @@ export const SubscriptionPane = () => {
     return (
         <div>
             <h2 className="text-2xl font-bold mb-6">Subscription</h2>
-            <div className="bg-blue-500/20 text-blue-300 p-4 rounded-lg mb-6 max-w-md">
+            <div className="bg-blue-500/20 text-blue-300 p-4 rounded-lg mb-6 max-w-full md:max-w-md">
                 <p className="font-semibold">Trial Phase Active! 🎉</p>
                 <p className="text-sm">All features, including Premium, are currently free for a limited time period. Enjoy full access!</p>
             </div>
-            <div className="space-y-4 max-w-md p-6 rounded-lg bg-white/5">
+            <div className="space-y-4 max-w-full md:max-w-md p-6 rounded-lg bg-white/5">
                 <div className="flex justify-between items-center">
                     <h3 className="text-lg font-medium">Your Current Plan</h3>
                     <span className={`font-bold text-lg capitalize px-3 py-1 rounded-full ${plan === 'premium' ? 'bg-yellow-500/20 text-yellow-400' : 'bg-gray-500/20 text-gray-300'}`}>

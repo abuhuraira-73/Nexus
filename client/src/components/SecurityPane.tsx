@@ -54,7 +54,7 @@ export const SecurityPane = () => {
             <h2 className="text-2xl font-bold mb-6">Security</h2>
             
             {/* Change Password Section */}
-            <div className="space-y-4 max-w-md">
+            <div className="space-y-4 max-w-full md:max-w-md">
                 <h3 className="text-lg font-medium">Change Password</h3>
                 <div className="space-y-2">
                     <Label htmlFor="current-password">Current Password</Label>
@@ -91,7 +91,7 @@ export const SecurityPane = () => {
             <Separator className="my-8" />
 
             {/* Danger Zone */}
-            <div className="space-y-4 max-w-md">
+            <div className="space-y-4 max-w-full md:max-w-md">
                  <h3 className="text-lg font-medium text-red-500">Danger Zone</h3>
                  <p className="text-sm text-muted-foreground">Once you delete your account, there is no going back. Please be certain.</p>
                  <Button variant="destructive" onClick={openDeleteModal}>
