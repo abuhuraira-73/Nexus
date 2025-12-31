@@ -192,3 +192,16 @@
     animation: scroll 40s linear infinite;
   }
 }
+
+/*
+  Force buttons inside the settings modal to wrap long text.
+  This is a targeted fix for an issue where dynamically loaded button
+  text was overflowing on mobile screens.
+*/
+[role="dialog"] main button {
+    white-space: normal !important;
+    height: auto !important;
+    line-height: 1.25rem !important; /* Adjust line-height for wrapped text */
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
