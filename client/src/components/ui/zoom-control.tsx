@@ -4,7 +4,7 @@ import { Input } from './input';
 import { Button } from './button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './tooltip';
 import { Frame } from 'lucide-react';
-
+ 
 export const ZoomControl = () => {
   const { stageScale, setStage } = useCanvasStore();
   const [displayValue, setDisplayValue] = useState(Math.round(stageScale * 100).toString());
