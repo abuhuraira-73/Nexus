@@ -24,7 +24,7 @@ export const ZoomControl = () => {
     } else {
       setDisplayValue(Math.round(stageScale * 100).toString());
     }
-  };
+  }; 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
